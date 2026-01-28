@@ -1,81 +1,77 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Estado de Conciencia (AVPU) – Signos Vitales</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <style>
-    body { font-family: Arial, sans-serif; background:#f2f2f2; margin:0; padding:20px; text-align:center; }
-    .header { display:flex; align-items:center; justify-content:center; max-width:420px; margin:0 auto 20px auto; gap:12px; }
-    .logo { width:33%; max-width:90px; }
-    .logo img { width:100%; height:auto; }
-    .header-text { text-align:left; width:67%; }
-    h1 { margin-bottom:4px; font-size:22px; }
-    p.subtitle { margin-top:0; color:#555; font-size:14px; }
-
-    .avpu-button {
-      display:block;
-      width:100%;
-      max-width:400px;
-      margin:12px auto;
-      padding:20px;
-      font-size:18px;
-      border-radius:12px;
-      border:none;
-      color:white;
-      cursor:pointer;
-      box-shadow:0 4px 8px rgba(0,0,0,0.1);
-      transition:all 0.1s ease;
-    }
-    .avpu-button:active { transform:translateY(2px); box-shadow:0 2px 4px rgba(0,0,0,0.2); }
-
-    .verde { background-color: #2e7d32; }
-    .amarillo { background-color: #f9a825; color:#000; }
-    .naranja { background-color: #ff9800; }
-    .rojo { background-color: #d32f2f; }
-
-  </style>
+<meta charset="UTF-8">
+<title>Estado de Conciencia – AVPU</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body { font-family: Arial, sans-serif; background:#f2f2f2; margin:0; padding:20px; text-align:center; }
+.header { display:flex; align-items:center; justify-content:center; max-width:420px; margin:0 auto 20px auto; gap:12px; }
+.logo { width:33%; max-width:90px; } .logo img { width:100%; height:auto; }
+.header-text { text-align:left; width:67%; }
+h1 { margin-bottom:4px; font-size:22px; }
+p.subtitle { margin-top:0; color:#555; font-size:14px; }
+button { padding:16px 20px; font-size:18px; border-radius:12px; border:none; margin:10px; cursor:pointer; transition:all 0.1s ease; width:160px;}
+button:active { transform:translateY(2px); box-shadow:0 2px 4px rgba(0,0,0,0.2); }
+.a-btn { background:#4caf50; color:white; }
+.v-btn { background:#ffeb3b; color:#555; }
+.p-btn { background:#ff9800; color:white; }
+.u-btn { background:#f44336; color:white; }
+.modal { display:none; position:fixed; z-index:100; left:0; top:0; width:100%; height:100%; overflow:auto; background-color: rgba(0,0,0,0.4);}
+.modal-content { background-color:#fff; margin:15% auto; padding:20px; border-radius:12px; max-width:400px; text-align:left; box-shadow:0 4px 12px rgba(0,0,0,0.3);}
+.modal-header { font-size:20px; font-weight:bold; margin-bottom:10px; color:#1976d2; }
+.modal-body { margin-bottom:20px; font-size:16px; }
+.modal-footer { text-align:right; }
+.close-btn { padding:8px 16px; border:none; border-radius:8px; background:#1976d2; color:white; cursor:pointer; font-weight:bold; }
+.close-btn:active { transform:translateY(2px); }
+</style>
 </head>
 <body>
 
-  <div class="header">
-    <div class="logo">
-      <img src="logo.png" alt="The Tía Foundation">
-    </div>
-    <div class="header-text">
-      <h1>Estado de Conciencia (AVPU)</h1>
-      <p class="subtitle">Selecciona el nivel del paciente</p>
-    </div>
+<div class="header">
+  <div class="logo"><img src="logo.png" alt="The Tía Foundation"></div>
+  <div class="header-text"><h1>Estado de Conciencia</h1><p class="subtitle">AVPU</p></div>
+</div>
+
+<p>Selecciona el nivel de conciencia:</p>
+<button class="a-btn" onclick="mostrarAVPU('A')">A – Alerta</button>
+<button class="v-btn" onclick="mostrarAVPU('V')">V – Responde a la Voz</button>
+<button class="p-btn" onclick="mostrarAVPU('P')">P – Responde al Dolor</button>
+<button class="u-btn" onclick="mostrarAVPU('U')">U – No Responde</button>
+
+<button onclick="location.href='signos-vitales.html'">⬅ Volver</button>
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">The Tía Foundation</div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer"><button class="close-btn" onclick="cerrarModal()">Cerrar</button></div>
   </div>
+</div>
 
-  <button class="avpu-button verde" onclick="mostrarInfo('A')">🟢 A – Alerta: paciente despierto y responde preguntas</button>
-  <button class="avpu-button amarillo" onclick="mostrarInfo('V')">🟡 V – Responde a la voz: se mueve o habla con estímulo verbal</button>
-  <button class="avpu-button naranja" onclick="mostrarInfo('P')">🟠 P – Responde al dolor: reacciona solo a estímulo doloroso</button>
-  <button class="avpu-button rojo" onclick="mostrarInfo('U')">🔴 U – No responde: no hay respuesta a estímulos</button>
-
-  <button class="avpu-button" style="background:#ffffff;color:#000; box-shadow:0 4px 8px rgba(0,0,0,0.1);" onclick="location.href='signos-vitales.html'">⬅ Volver</button>
-
-  <script>
-    function mostrarInfo(tipo){
-      let mensaje="";
-      switch(tipo){
-        case 'A':
-          mensaje="Paciente alerta:\n- Monitorear signos vitales regularmente\n- Puede interactuar y responder preguntas\n- Continuar observación rutinaria";
-          break;
-        case 'V':
-          mensaje="Paciente responde a la voz:\n- Verificar nivel de conciencia\n- Vigilar signos vitales\n- Preparar para intervención si empeora";
-          break;
-        case 'P':
-          mensaje="Paciente responde al dolor:\n- Evaluar causa del dolor\n- Monitorear signos vitales cada 5 min\n- Considerar traslado a nivel superior";
-          break;
-        case 'U':
-          mensaje="Paciente no responde:\n- Activar algoritmo de emergencia\n- Revisar vía aérea, respiración y circulación\n- Traslado inmediato a hospital";
-          break;
-      }
-      alert(mensaje);
-    }
-  </script>
+<script>
+function mostrarAVPU(nivel){
+  const modalBody = document.getElementById('modal-body');
+  let mensaje="";
+  switch(nivel){
+    case 'A':
+      mensaje="Paciente alerta: responde a preguntas, consciente, pupilas normales.<br>Acción: vigilar signos vitales, continuar observación.";
+      break;
+    case 'V':
+      mensaje="Paciente responde a la voz o estímulo verbal.<br>Acción: asegurar vía aérea, vigilar signos vitales, preparar intervención si empeora.";
+      break;
+    case 'P':
+      mensaje="Paciente responde solo al dolor.<br>Acción: evaluar causa, considerar intervención urgente, vigilancia intensiva.";
+      break;
+    case 'U':
+      mensaje="Paciente no responde.<br>Acción: emergencia inmediata: revisar vía aérea, RCP si necesario, derivación inmediata.";
+      break;
+  }
+  modalBody.innerHTML = mensaje;
+  document.getElementById('modal').style.display="block";
+}
+function cerrarModal(){ document.getElementById('modal').style.display="none"; }
+</script>
 
 </body>
 </html>
