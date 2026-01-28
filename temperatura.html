@@ -12,11 +12,14 @@
     .header-text { text-align:left; width:67%; }
     h1 { margin-bottom:4px; font-size:22px; }
     p.subtitle { margin-top:0; color:#555; font-size:14px; }
+
     .input-group { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; align-items:center; margin:10px 0; }
     .input-group label { font-weight:bold; margin:0; }
-    .input-group input, .input-group select { flex:0 0 80px; padding:8px; font-size:16px; border-radius:6px; border:1px solid #ccc; }
+    .input-group input { flex:0 0 80px; padding:8px; font-size:16px; border-radius:6px; border:1px solid #ccc; }
+
     button { padding:12px 20px; font-size:16px; border-radius:10px; border:none; margin:10px; cursor:pointer; transition:all 0.1s ease; box-shadow:0 4px 8px rgba(0,0,0,0.1);}
     button:active { transform:translateY(2px); box-shadow:0 2px 4px rgba(0,0,0,0.2); }
+
     .resultado { margin-top:20px; padding:16px; border-radius:10px; font-size:18px; font-weight:bold; color:white; }
     .verde { background-color: #2e7d32; }
     .amarillo { background-color: #f9a825; }
@@ -31,64 +34,82 @@
     </div>
     <div class="header-text">
       <h1>Temperatura</h1>
-      <p class="subtitle">Ingresa la edad y la temperatura en °C</p>
+      <p class="subtitle">Ingresa temperatura corporal (°C)</p>
     </div>
   </div>
 
   <div class="input-group">
-    <label for="edad">Edad:</label>
-    <select id="edad">
-      <option value="rn">Recién nacido</option>
-      <option value="nino">Niño</option>
-      <option value="adulto">Adulto/Adolescente</option>
-    </select>
-
-    <label for="temp">Temp (°C):</label>
-    <input type="number" id="temp" placeholder="36.5">
+    <label for="temp">Temperatura:</label>
+    <input type="number" id="temp" placeholder="36.5" step="0.1">
   </div>
 
-  <button onclick="evaluarTemp()">Evaluar</button>
+  <button onclick="evaluarTemperatura()">Evaluar</button>
   <button onclick="location.href='signos-vitales.html'">⬅ Volver</button>
 
   <div id="resultado" class="resultado" style="display:none;"></div>
 
   <script>
-    function evaluarTemp(){
-      const edad = document.getElementById('edad').value;
+    function evaluarTemperatura(){
       const temp = parseFloat(document.getElementById('temp').value);
       const res = document.getElementById('resultado');
 
-      if(isNaN(temp)){ alert("Ingresa un valor válido"); return; }
+      if(isNaN(temp)){
+        alert("Ingresa un valor válido");
+        return;
+      }
 
-      let rango={normal:[36,37.5], amarillo:[0,0], rojo:[0,0]};
-      switch(edad){
-        case "rn": rango={normal:[36.5,37.5], amarillo:[37.6,38], rojo:[0,36,39,50]}; break;
-        case "nino": rango={normal:[36,37.5], amarillo:[37.6,38.5], rojo:[0,35,40,50]}; break;
-        case "adulto": rango={normal:[36,37.5], amarillo:[37.6,38], rojo:[0,35,40,50]}; break;
+      if(temp < 34 || temp > 42){
+        alert("Valor fuera de rango permitido (34–42 °C)");
+        return;
       }
 
       let mensaje="", color="", accion=null;
 
-      if(temp<36 || temp>40){
-        mensaje="🔴 EMERGENCIA: Temperatura crítica";
+      if(temp < 35.5){
+        mensaje="🔴 Hipotermia: emergencia";
         color="rojo";
         accion=function(){
-          alert("ALGORITMO EMERGENCIA TEMPERATURA:\n1. Valorar signos vitales\n2. Mantener al paciente abrigado/hidratar\n3. Traslado inmediato si grave");
+          alert(
+            "ALGORITMO HIPOTERMIA:\n"+
+            "1. Abrigar al paciente\n"+
+            "2. Medir signos vitales\n"+
+            "3. Traslado si persiste hipotermia"
+          );
         };
-      } else if((temp>rango.normal[1] && temp<=rango.normal[1]+1) || (temp<rango.normal[0] && temp>=rango.normal[0]-1)){
-        mensaje="🟡 Alerta: Vigilar y re-evaluar";
+      } else if(temp <= 36){
+        mensaje="🟡 Alerta: temperatura baja leve";
         color="amarillo";
-        accion=function(){
-          alert("ALGORITMO OBSERVACIÓN TEMPERATURA:\n1. Repetir medición en 30 min\n2. Observar síntomas asociados\n3. Avisar responsable sanitario");
-        };
-      } else {
+      } else if(temp <= 37.5){
         mensaje="🟢 Normal";
         color="verde";
+      } else if(temp <= 38){
+        mensaje="🟡 Fiebre leve";
+        color="amarillo";
+        accion=function(){
+          alert(
+            "ALGORITMO FIEBRE LEVE:\n"+
+            "1. Vigilar síntomas\n"+
+            "2. Hidratación\n"+
+            "3. Controlar signos vitales"
+          );
+        };
+      } else {
+        mensaje="🔴 Fiebre alta: emergencia";
+        color="rojo";
+        accion=function(){
+          alert(
+            "ALGORITMO FIEBRE ALTA:\n"+
+            "1. Valorar signos de alarma\n"+
+            "2. Administrar medidas antipiréticas\n"+
+            "3. Traslado si necesario"
+          );
+        };
       }
 
       res.style.display="block";
       res.className="resultado "+color;
       res.textContent=mensaje;
+
       if(accion) accion();
     }
   </script>
