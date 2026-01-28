@@ -1,104 +1,71 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Oximetría – Signos Vitales</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body { font-family: Arial, sans-serif; background: #f2f2f2; margin:0; padding:20px; text-align:center; }
-    .header { display:flex; align-items:center; justify-content:center; max-width:420px; margin:0 auto 20px auto; gap:12px; }
-    .logo { width:33%; max-width:90px; }
-    .logo img { width:100%; height:auto; }
-    .header-text { text-align:left; width:67%; }
-    h1 { margin-bottom:4px; font-size:22px; }
-    p.subtitle { margin-top:0; color:#555; font-size:14px; }
-
-    .input-group { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; align-items:center; margin:10px 0; }
-    .input-group label { font-weight:bold; margin:0; }
-    .input-group input { flex:0 0 80px; padding:8px; font-size:16px; border-radius:6px; border:1px solid #ccc; }
-
-    button { padding:12px 20px; font-size:16px; border-radius:10px; border:none; margin:10px; cursor:pointer; transition:all 0.1s ease; box-shadow:0 4px 8px rgba(0,0,0,0.1);}
-    button:active { transform:translateY(2px); box-shadow:0 2px 4px rgba(0,0,0,0.2); }
-
-    .resultado { margin-top:20px; padding:16px; border-radius:10px; font-size:18px; font-weight:bold; color:white; }
-    .verde { background-color: #2e7d32; }
-    .amarillo { background-color: #f9a825; }
-    .rojo { background-color: #d32f2f; }
-  </style>
+<meta charset="UTF-8">
+<title>Oximetría – Signos Vitales</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body { font-family: Arial, sans-serif; background: #f2f2f2; margin:0; padding:20px; text-align:center; }
+.header { display:flex; align-items:center; justify-content:center; max-width:420px; margin:0 auto 20px auto; gap:12px; }
+.logo { width:33%; max-width:90px; } .logo img { width:100%; height:auto; }
+.header-text { text-align:left; width:67%; }
+h1 { margin-bottom:4px; font-size:22px; }
+p.subtitle { margin-top:0; color:#555; font-size:14px; }
+.input-group { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; align-items:center; margin:10px 0; }
+.input-group label { font-weight:bold; margin:0; }
+.input-group input, .input-group select { flex:0 0 120px; padding:8px; font-size:16px; border-radius:6px; border:1px solid #ccc; }
+button { padding:12px 20px; font-size:16px; border-radius:10px; border:none; margin:10px; cursor:pointer; transition:all 0.1s ease; box-shadow:0 4px 8px rgba(0,0,0,0.1);}
+button:active { transform:translateY(2px); box-shadow:0 2px 4px rgba(0,0,0,0.2); }
+.modal { display:none; position:fixed; z-index:100; left:0; top:0; width:100%; height:100%; overflow:auto; background-color: rgba(0,0,0,0.4);}
+.modal-content { background-color:#fff; margin:15% auto; padding:20px; border-radius:12px; max-width:400px; text-align:left; box-shadow:0 4px 12px rgba(0,0,0,0.3);}
+.modal-header { font-size:20px; font-weight:bold; margin-bottom:10px; color:#1976d2; }
+.modal-body { margin-bottom:20px; font-size:16px; }
+.modal-footer { text-align:right; }
+.close-btn { padding:8px 16px; border:none; border-radius:8px; background:#1976d2; color:white; cursor:pointer; font-weight:bold; }
+.close-btn:active { transform:translateY(2px); }
+</style>
 </head>
 <body>
 
-  <div class="header">
-    <div class="logo">
-      <img src="logo.png" alt="The Tía Foundation">
-    </div>
-    <div class="header-text">
-      <h1>Oximetría</h1>
-      <p class="subtitle">Ingresa saturación de oxígeno (%)</p>
-    </div>
+<div class="header">
+  <div class="logo"><img src="logo.png" alt="The Tía Foundation"></div>
+  <div class="header-text"><h1>Oximetría</h1><p class="subtitle">Saturación de oxígeno</p></div>
+</div>
+
+<div class="input-group">
+  <label for="oxi">Saturación (%)</label>
+  <input type="number" id="oxi" placeholder="95" min="0" max="100">
+</div>
+
+<button onclick="evaluarOxi()">Evaluar</button>
+<button onclick="location.href='signos-vitales.html'">⬅ Volver</button>
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">The Tía Foundation</div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer"><button class="close-btn" onclick="cerrarModal()">Cerrar</button></div>
   </div>
+</div>
 
-  <div class="input-group">
-    <label for="oxi">Saturación:</label>
-    <input type="number" id="oxi" placeholder="95" step="1">
-  </div>
+<script>
+function evaluarOxi(){
+  const oxi = parseInt(document.getElementById('oxi').value);
+  const modalBody = document.getElementById('modal-body');
 
-  <button onclick="evaluarOximetria()">Evaluar</button>
-  <button onclick="location.href='signos-vitales.html'">⬅ Volver</button>
+  if(isNaN(oxi) || oxi<0 || oxi>100){ alert("Ingresa saturación válida (0-100%)"); return; }
 
-  <div id="resultado" class="resultado" style="display:none;"></div>
+  let color="", mensaje="";
+  if(oxi<88){ color="🔴"; mensaje="Hipoxemia grave"; }
+  else if(oxi<91){ color="🟡"; mensaje="Hipoxemia leve"; }
+  else { color="🟢"; mensaje="Normal"; }
 
-  <script>
-    function evaluarOximetria(){
-      const oxi = parseInt(document.getElementById('oxi').value);
-      const res = document.getElementById('resultado');
-
-      if(isNaN(oxi)){
-        alert("Ingresa un valor válido");
-        return;
-      }
-
-      if(oxi < 50 || oxi > 100){
-        alert("Valor fuera de rango permitido (50–100%)");
-        return;
-      }
-
-      let mensaje="", color="", accion=null;
-
-      if(oxi < 88){
-        mensaje="🔴 Saturación baja: emergencia";
-        color="rojo";
-        accion=function(){
-          alert(
-            "ALGORITMO OXIMETRÍA BAJA:\n"+
-            "1. Administrar oxígeno si disponible\n"+
-            "2. Valorar signos vitales\n"+
-            "3. Traslado inmediato si persiste"
-          );
-        };
-      } else if(oxi <= 91){
-        mensaje="🟡 Saturación ligeramente baja: alerta";
-        color="amarillo";
-        accion=function(){
-          alert(
-            "ALGORITMO OXIMETRÍA ALERTA:\n"+
-            "1. Observar signos de dificultad respiratoria\n"+
-            "2. Posicionar adecuadamente al paciente\n"+
-            "3. Reevaluar en 5–10 min"
-          );
-        };
-      } else {
-        mensaje="🟢 Saturación normal";
-        color="verde";
-      }
-
-      res.style.display="block";
-      res.className="resultado "+color;
-      res.textContent=mensaje;
-
-      if(accion) accion();
-    }
-  </script>
+  modalBody.innerHTML = `<span style="font-size:24px">${color}</span> ${mensaje}<br><br>
+  Algoritmo:<br>- Administrar oxígeno si amarillo o rojo<br>- Vigilar signos vitales<br>- Referir si <90%`;
+  document.getElementById('modal').style.display="block";
+}
+function cerrarModal(){ document.getElementById('modal').style.display="none"; }
+</script>
 
 </body>
 </html>
