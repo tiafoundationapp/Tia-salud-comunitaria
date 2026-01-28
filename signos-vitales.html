@@ -33,33 +33,42 @@
     .menu-button {
       display: block;
       width: 100%;
-      max-width: 420px;
-      margin: 14px auto;
-      padding: 16px;
+      max-width: 400px;
+      margin: 12px auto;
+      padding: 18px;
       font-size: 18px;
-      border-radius: 14px;
+      border-radius: 12px;
       border: none;
       background: #ffffff;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      text-align: left;
-      transition: all 0.1s ease; /* transición suave */
+      cursor: pointer;
+      transition: all 0.1s ease;
     }
 
-    .menu-button span {
-      display: block;
-      font-size: 14px;
-      color: #555;
-      margin-top: 6px;
-    }
-
-    /* Feedback al presionar */
     .menu-button:active {
-      background-color: #e0e0e0;
       transform: translateY(2px);
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
 
-    .blue { border-left: 10px solid #1976d2; }
+    .emergency {
+      background: #d32f2f;
+      color: white;
+      font-size: 20px;
+    }
+
+    .subtext {
+      font-size: 14px;
+      color: #555;
+    }
+
+    /* Colores según tipo de signo */
+    .presion { background-color: #2196F3; color:white; }
+    .fc { background-color: #9C27B0; color:white; }
+    .fr { background-color: #FF9800; color:white; }
+    .temperatura { background-color: #009688; color:white; }
+    .oximetria { background-color: #3F51B5; color:white; }
+    .avpu { background-color: #607D8B; color:white; }
+    .glucosa { background-color: #795548; color:white; }
 
   </style>
 </head>
@@ -72,44 +81,46 @@
     </div>
     <div class="header-text">
       <h1>Signos Vitales</h1>
-      <p class="subtitle">Evaluar, interpretar y decidir</p>
+      <p class="subtitle">Selecciona el signo vital a evaluar</p>
     </div>
   </div>
 
-  <button class="menu-button blue" onclick="location.href='presion-arterial.html'">
-    🩺 Presión Arterial
-    <span>Detectar hipertensión o choque</span>
+  <button class="menu-button presion" onclick="location.href='presion-arterial.html'">
+    💓 Presión Arterial
+    <div class="subtext">Sistólica y Diastólica</div>
   </button>
 
-  <button class="menu-button blue">
+  <button class="menu-button fc" onclick="location.href='frecuencia-cardiaca.html'">
     ❤️ Frecuencia Cardiaca
-    <span>Identificar taquicardia o bradicardia</span>
+    <div class="subtext">Incluye ajuste por edad</div>
   </button>
 
-  <button class="menu-button blue">
+  <button class="menu-button fr">
     🌬️ Frecuencia Respiratoria
-    <span>Señal temprana de gravedad</span>
+    <div class="subtext">Próximamente interactivo</div>
   </button>
 
-  <button class="menu-button blue">
+  <button class="menu-button temperatura">
     🌡️ Temperatura
-    <span>Fiebre, infección o hipotermia</span>
+    <div class="subtext">Próximamente interactivo</div>
   </button>
 
-  <button class="menu-button blue">
-    🍬 Glucosa Capilar
-    <span>Hipoglucemia o diabetes descontrolada</span>
+  <button class="menu-button oximetria">
+    🫁 Oximetría
+    <div class="subtext">Próximamente interactivo</div>
   </button>
 
-  <button class="menu-button blue">
-    🧑 Saturación de Oxígeno
-    <span>Dificultad respiratoria oculta</span>
+  <button class="menu-button avpu">
+    🧠 Estado de conciencia (AVPU)
+    <div class="subtext">Próximamente interactivo</div>
   </button>
 
-  <button class="menu-button blue">
-    🧠 Estado de Conciencia (AVPU)
-    <span>Valorar gravedad neurológica</span>
+  <button class="menu-button glucosa">
+    🍬 Glucosa capilar
+    <div class="subtext">Próximamente interactivo</div>
   </button>
+
+  <button class="menu-button" onclick="location.href='index.html'">⬅ Volver al Menú Principal</button>
 
 </body>
 </html>
