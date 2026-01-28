@@ -2,68 +2,68 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>The Tía Foundation – Salud Comunitaria</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <title>The Tía App</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f2f2f2;
       margin: 0;
-      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: #e0e0e0;
       text-align: center;
     }
 
+    .container {
+      max-width: 420px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .logo {
+      width: 160px;
+      margin: 20px auto;
+    }
+
     h1 {
-      margin-bottom: 5px;
+      font-size: 24px;
+      margin-bottom: 20px;
     }
 
-    p {
-      margin-top: 0;
-      color: #555;
-    }
-
-    .menu-button {
+    .btn {
       display: block;
-      width: 100%;
-      max-width: 400px;
-      margin: 12px auto;
-      padding: 18px;
-      font-size: 18px;
+      padding: 16px;
+      margin: 12px 0;
       border-radius: 12px;
-      border: none;
-      background: #ffffff;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      color: white;
+      font-size: 18px;
+      text-decoration: none;
+      font-weight: bold;
     }
 
-    .emergency {
-      background: #d32f2f;
-      color: white;
-      font-size: 20px;
-    }
+    .azul { background: #1976d2; }
+    .morado { background: #6a1b9a; }
+    .rojo { background: #c62828; }
+    .verde { background: #2e7d32; }
+    .naranja { background: #ef6c00; }
+    .gris { background: #455a64; }
+
   </style>
 </head>
-
 <body>
 
-  <h1>The Tía Foundation</h1>
-  <p>Salud Comunitaria</p>
+  <div class="container">
 
-  <button class="menu-button emergency">🚨 EMERGENCIAS</button>
+    <!-- LOGO -->
+    <img src="logo.png" class="logo" alt="Logo Fundación">
 
-  <button class="menu-button">🚦 Signos Vitales</button>
+    <h1>Manual de Salud Comunitaria</h1>
 
-  <button class="menu-button">💉 Aplicación de Medicamentos</button>
+    <a href="#" class="btn azul">Evaluación Inicial</a>
+    <a href="#" class="btn morado">Signos Vitales</a>
+    <a href="#" class="btn rojo">Urgencias</a>
+    <a href="#" class="btn verde">Primeros Auxilios</a>
+    <a href="#" class="btn naranja">Nutrición</a>
+    <a href="#" class="btn gris">Educación en Salud</a>
 
-  <button class="menu-button">🩹 Heridas, Vendajes y Quemaduras</button>
-
-  <button class="menu-button">🤰 Trabajo de Parto</button>
-
-  <button class="menu-button">🥗 Nutrición Saludable</button>
-
-  <button class="menu-button">🧠 Primeros Auxilios Psicológicos</button>
-
-  <button class="menu-button">📘 Manual Completo</button>
+  </div>
 
 </body>
 </html>
