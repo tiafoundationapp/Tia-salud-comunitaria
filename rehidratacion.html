@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Rehidratación IV</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background:#f2f2f2;
+  margin:0;
+  padding:20px;
+}
+
+.container {
+  max-width:420px;
+  margin:0 auto;
+  background:#ffffff;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 4px 8px rgba(0,0,0,0.1);
+}
+
+h1 {
+  text-align:center;
+  font-size:22px;
+  margin-bottom:6px;
+}
+
+p {
+  text-align:center;
+  color:#555;
+  font-size:14px;
+}
+
+/* Botón infografía */
+.info-btn {
+  width:100%;
+  padding:10px;
+  margin:12px 0;
+  font-size:16px;
+  border-radius:10px;
+  border:2px solid #1976d2;
+  background:#fff;
+  color:#1976d2;
+  cursor:pointer;
+}
+
+.info-btn:active { transform: translateY(2px); }
+
+/* Advertencia */
+.warning-box {
+  border:2px solid #d32f2f;
+  background:#fdecea;
+  border-radius:10px;
+  padding:12px;
+  margin-bottom:15px;
+}
+
+.warning-box label {
+  font-weight:bold;
+  color:#b71c1c;
+  font-size:16px;
+}
+
+.warning-box p {
+  color:#b71c1c;
+  font-size:14px;
+  margin-top:6px;
+}
+
+/* Botones */
+.sub-btn {
+  width:100%;
+  padding:15px;
+  margin:10px 0;
+  font-size:17px;
+  border-radius:12px;
+  border:none;
+  background:#ffffff;
+  box-shadow:0 3px 6px rgba(0,0,0,0.15);
+  cursor:pointer;
+}
+
+.sub-btn:active { transform: translateY(2px); }
+
+.danger {
+  background:#d32f2f;
+  color:white;
+}
+
+/* Volver */
+.back-btn {
+  width:100%;
+  margin-top:20px;
+  padding:12px;
+  font-size:16px;
+  border-radius:10px;
+  border:none;
+  background:#1976d2;
+  color:white;
+  cursor:pointer;
+}
+
+/* Modal */
+.modal {
+  display:none;
+  position:fixed;
+  z-index:100;
+  left:0; top:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.6);
+}
+
+.modal-content {
+  background:#ffffff;
+  margin:6% auto;
+  padding:18px;
+  border-radius:12px;
+  max-width:95%;
+}
+
+.modal-content h2 { margin-top:0; }
+
+.modal-content label {
+  display:block;
+  margin:8px 0;
+  font-size:16px;
+}
+
+.close-btn {
+  width:100%;
+  margin-top:15px;
+  padding:10px;
+  font-size:16px;
+  border-radius:8px;
+  border:none;
+  background:#1976d2;
+  color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>💧 Rehidratación IV</h1>
+  <p>Manejo inicial de deshidratación y choque leve</p>
+
+  <!-- Infografía -->
+  <button class="info-btn" onclick="openModal('infografia')">
+    📊 Ver infografía
+  </button>
+
+  <!-- Advertencia -->
+  <div class="warning-box">
+    <label>
+      ⚠️ <input type="checkbox">
+      ¿Alergia conocida o antecedente grave con soluciones IV?
+    </label>
+    <p>Si existe duda, NO iniciar y referir.</p>
+  </div>
+
+  <button class="sub-btn danger" onclick="openModal('advertencias')">
+    🔴 ADVERTENCIAS
+  </button>
+
+  <button class="sub-btn" onclick="openModal('material')">
+    🧰 Material necesario
+  </button>
+
+  <button class="sub-btn" onclick="openModal('tecnica')">
+    🧪 Técnica de rehidratación
+  </button>
+
+  <button class="sub-btn" onclick="location.href='calculadora-rehidratacion.html'">
+    🧮 Dosis / Volumen
+  </button>
+
+  <button class="back-btn" onclick="history.back()">⬅ Volver</button>
+</div>
+
+<!-- MODALES -->
+
+<!-- Infografía -->
+<div id="infografia" class="modal">
+  <div class="modal-content">
+    <h2>Infografía Rehidratación IV</h2>
+    <img src="img/rehidratacion.png" style="width:100%;border-radius:8px;">
+    <button class="close-btn" onclick="closeModal('infografia')">Cerrar</button>
+  </div>
+</div>
+
+<!-- Advertencias -->
+<div id="advertencias" class="modal">
+  <div class="modal-content">
+    <h2>🔴 Advertencias importantes</h2>
+    <ul>
+      <li>No iniciar IV si el paciente está inconsciente sin vía aérea</li>
+      <li>No usar glucosadas para rehidratación inicial</li>
+      <li>Si hay dificultad respiratoria → detener</li>
+      <li>Referir si no mejora tras líquidos iniciales</li>
+    </ul>
+    <button class="close-btn" onclick="closeModal('advertencias')">Cerrar</button>
+  </div>
+</div>
+
+<!-- Material -->
+<div id="material" class="modal">
+  <div class="modal-content">
+    <h2>🧰 Material necesario</h2>
+    <label><input type="checkbox"> Solución salina 0.9%</label>
+    <small>Usos: diarrea, fiebre, vómito, deshidratación</small><br><br>
+
+    <label><input type="checkbox"> Solución Hartmann</label>
+    <small>Usos: quemaduras, vómitos intensos, trauma</small><br><br>
+
+    <label><input type="checkbox"> Equipo macrogotero</label>
+    <label><input type="checkbox"> Catéter IV</label>
+    <label><input type="checkbox"> Torniquete</label>
+    <label><input type="checkbox"> Alcohol</label>
+    <label><input type="checkbox"> Guantes</label>
+    <label><input type="checkbox"> Contenedor punzocortantes</label>
+
+    <button class="close-btn" onclick="closeModal('material')">Cerrar</button>
+  </div>
+</div>
+
+<!-- Técnica -->
+<div id="tecnica" class="modal">
+  <div class="modal-content">
+    <h2>🧪 Técnica (lenguaje simple)</h2>
+    <label><input type="checkbox"> Lávate las manos</label>
+    <label><input type="checkbox"> Explica al paciente lo que harás</label>
+    <label><input type="checkbox"> Coloca torniquete</label>
+    <label><input type="checkbox"> Limpia la zona</label>
+    <label><input type="checkbox"> Coloca el catéter IV</label>
+    <label><input type="checkbox"> Retira torniquete</label>
+    <label><input type="checkbox"> Conecta solución</label>
+    <label><input type="checkbox"> Ajusta el goteo</label>
+    <label><input type="checkbox"> Vigila mejoría o reacciones</label>
+
+    <button class="close-btn" onclick="closeModal('tecnica')">Cerrar</button>
+  </div>
+</div>
+
+<script>
+function openModal(id) {
+  document.getElementById(id).style.display = "block";
+}
+function closeModal(id) {
+  document.getElementById(id).style.display = "none";
+}
+</script>
+
+</body>
+</html>
