@@ -25,12 +25,12 @@
 
     .logo { width: 33%; max-width: 90px; }
     .logo img { width: 100%; height: auto; }
+
     .header-text { text-align: left; width: 67%; }
 
     h1 { margin-bottom: 4px; font-size: 22px; }
     p.subtitle { margin-top: 0; color: #555; font-size: 14px; }
 
-    /* Grupo de inputs responsivo */
     .input-group {
       display: flex;
       flex-wrap: wrap;
@@ -41,12 +41,11 @@
     }
 
     .input-group label {
-      margin: 0;
       font-weight: bold;
     }
 
     .input-group input {
-      flex: 0 0 80px; /* ancho fijo para los cuadros */
+      flex: 0 0 80px;
       padding: 8px;
       font-size: 16px;
       border-radius: 6px;
@@ -81,7 +80,6 @@
     .verde { background-color: #2e7d32; }
     .amarillo { background-color: #f9a825; }
     .rojo { background-color: #d32f2f; }
-
   </style>
 </head>
 
@@ -93,7 +91,7 @@
     </div>
     <div class="header-text">
       <h1>Presión Arterial</h1>
-      <p class="subtitle">Ingresa los valores para ver semáforo clínico</p>
+      <p class="subtitle">Ingresa los valores para ver el semáforo clínico</p>
     </div>
   </div>
 
@@ -122,22 +120,45 @@
 
       let mensaje = "";
       let color = "";
+      let accion = null;
 
-      // Semáforo básico
       if ((s < 90 || d < 60) || (s >= 160 || d >= 100)) {
         mensaje = "🔴 EMERGENCIA: Actuar inmediatamente";
         color = "rojo";
-      } else if ((s >= 140 || d >= 90)) {
-        mensaje = "🟡 Alerta: Vigilar y repetir medición";
+        accion = function() {
+          alert(
+            "ALGORITMO DE EMERGENCIA – PRESIÓN ARTERIAL\n\n" +
+            "1. Mantener al paciente en reposo\n" +
+            "2. Posición semisentada\n" +
+            "3. Tomar signos vitales cada 5 minutos\n" +
+            "4. Administrar oxígeno si está disponible\n" +
+            "5. Buscar traslado urgente a unidad médica"
+          );
+        };
+      } 
+      else if (s >= 140 || d >= 90) {
+        mensaje = "🟡 ALERTA: Vigilar y repetir medición";
         color = "amarillo";
-      } else {
-        mensaje = "🟢 Normal: Continúa observación";
+        accion = function() {
+          alert(
+            "ALGORITMO DE OBSERVACIÓN – PRESIÓN ARTERIAL\n\n" +
+            "1. Repetir medición en 15 minutos\n" +
+            "2. Verificar técnica correcta\n" +
+            "3. Preguntar síntomas (cefalea, mareo, visión borrosa)\n" +
+            "4. Si persiste, avisar al responsable de salud"
+          );
+        };
+      } 
+      else {
+        mensaje = "🟢 NORMAL: Continuar observación";
         color = "verde";
       }
 
       res.style.display = "block";
       res.className = "resultado " + color;
       res.textContent = mensaje;
+
+      if (accion) accion();
     }
   </script>
 
