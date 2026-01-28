@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Colocación de Sueros IV</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background:#f2f2f2;
+  margin:0;
+  padding:20px;
+  text-align:center;
+}
+
+.container {
+  max-width:420px;
+  margin:0 auto;
+  background:#ffffff;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 4px 8px rgba(0,0,0,0.1);
+  text-align:left;
+}
+
+h1 {
+  font-size:22px;
+  margin-bottom:10px;
+  text-align:center;
+}
+
+p {
+  text-align:center;
+  color:#555;
+  font-size:14px;
+}
+
+/* Botones */
+.menu-btn {
+  width:100%;
+  padding:16px;
+  margin:12px 0;
+  font-size:18px;
+  border-radius:14px;
+  border:none;
+  background:#ffffff;
+  box-shadow:0 3px 6px rgba(0,0,0,0.15);
+  cursor:pointer;
+}
+
+.menu-btn:active {
+  transform:translateY(2px);
+}
+
+/* Botón volver */
+.back-btn {
+  width:100%;
+  margin-top:20px;
+  padding:12px;
+  font-size:16px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  background:#1976d2;
+  color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>🧪 Colocación de Sueros IV</h1>
+  <p>Selecciona el motivo o tipo de solución</p>
+
+  <button class="menu-btn" onclick="location.href='rehidratacion.html'">
+    💧 Rehidratación
+  </button>
+
+  <button class="menu-btn" onclick="location.href='quemado-iv.html'">
+    🔥 Paciente quemado
+  </button>
+
+  <button class="menu-btn" onclick="location.href='tipos-soluciones.html'">
+    🧪 Tipos de soluciones
+  </button>
+
+  <button class="back-btn" onclick="history.back()">⬅ Volver</button>
+</div>
+
+</body>
+</html>
