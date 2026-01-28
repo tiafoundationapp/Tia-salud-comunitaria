@@ -1,135 +1,88 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Glucosa Capilar – Signos Vitales</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <style>
-    body { font-family: Arial, sans-serif; background: #f2f2f2; margin:0; padding:20px; text-align:center; }
-    .header { display:flex; align-items:center; justify-content:center; max-width:420px; margin:0 auto 20px auto; gap:12px; }
-    .logo { width:33%; max-width:90px; }
-    .logo img { width:100%; height:auto; }
-    .header-text { text-align:left; width:67%; }
-    h1 { margin-bottom:4px; font-size:22px; }
-    p.subtitle { margin-top:0; color:#555; font-size:14px; }
-
-    .input-group { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; align-items:center; margin:10px 0; }
-    .input-group label { font-weight:bold; margin:0; }
-    .input-group input, .input-group select { flex:0 0 120px; padding:8px; font-size:16px; border-radius:6px; border:1px solid #ccc; }
-
-    button { padding:12px 20px; font-size:16px; border-radius:10px; border:none; margin:10px; cursor:pointer; transition:all 0.1s ease; box-shadow:0 4px 8px rgba(0,0,0,0.1);}
-    button:active { transform:translateY(2px); box-shadow:0 2px 4px rgba(0,0,0,0.2); }
-
-    .resultado { margin-top:20px; padding:16px; border-radius:10px; font-size:18px; font-weight:bold; color:white; }
-    .verde { background-color: #2e7d32; }
-    .amarillo { background-color: #f9a825; color:#000; }
-    .rojo { background-color: #d32f2f; }
-  </style>
+<meta charset="UTF-8">
+<title>Glucosa – Signos Vitales</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body { font-family: Arial, sans-serif; background:#f2f2f2; margin:0; padding:20px; text-align:center; }
+.header { display:flex; align-items:center; justify-content:center; max-width:420px; margin:0 auto 20px auto; gap:12px; }
+.logo { width:33%; max-width:90px; } .logo img { width:100%; height:auto; }
+.header-text { text-align:left; width:67%; }
+h1 { margin-bottom:4px; font-size:22px; }
+p.subtitle { margin-top:0; color:#555; font-size:14px; }
+.input-group { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; align-items:center; margin:10px 0; }
+.input-group label { font-weight:bold; margin:0; }
+.input-group input, .input-group select { flex:0 0 120px; padding:8px; font-size:16px; border-radius:6px; border:1px solid #ccc; }
+button { padding:12px 20px; font-size:16px; border-radius:10px; border:none; margin:10px; cursor:pointer; transition:all 0.1s ease; box-shadow:0 4px 8px rgba(0,0,0,0.1);}
+button:active { transform:translateY(2px); box-shadow:0 2px 4px rgba(0,0,0,0.2); }
+.modal { display:none; position:fixed; z-index:100; left:0; top:0; width:100%; height:100%; overflow:auto; background-color: rgba(0,0,0,0.4);}
+.modal-content { background-color:#fff; margin:15% auto; padding:20px; border-radius:12px; max-width:400px; text-align:left; box-shadow:0 4px 12px rgba(0,0,0,0.3);}
+.modal-header { font-size:20px; font-weight:bold; margin-bottom:10px; color:#1976d2; }
+.modal-body { margin-bottom:20px; font-size:16px; }
+.modal-footer { text-align:right; }
+.close-btn { padding:8px 16px; border:none; border-radius:8px; background:#1976d2; color:white; cursor:pointer; font-weight:bold; }
+.close-btn:active { transform:translateY(2px); }
+</style>
 </head>
 <body>
 
-  <div class="header">
-    <div class="logo">
-      <img src="logo.png" alt="The Tía Foundation">
-    </div>
-    <div class="header-text">
-      <h1>Glucosa Capilar</h1>
-      <p class="subtitle">Ingresa glucosa y tipo de toma</p>
-    </div>
+<div class="header">
+  <div class="logo"><img src="logo.png" alt="The Tía Foundation"></div>
+  <div class="header-text"><h1>Glucosa</h1><p class="subtitle">Capilar – con/sin ayuno</p></div>
+</div>
+
+<div class="input-group">
+  <label for="ayuno">Toma:</label>
+  <select id="ayuno">
+    <option value="">--Selecciona--</option>
+    <option value="ayuno">Ayuno</option>
+    <option value="sinayuno">Sin ayuno</option>
+  </select>
+</div>
+
+<div class="input-group">
+  <label for="gluc">Valor (mg/dL):</label>
+  <input type="number" id="gluc" placeholder="90" min="30" max="600">
+</div>
+
+<button onclick="evaluarGluc()">Evaluar</button>
+<button onclick="location.href='signos-vitales.html'">⬅ Volver</button>
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">The Tía Foundation</div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer"><button class="close-btn" onclick="cerrarModal()">Cerrar</button></div>
   </div>
+</div>
 
-  <div class="input-group">
-    <label for="glucosa">Glucosa (mg/dL):</label>
-    <input type="number" id="glucosa" placeholder="95" step="1">
-  </div>
+<script>
+function evaluarGluc(){
+  const gluc = parseInt(document.getElementById('gluc').value);
+  const toma = document.getElementById('ayuno').value;
+  const modalBody = document.getElementById('modal-body');
 
-  <div class="input-group">
-    <label for="tipo">Tipo de toma:</label>
-    <select id="tipo">
-      <option value="ayuno">Ayuno</option>
-      <option value="sin-ayuno">Sin ayuno</option>
-    </select>
-  </div>
+  if(!toma || isNaN(gluc)){ alert("Selecciona tipo de toma e ingresa valor"); return; }
 
-  <button onclick="evaluarGlucosa()">Evaluar</button>
-  <button onclick="location.href='signos-vitales.html'">⬅ Volver</button>
+  let color="", mensaje="";
+  if(toma==="ayuno"){
+    if(gluc<70){ color="🔴"; mensaje="Hipoglucemia"; }
+    else if(gluc<=99){ color="🟢"; mensaje="Normal"; }
+    else if(gluc<=125){ color="🟡"; mensaje="Prediabetes"; }
+    else { color="🔴"; mensaje="Hiperglucemia"; }
+  } else if(toma==="sinayuno"){
+    if(gluc<70){ color="🔴"; mensaje="Hipoglucemia"; }
+    else if(gluc<=139){ color="🟢"; mensaje="Normal"; }
+    else { color="🔴"; mensaje="Hiperglucemia"; }
+  }
 
-  <div id="resultado" class="resultado" style="display:none;"></div>
-
-  <script>
-    function evaluarGlucosa(){
-      const glucosa = parseInt(document.getElementById('glucosa').value);
-      const tipo = document.getElementById('tipo').value;
-      const res = document.getElementById('resultado');
-
-      if(isNaN(glucosa)){
-        alert("Ingresa un valor válido");
-        return;
-      }
-
-      if(glucosa < 40 || glucosa > 500){
-        alert("Valor fuera de rango permitido (40–500 mg/dL)");
-        return;
-      }
-
-      let mensaje="", color="", accion=null;
-
-      if(tipo === "ayuno"){
-        if(glucosa < 70){
-          mensaje="🔴 Hipoglucemia: emergencia";
-          color="rojo";
-          accion=function(){
-            alert("ALGORITMO HIPOS: Administrar carbohidratos, medir signos vitales, traslado si no mejora");
-          };
-        } else if(glucosa <= 99){
-          mensaje="🟢 Normal";
-          color="verde";
-        } else if(glucosa <= 125){
-          mensaje="🟡 Alteración glucosa en ayuno: alerta";
-          color="amarillo";
-          accion=function(){
-            alert("ALGORITMO GLUCOSA ELEVADA: Recomendaciones nutrición, controlar signos vitales, seguimiento cercano");
-          };
-        } else {
-          mensaje="🔴 HIperglucemia: emergencia";
-          color="rojo";
-          accion=function(){
-            alert("ALGORITMO GLUCOSA ALTA: Confirmar diagnóstico, manejo inicial, traslado si síntomas graves");
-          };
-        }
-      } else { // sin-ayuno
-        if(glucosa < 70){
-          mensaje="🔴 Hipoglucemia: emergencia";
-          color="rojo";
-          accion=function(){
-            alert("ALGORITMO HIPOS: Administrar carbohidratos, medir signos vitales, traslado si no mejora");
-          };
-        } else if(glucosa <= 140){
-          mensaje="🟢 Normal";
-          color="verde";
-        } else if(glucosa <= 199){
-          mensaje="🟡 Glucosa post-prandial elevada: alerta";
-          color="amarillo";
-          accion=function(){
-            alert("ALGORITMO GLUCOSA ELEVADA POST: Vigilar signos, recomendaciones nutrición, seguimiento cercano");
-          };
-        } else {
-          mensaje="🔴 Hiperglucemia: emergencia";
-          color="rojo";
-          accion=function(){
-            alert("ALGORITMO GLUCOSA ALTA: Confirmar diagnóstico, manejo inicial, traslado si síntomas graves");
-          };
-        }
-      }
-
-      res.style.display="block";
-      res.className="resultado "+color;
-      res.textContent=mensaje;
-
-      if(accion) accion();
-    }
-  </script>
+  modalBody.innerHTML = `<span style="font-size:24px">${color}</span> ${mensaje}<br><br>
+  Algoritmo:<br>- Repetir medición si anormal<br>- Vigilar signos de hipoglucemia/hiperglucemia<br>- Referir según gravedad`;
+  document.getElementById('modal').style.display="block";
+}
+function cerrarModal(){ document.getElementById('modal').style.display="none"; }
+</script>
 
 </body>
 </html>
