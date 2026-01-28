@@ -68,24 +68,32 @@ h1 {
   font-size:14px;
 }
 
-/* Checklist */
-.checklist label {
-  display:block;
-  margin:8px 0;
-  font-size:16px;
-}
-
-.footer-warning {
-  margin-top:12px;
-  color:#d32f2f;
-  font-weight:bold;
-  font-size:14px;
-}
-
-/* Botones */
-button.main-btn {
+/* Botones submenu */
+.sub-btn {
   width:100%;
-  margin-top:15px;
+  padding:14px;
+  margin:10px 0;
+  font-size:17px;
+  border-radius:12px;
+  border:none;
+  background:#ffffff;
+  box-shadow:0 3px 6px rgba(0,0,0,0.15);
+  cursor:pointer;
+}
+
+.sub-btn:active {
+  transform:translateY(2px);
+}
+
+.danger {
+  background:#d32f2f;
+  color:white;
+}
+
+/* Botón volver */
+.back-btn {
+  width:100%;
+  margin-top:20px;
   padding:12px;
   font-size:16px;
   border-radius:10px;
@@ -95,11 +103,7 @@ button.main-btn {
   color:white;
 }
 
-button:active {
-  transform:translateY(2px);
-}
-
-/* Modal imagen */
+/* Modal */
 .modal {
   display:none;
   position:fixed;
@@ -110,21 +114,32 @@ button:active {
 }
 
 .modal-content {
-  background:#fff;
+  background:#ffffff;
   margin:5% auto;
-  padding:15px;
+  padding:18px;
   border-radius:12px;
   max-width:95%;
-  text-align:center;
+}
+
+.modal-content h2 {
+  margin-top:0;
+}
+
+.modal-content label {
+  display:block;
+  margin:8px 0;
+  font-size:16px;
 }
 
 .close-btn {
+  width:100%;
+  margin-top:15px;
+  padding:10px;
+  font-size:16px;
+  border-radius:8px;
+  border:none;
   background:#1976d2;
   color:white;
-  border:none;
-  padding:10px 20px;
-  border-radius:8px;
-  margin-top:10px;
   cursor:pointer;
 }
 </style>
@@ -134,59 +149,119 @@ button:active {
 
 <div class="container">
   <h1>💉 Inyección Intramuscular</h1>
+  <p style="text-align:center;color:#555;font-size:14px;">
+    Aplicación segura de medicamentos IM
+  </p>
 
-  <!-- Botón infografía -->
-  <button class="info-btn" onclick="abrirInfografia()">
+  <!-- Infografía -->
+  <button class="info-btn" onclick="openModal('infografia')">
     📊 Ver infografía
   </button>
 
-  <!-- Advertencia de alergias -->
+  <!-- Alergias -->
   <div class="warning-box">
     <label>
       ⚠️ <input type="checkbox">
-      ¿El paciente tiene alergia conocida a este medicamento?
+      ¿Alergia conocida al medicamento?
     </label>
-    <p>
-      Si la respuesta es SÍ o se desconoce, <strong>NO aplicar</strong> y referir.
-    </p>
+    <p>Si la respuesta es SÍ o se desconoce, <strong>NO aplicar</strong> y referir.</p>
   </div>
 
-  <!-- Checklist -->
-  <div class="checklist">
-    <label><input type="checkbox"> Lavado de manos</label>
-    <label><input type="checkbox"> Material completo (jeringa, aguja, medicamento, alcohol)</label>
-    <label><input type="checkbox"> Medicamento correcto (caducidad y aspecto)</label>
-    <label><input type="checkbox"> Verificar dosis indicada en la receta</label>
-    <label><input type="checkbox"> Sitio anatómico correcto</label>
-    <label><input type="checkbox"> Limpieza del área</label>
-    <label><input type="checkbox"> Ángulo de aplicación 90°</label>
-    <label><input type="checkbox"> Aspiración (si aplica)</label>
-    <label><input type="checkbox"> Aplicación lenta</label>
-    <label><input type="checkbox"> Presión local sin masajear</label>
-    <label><input type="checkbox"> Vigilancia 15–30 minutos</label>
-  </div>
+  <!-- Submenús -->
+  <button class="sub-btn danger" onclick="openModal('advertencias')">
+    🔴 ADVERTENCIAS
+  </button>
 
-  <p class="footer-warning">
-    ⚠️ Si algún paso no se cumple, NO aplicar el medicamento.
-  </p>
+  <button class="sub-btn" onclick="openModal('material')">
+    🧰 Material necesario
+  </button>
 
-  <button class="main-btn" onclick="history.back()">⬅ Volver</button>
+  <button class="sub-btn" onclick="openModal('preparacion')">
+    🧪 Preparación del medicamento
+  </button>
+
+  <button class="sub-btn" onclick="openModal('aplicacion')">
+    💉 Aplicación
+  </button>
+
+  <button class="back-btn" onclick="history.back()">⬅ Volver</button>
 </div>
 
-<!-- Modal infografía -->
-<div id="imgModal" class="modal">
+<!-- MODALES -->
+
+<!-- Infografía -->
+<div id="infografia" class="modal">
   <div class="modal-content">
+    <h2>Infografía IM</h2>
     <img src="img/inyeccion-im.png" style="width:100%;border-radius:8px;">
-    <button class="close-btn" onclick="cerrarInfografia()">Cerrar</button>
+    <button class="close-btn" onclick="closeModal('infografia')">Cerrar</button>
+  </div>
+</div>
+
+<!-- Advertencias -->
+<div id="advertencias" class="modal">
+  <div class="modal-content">
+    <h2>🔴 Advertencias IM</h2>
+    <ul>
+      <li>No aplicar si hay alergia conocida</li>
+      <li>No masajear después de aplicar</li>
+      <li>No aspirar en sitio ventroglúteo</li>
+      <li>Evitar región dorsoglútea por riesgo de nervio ciático</li>
+      <li>No exceder volumen recomendado</li>
+    </ul>
+    <button class="close-btn" onclick="closeModal('advertencias')">Cerrar</button>
+  </div>
+</div>
+
+<!-- Material -->
+<div id="material" class="modal">
+  <div class="modal-content">
+    <h2>🧰 Material necesario</h2>
+    <label><input type="checkbox"> Medicamento</label>
+    <label><input type="checkbox"> Jeringa</label>
+    <label><input type="checkbox"> Aguja IM adecuada</label>
+    <label><input type="checkbox"> Alcohol</label>
+    <label><input type="checkbox"> Algodón o gasa</label>
+    <label><input type="checkbox"> Guantes</label>
+    <label><input type="checkbox"> Contenedor punzocortantes</label>
+    <button class="close-btn" onclick="closeModal('material')">Cerrar</button>
+  </div>
+</div>
+
+<!-- Preparación -->
+<div id="preparacion" class="modal">
+  <div class="modal-content">
+    <h2>🧪 Preparación</h2>
+    <label><input type="checkbox"> Verificar medicamento</label>
+    <label><input type="checkbox"> Revisar caducidad y aspecto</label>
+    <label><input type="checkbox"> Confirmar dosis de la receta</label>
+    <label><input type="checkbox"> Cargar medicamento en jeringa</label>
+    <label><input type="checkbox"> Eliminar burbujas de aire</label>
+    <button class="close-btn" onclick="closeModal('preparacion')">Cerrar</button>
+  </div>
+</div>
+
+<!-- Aplicación -->
+<div id="aplicacion" class="modal">
+  <div class="modal-content">
+    <h2>💉 Aplicación IM</h2>
+    <label><input type="checkbox"> Lavado de manos</label>
+    <label><input type="checkbox"> Identificar sitio correcto</label>
+    <label><input type="checkbox"> Limpieza del área</label>
+    <label><input type="checkbox"> Insertar aguja a 90°</label>
+    <label><input type="checkbox"> Aplicar medicamento lentamente</label>
+    <label><input type="checkbox"> Retirar aguja sin masajear</label>
+    <label><input type="checkbox"> Vigilar reacción</label>
+    <button class="close-btn" onclick="closeModal('aplicacion')">Cerrar</button>
   </div>
 </div>
 
 <script>
-function abrirInfografia() {
-  document.getElementById("imgModal").style.display = "block";
+function openModal(id) {
+  document.getElementById(id).style.display = "block";
 }
-function cerrarInfografia() {
-  document.getElementById("imgModal").style.display = "none";
+function closeModal(id) {
+  document.getElementById(id).style.display = "none";
 }
 </script>
 
