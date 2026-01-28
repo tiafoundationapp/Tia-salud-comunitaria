@@ -39,7 +39,8 @@
       font-size: 18px;
       border-radius: 12px;
       border: none;
-      background: #ffffff;
+      background: #ffffff; /* fondo blanco */
+      color: #000; /* texto negro */
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       cursor: pointer;
       transition: all 0.1s ease;
@@ -61,15 +62,6 @@
       color: #555;
     }
 
-    /* Colores según tipo de signo */
-    .presion { background-color: #2196F3; color:white; }
-    .fc { background-color: #9C27B0; color:white; }
-    .fr { background-color: #FF9800; color:white; }
-    .temperatura { background-color: #009688; color:white; }
-    .oximetria { background-color: #3F51B5; color:white; }
-    .avpu { background-color: #607D8B; color:white; }
-    .glucosa { background-color: #795548; color:white; }
-
   </style>
 </head>
 
@@ -85,37 +77,37 @@
     </div>
   </div>
 
-  <button class="menu-button presion" onclick="location.href='presion-arterial.html'">
+  <button class="menu-button" onclick="location.href='presion-arterial.html'">
     💓 Presión Arterial
     <div class="subtext">Sistólica y Diastólica</div>
   </button>
 
-  <button class="menu-button fc" onclick="location.href='frecuencia-cardiaca.html'">
+  <button class="menu-button" onclick="location.href='frecuencia-cardiaca.html'">
     ❤️ Frecuencia Cardiaca
     <div class="subtext">Incluye ajuste por edad</div>
   </button>
 
-  <button class="menu-button fr">
+  <button class="menu-button">
     🌬️ Frecuencia Respiratoria
     <div class="subtext">Próximamente interactivo</div>
   </button>
 
-  <button class="menu-button temperatura">
+  <button class="menu-button">
     🌡️ Temperatura
     <div class="subtext">Próximamente interactivo</div>
   </button>
 
-  <button class="menu-button oximetria">
+  <button class="menu-button">
     🫁 Oximetría
     <div class="subtext">Próximamente interactivo</div>
   </button>
 
-  <button class="menu-button avpu">
+  <button class="menu-button">
     🧠 Estado de conciencia (AVPU)
     <div class="subtext">Próximamente interactivo</div>
   </button>
 
-  <button class="menu-button glucosa">
+  <button class="menu-button">
     🍬 Glucosa capilar
     <div class="subtext">Próximamente interactivo</div>
   </button>
