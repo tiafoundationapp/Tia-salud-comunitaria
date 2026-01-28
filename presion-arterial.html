@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Presión Arterial – Signos Vitales</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 420px;
+      margin: 0 auto 20px auto;
+      gap: 12px;
+    }
+
+    .logo { width: 33%; max-width: 90px; }
+    .logo img { width: 100%; height: auto; }
+    .header-text { text-align: left; width: 67%; }
+
+    h1 { margin-bottom: 4px; font-size: 22px; }
+    p.subtitle { margin-top: 0; color: #555; font-size: 14px; }
+
+    input[type=number] {
+      width: 80px;
+      padding: 8px;
+      font-size: 16px;
+      margin: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: none;
+      margin: 10px;
+      cursor: pointer;
+      transition: all 0.1s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    button:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .resultado {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+    }
+
+    .verde { background-color: #2e7d32; }
+    .amarillo { background-color: #f9a825; }
+    .rojo { background-color: #d32f2f; }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <div class="logo">
+      <img src="logo.png" alt="The Tía Foundation">
+    </div>
+    <div class="header-text">
+      <h1>Presión Arterial</h1>
+      <p class="subtitle">Ingresa los valores para ver semáforo clínico</p>
+    </div>
+  </div>
+
+  <div>
+    <label>Sistólica:</label>
+    <input type="number" id="sist" placeholder="mmHg">
+    <label>Diastólica:</label>
+    <input type="number" id="diast" placeholder="mmHg">
+  </div>
+
+  <button onclick="evaluarPresion()">Evaluar</button>
+  <button onclick="location.href='signos-vitales.html'">⬅ Volver</button>
+
+  <div id="resultado" class="resultado" style="display:none;"></div>
+
+  <script>
+    function evaluarPresion() {
+      const s = parseInt(document.getElementById('sist').value);
+      const d = parseInt(document.getElementById('diast').value);
+      const res = document.getElementById('resultado');
+
+      if (isNaN(s) || isNaN(d)) {
+        alert("Por favor ingresa ambos valores.");
+        return;
+      }
+
+      let mensaje = "";
+      let color = "";
+
+      // Semáforo básico
+      if ((s < 90 || d < 60) || (s >= 160 || d >= 100)) {
+        mensaje = "🔴 EMERGENCIA: Actuar inmediatamente";
+        color = "rojo";
+      } else if ((s >= 140 || d >= 90)) {
+        mensaje = "🟡 Alerta: Vigilar y repetir medición";
+        color = "amarillo";
+      } else {
+        mensaje = "🟢 Normal: Continúa observación";
+        color = "verde";
+      }
+
+      res.style.display = "block";
+      res.className = "resultado " + color;
+      res.textContent = mensaje;
+    }
+  </script>
+
+</body>
+</html>
