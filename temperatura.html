@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Temperatura – Signos Vitales</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial, sans-serif; background: #f2f2f2; margin:0; padding:20px; text-align:center; }
+    .header { display:flex; align-items:center; justify-content:center; max-width:420px; margin:0 auto 20px auto; gap:12px; }
+    .logo { width:33%; max-width:90px; }
+    .logo img { width:100%; height:auto; }
+    .header-text { text-align:left; width:67%; }
+    h1 { margin-bottom:4px; font-size:22px; }
+    p.subtitle { margin-top:0; color:#555; font-size:14px; }
+    .input-group { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; align-items:center; margin:10px 0; }
+    .input-group label { font-weight:bold; margin:0; }
+    .input-group input, .input-group select { flex:0 0 80px; padding:8px; font-size:16px; border-radius:6px; border:1px solid #ccc; }
+    button { padding:12px 20px; font-size:16px; border-radius:10px; border:none; margin:10px; cursor:pointer; transition:all 0.1s ease; box-shadow:0 4px 8px rgba(0,0,0,0.1);}
+    button:active { transform:translateY(2px); box-shadow:0 2px 4px rgba(0,0,0,0.2); }
+    .resultado { margin-top:20px; padding:16px; border-radius:10px; font-size:18px; font-weight:bold; color:white; }
+    .verde { background-color: #2e7d32; }
+    .amarillo { background-color: #f9a825; }
+    .rojo { background-color: #d32f2f; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo">
+      <img src="logo.png" alt="The Tía Foundation">
+    </div>
+    <div class="header-text">
+      <h1>Temperatura</h1>
+      <p class="subtitle">Ingresa la edad y la temperatura en °C</p>
+    </div>
+  </div>
+
+  <div class="input-group">
+    <label for="edad">Edad:</label>
+    <select id="edad">
+      <option value="rn">Recién nacido</option>
+      <option value="nino">Niño</option>
+      <option value="adulto">Adulto/Adolescente</option>
+    </select>
+
+    <label for="temp">Temp (°C):</label>
+    <input type="number" id="temp" placeholder="36.5">
+  </div>
+
+  <button onclick="evaluarTemp()">Evaluar</button>
+  <button onclick="location.href='signos-vitales.html'">⬅ Volver</button>
+
+  <div id="resultado" class="resultado" style="display:none;"></div>
+
+  <script>
+    function evaluarTemp(){
+      const edad = document.getElementById('edad').value;
+      const temp = parseFloat(document.getElementById('temp').value);
+      const res = document.getElementById('resultado');
+
+      if(isNaN(temp)){ alert("Ingresa un valor válido"); return; }
+
+      let rango={normal:[36,37.5], amarillo:[0,0], rojo:[0,0]};
+      switch(edad){
+        case "rn": rango={normal:[36.5,37.5], amarillo:[37.6,38], rojo:[0,36,39,50]}; break;
+        case "nino": rango={normal:[36,37.5], amarillo:[37.6,38.5], rojo:[0,35,40,50]}; break;
+        case "adulto": rango={normal:[36,37.5], amarillo:[37.6,38], rojo:[0,35,40,50]}; break;
+      }
+
+      let mensaje="", color="", accion=null;
+
+      if(temp<36 || temp>40){
+        mensaje="🔴 EMERGENCIA: Temperatura crítica";
+        color="rojo";
+        accion=function(){
+          alert("ALGORITMO EMERGENCIA TEMPERATURA:\n1. Valorar signos vitales\n2. Mantener al paciente abrigado/hidratar\n3. Traslado inmediato si grave");
+        };
+      } else if((temp>rango.normal[1] && temp<=rango.normal[1]+1) || (temp<rango.normal[0] && temp>=rango.normal[0]-1)){
+        mensaje="🟡 Alerta: Vigilar y re-evaluar";
+        color="amarillo";
+        accion=function(){
+          alert("ALGORITMO OBSERVACIÓN TEMPERATURA:\n1. Repetir medición en 30 min\n2. Observar síntomas asociados\n3. Avisar responsable sanitario");
+        };
+      } else {
+        mensaje="🟢 Normal";
+        color="verde";
+      }
+
+      res.style.display="block";
+      res.className="resultado "+color;
+      res.textContent=mensaje;
+      if(accion) accion();
+    }
+  </script>
+
+</body>
+</html>
