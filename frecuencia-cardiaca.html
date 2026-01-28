@@ -18,14 +18,10 @@ p.subtitle { margin-top:0; color:#555; font-size:14px; }
 .input-group { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; align-items:center; margin:10px 0; }
 .input-group label { font-weight:bold; margin:0; }
 .input-group input { flex:0 0 80px; padding:8px; font-size:16px; border-radius:6px; border:1px solid #ccc; }
-.input-group select { flex:0 0 120px; padding:8px; font-size:16px; border-radius:6px; border:1px solid #ccc; }
 
 button { padding:12px 20px; font-size:16px; border-radius:10px; border:none; margin:10px; cursor:pointer; transition:all 0.1s ease; box-shadow:0 4px 8px rgba(0,0,0,0.1);}
 button:active { transform:translateY(2px); box-shadow:0 2px 4px rgba(0,0,0,0.2); }
 
-.resultado { margin-top:20px; padding:16px; border-radius:10px; font-size:18px; font-weight:bold; color:white; }
-
-/* Modal */
 .modal {
   display:none; 
   position:fixed; 
@@ -39,7 +35,7 @@ button:active { transform:translateY(2px); box-shadow:0 2px 4px rgba(0,0,0,0.2);
   max-width:400px; text-align:left; box-shadow:0 4px 12px rgba(0,0,0,0.3);
 }
 .modal-header { font-size:20px; font-weight:bold; margin-bottom:10px; color:#1976d2; }
-.modal-body { margin-bottom:20px; }
+.modal-body { margin-bottom:20px; font-size:16px; }
 .modal-footer { text-align:right; }
 .close-btn { padding:8px 16px; border:none; border-radius:8px; background:#1976d2; color:white; cursor:pointer; font-weight:bold; }
 .close-btn:active { transform:translateY(2px); }
@@ -97,22 +93,31 @@ function evaluarFC(){
 
   let color="", mensaje="";
 
-  // Rangos simplificados
+  // Rangos por edad (simplificados)
   if(edad >= 18){ // Adultos
-    if(fc < 60) { color="🔴"; mensaje="Bradicardia: alerta"; }
+    if(fc < 50) { color="🔴"; mensaje="Bradicardia grave"; }
+    else if(fc < 60) { color="🟡"; mensaje="Bradicardia leve"; }
     else if(fc <=100) { color="🟢"; mensaje="Normal"; }
-    else { color="🟡"; mensaje="Taquicardia: alerta"; }
-  } else if(edad >= 1){ // Niños
-    if(fc < 70) { color="🔴"; mensaje="Bradicardia: alerta"; }
+    else if(fc <=120) { color="🟡"; mensaje="Taquicardia leve"; }
+    else { color="🔴"; mensaje="Taquicardia grave"; }
+
+  } else if(edad >= 1){ // Niños 1-17
+    if(fc < 60) { color="🔴"; mensaje="Bradicardia grave"; }
+    else if(fc < 70) { color="🟡"; mensaje="Bradicardia leve"; }
     else if(fc <=120) { color="🟢"; mensaje="Normal"; }
-    else { color="🟡"; mensaje="Taquicardia: alerta"; }
+    else if(fc <=140) { color="🟡"; mensaje="Taquicardia leve"; }
+    else { color="🔴"; mensaje="Taquicardia grave"; }
+
   } else { // Lactantes <1 año
-    if(fc <100) { color="🔴"; mensaje="Bradicardia: alerta"; }
+    if(fc < 90) { color="🔴"; mensaje="Bradicardia grave"; }
+    else if(fc < 100) { color="🟡"; mensaje="Bradicardia leve"; }
     else if(fc <=160) { color="🟢"; mensaje="Normal"; }
-    else { color="🟡"; mensaje="Taquicardia: alerta"; }
+    else if(fc <=180) { color="🟡"; mensaje="Taquicardia leve"; }
+    else { color="🔴"; mensaje="Taquicardia grave"; }
   }
 
-  modalBody.innerHTML = color + " " + mensaje + "<br><br>Algoritmo:\n- Vigilar signos vitales\n- Repetir control si es anormal\n- Actuar según situación";
+  modalBody.innerHTML = `<span style="font-size:24px">${color}</span> ${mensaje}<br><br>
+  Algoritmo:<br>- Vigilar signos vitales<br>- Repetir control si es anormal<br>- Actuar según situación`;
   document.getElementById('modal').style.display = "block";
 }
 
