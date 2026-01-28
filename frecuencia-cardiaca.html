@@ -17,7 +17,7 @@ p.subtitle { margin-top:0; color:#555; font-size:14px; }
 
 .input-group { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; align-items:center; margin:10px 0; }
 .input-group label { font-weight:bold; margin:0; }
-.input-group input { flex:0 0 80px; padding:8px; font-size:16px; border-radius:6px; border:1px solid #ccc; }
+.input-group input, .input-group select { flex:0 0 120px; padding:8px; font-size:16px; border-radius:6px; border:1px solid #ccc; }
 
 button { padding:12px 20px; font-size:16px; border-radius:10px; border:none; margin:10px; cursor:pointer; transition:all 0.1s ease; box-shadow:0 4px 8px rgba(0,0,0,0.1);}
 button:active { transform:translateY(2px); box-shadow:0 2px 4px rgba(0,0,0,0.2); }
@@ -49,14 +49,20 @@ button:active { transform:translateY(2px); box-shadow:0 2px 4px rgba(0,0,0,0.2);
   </div>
   <div class="header-text">
     <h1>Frecuencia Cardíaca</h1>
-    <p class="subtitle">Ingresa edad y frecuencia</p>
+    <p class="subtitle">Selecciona grupo etario y frecuencia</p>
   </div>
 </div>
 
 <div class="input-group">
-  <label for="edad">Edad (años):</label>
-  <input type="number" id="edad" placeholder="25">
+  <label for="grupo">Grupo etario:</label>
+  <select id="grupo">
+    <option value="">--Selecciona--</option>
+    <option value="lactante">Lactante (<1 año)</option>
+    <option value="nino">Niño (1–17 años)</option>
+    <option value="adulto">Adulto (≥18 años)</option>
+  </select>
 </div>
+
 <div class="input-group">
   <label for="fc">Frecuencia Cardíaca (lpm):</label>
   <input type="number" id="fc" placeholder="80">
@@ -78,37 +84,38 @@ button:active { transform:translateY(2px); box-shadow:0 2px 4px rgba(0,0,0,0.2);
 
 <script>
 function evaluarFC(){
-  const edad = parseInt(document.getElementById('edad').value);
+  const grupo = document.getElementById('grupo').value;
   const fc = parseInt(document.getElementById('fc').value);
   const modalBody = document.getElementById('modal-body');
 
-  if(isNaN(edad) || isNaN(fc)){
-    alert("Ingresa valores válidos");
+  if(!grupo || isNaN(fc)){
+    alert("Selecciona grupo etario y coloca frecuencia cardíaca");
     return;
   }
-  if(edad < 0 || edad > 120 || fc < 30 || fc > 250){
-    alert("Valores fuera de rango");
+
+  if(fc < 30 || fc > 250){
+    alert("Valor de frecuencia fuera de rango (30-250 lpm)");
     return;
   }
 
   let color="", mensaje="";
 
-  // Rangos por edad (simplificados)
-  if(edad >= 18){ // Adultos
+  // Rangos por grupo etario
+  if(grupo === "adulto"){
     if(fc < 50) { color="🔴"; mensaje="Bradicardia grave"; }
     else if(fc < 60) { color="🟡"; mensaje="Bradicardia leve"; }
     else if(fc <=100) { color="🟢"; mensaje="Normal"; }
     else if(fc <=120) { color="🟡"; mensaje="Taquicardia leve"; }
     else { color="🔴"; mensaje="Taquicardia grave"; }
 
-  } else if(edad >= 1){ // Niños 1-17
+  } else if(grupo === "nino"){
     if(fc < 60) { color="🔴"; mensaje="Bradicardia grave"; }
     else if(fc < 70) { color="🟡"; mensaje="Bradicardia leve"; }
     else if(fc <=120) { color="🟢"; mensaje="Normal"; }
     else if(fc <=140) { color="🟡"; mensaje="Taquicardia leve"; }
     else { color="🔴"; mensaje="Taquicardia grave"; }
 
-  } else { // Lactantes <1 año
+  } else if(grupo === "lactante"){
     if(fc < 90) { color="🔴"; mensaje="Bradicardia grave"; }
     else if(fc < 100) { color="🟡"; mensaje="Bradicardia leve"; }
     else if(fc <=160) { color="🟢"; mensaje="Normal"; }
