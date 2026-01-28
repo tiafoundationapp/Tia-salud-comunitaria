@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Aplicación de Medicamentos y Soluciones</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body { font-family: Arial, sans-serif; background:#f2f2f2; margin:0; padding:20px; text-align:center; }
+.header { display:flex; align-items:center; justify-content:center; max-width:420px; margin:0 auto 20px auto; gap:12px; }
+.logo { width:33%; max-width:90px; } .logo img { width:100%; height:auto; }
+.header-text { text-align:left; width:67%; }
+h1 { margin-bottom:4px; font-size:22px; }
+p.subtitle { margin-top:0; color:#555; font-size:14px; }
+button { padding:16px 20px; font-size:18px; border-radius:12px; border:none; margin:10px; cursor:pointer; transition:all 0.1s ease; width:240px;}
+button:active { transform:translateY(2px); box-shadow:0 2px 4px rgba(0,0,0,0.2); }
+.back-btn { background:#1976d2; color:white; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo"><img src="logo.png" alt="The Tía Foundation"></div>
+  <div class="header-text"><h1>Medicamentos y Soluciones</h1><p class="subtitle">Aplicación segura</p></div>
+</div>
+
+<button onclick="alert('Aquí se desplegará el modal de Inyección Intramuscular con técnica y dosis')">💉 Inyección Intramuscular</button>
+
+<button onclick="alert('Aquí se desplegará el modal de Inyección Subcutánea con técnica y dosis')">💊 Inyección Subcutánea</button>
+
+<button onclick="alert('Aquí se desplegará el modal de Medicamento Intravenoso con técnica y dosis')">💧 Medicamento Intravenoso</button>
+
+<button onclick="alert('Aquí se desplegará el modal de Colocación de Sueros y cálculo de velocidad')">🧪 Colocación de Sueros</button>
+
+<button onclick="alert('Aquí se desplegará la Calculadora de dosis y velocidad IV')">🧮 Calculadoras</button>
+
+<button class="back-btn" onclick="location.href='menu.html'">⬅ Volver al Menú Principal</button>
+
+</body>
+</html>
