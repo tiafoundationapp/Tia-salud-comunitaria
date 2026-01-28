@@ -26,18 +26,19 @@
     }
 
     .menu-button {
-      display: block;
-      width: 100%;
-      max-width: 420px;
-      margin: 14px auto;
-      padding: 16px;
-      font-size: 18px;
-      border-radius: 14px;
-      border: none;
-      background: #ffffff;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      text-align: left;
-    }
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  margin: 14px auto;
+  padding: 16px;
+  font-size: 18px;
+  border-radius: 14px;
+  border: none;
+  background: #ffffff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: left;
+  transition: all 0.1s ease; /* línea agregada */
+}
 
     .menu-button span {
       display: block;
@@ -103,7 +104,12 @@
       text-align: left;
       width: 67%;
     }
-
+.menu-button:active {
+  background-color: #e0e0e0; /* gris claro al presionar */
+  transform: translateY(2px); /* efecto de hundimiento */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+    
   </style>
 </head>
 
