@@ -28,26 +28,12 @@
       max-width: 90px;
     }
 
-    .logo img {
-      width: 100%;
-      height: auto;
-    }
+    .logo img { width: 100%; height: auto; }
 
-    .header-text {
-      text-align: left;
-      width: 67%;
-    }
+    .header-text { text-align: left; width: 67%; }
 
-    h1 {
-      margin-bottom: 4px;
-      font-size: 22px;
-    }
-
-    p.subtitle {
-      margin-top: 0;
-      color: #555;
-      font-size: 14px;
-    }
+    h1 { margin-bottom: 4px; font-size: 22px; }
+    p.subtitle { margin-top: 0; color: #555; font-size: 14px; }
 
     .menu-button {
       display: block;
@@ -61,6 +47,7 @@
       background: #ffffff;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       text-align: left;
+      transition: all 0.1s ease; /* transición suave */
     }
 
     .menu-button span {
@@ -70,9 +57,14 @@
       margin-top: 6px;
     }
 
-    .blue {
-      border-left: 10px solid #1976d2;
+    /* Feedback al presionar */
+    .menu-button:active {
+      background-color: #e0e0e0;
+      transform: translateY(2px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
+
+    .blue { border-left: 10px solid #1976d2; }
   </style>
 </head>
 
