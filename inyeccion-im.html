@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Inyección Intramuscular</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background:#f2f2f2;
+  margin:0;
+  padding:20px;
+  text-align:center;
+}
+
+.container {
+  max-width:420px;
+  margin:0 auto;
+  background:#ffffff;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 4px 8px rgba(0,0,0,0.1);
+  text-align:left;
+}
+
+h1 {
+  font-size:22px;
+  margin-bottom:10px;
+  text-align:center;
+}
+
+.warning-box {
+  border:2px solid #d32f2f;
+  border-radius:10px;
+  padding:12px;
+  margin-bottom:15px;
+  background:#fdecea;
+}
+
+.warning-box label {
+  font-size:17px;
+  font-weight:bold;
+  color:#b71c1c;
+}
+
+.warning-box p {
+  margin:6px 0 0 0;
+  color:#b71c1c;
+  font-size:14px;
+}
+
+.checklist label {
+  display:block;
+  margin:8px 0;
+  font-size:16px;
+}
+
+.footer-warning {
+  margin-top:12px;
+  color:#d32f2f;
+  font-weight:bold;
+  font-size:14px;
+}
+
+button {
+  width:100%;
+  margin-top:15px;
+  padding:12px;
+  font-size:16px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  background:#1976d2;
+  color:white;
+  transition:all 0.1s ease;
+}
+
+button:active {
+  transform:translateY(2px);
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>💉 Inyección Intramuscular</h1>
+
+  <!-- Advertencia de alergias -->
+  <div class="warning-box">
+    <label>
+      ⚠️ <input type="checkbox">
+      ¿El paciente tiene alergia conocida a este medicamento?
+    </label>
+    <p>
+      Si la respuesta es SÍ o se desconoce, <strong>NO aplicar</strong> y referir.
+    </p>
+  </div>
+
+  <!-- Checklist -->
+  <div class="checklist">
+    <label><input type="checkbox"> Lavado de manos</label>
+    <label><input type="checkbox"> Material completo (jeringa, aguja, medicamento, alcohol)</label>
+    <label><input type="checkbox"> Medicamento correcto (caducidad y aspecto)</label>
+    <label><input type="checkbox"> Verificar dosis indicada en la receta</label>
+    <label><input type="checkbox"> Sitio anatómico correcto</label>
+    <label><input type="checkbox"> Limpieza del área</label>
+    <label><input type="checkbox"> Ángulo de aplicación 90°</label>
+    <label><input type="checkbox"> Aspiración (si aplica)</label>
+    <label><input type="checkbox"> Aplicación lenta</label>
+    <label><input type="checkbox"> Presión local sin masajear</label>
+    <label><input type="checkbox"> Vigilancia 15–30 minutos</label>
+  </div>
+
+  <p class="footer-warning">
+    ⚠️ Si algún paso no se cumple, NO aplicar el medicamento.
+  </p>
+
+  <button onclick="history.back()">⬅ Volver</button>
+</div>
+
+</body>
+</html>
