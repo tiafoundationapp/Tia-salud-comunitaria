@@ -22,18 +22,13 @@ body {
   box-shadow:0 4px 8px rgba(0,0,0,0.1);
 }
 
-h1 {
-  text-align:center;
-  font-size:22px;
-}
+h1 { text-align:center; font-size:22px; }
 
-.section {
-  margin-top:20px;
-}
+.section { margin-top:18px; }
 
 .section h2 {
   font-size:18px;
-  margin-bottom:8px;
+  margin-bottom:6px;
 }
 
 select, input {
@@ -53,18 +48,18 @@ select, input {
   border:none;
   background:#1976d2;
   color:white;
-  cursor:pointer;
 }
-
-.calc-btn:active { transform: translateY(2px); }
 
 .result-box {
   margin-top:20px;
   padding:15px;
   border-radius:10px;
-  background:#e3f2fd;
   display:none;
 }
+
+.green { background:#e8f5e9; }
+.yellow { background:#fffde7; }
+.red { background:#fdecea; }
 
 .back-btn {
   width:100%;
@@ -82,73 +77,101 @@ select, input {
 <body>
 
 <div class="container">
-  <h1>🧮 Rehidratación IV</h1>
+<h1>🧮 Rehidratación IV</h1>
 
-  <!-- Grupo etario -->
-  <div class="section">
-    <h2>Grupo de edad</h2>
-    <select id="edad">
-      <option value="">Selecciona</option>
-      <option value="lactante">👶 Lactante (0–1 año)</option>
-      <option value="nino">🧒 Niño (1–12 años)</option>
-      <option value="adulto">🧑 Adulto</option>
-      <option value="adultomayor">👴 Adulto mayor</option>
-    </select>
-  </div>
+<div class="section">
+<h2>Grupo de edad</h2>
+<select id="edad">
+<option value="">Selecciona</option>
+<option value="lactante">👶 Lactante</option>
+<option value="nino">🧒 Niño</option>
+<option value="adulto">🧑 Adulto</option>
+<option value="adultomayor">👴 Adulto mayor</option>
+</select>
+</div>
 
-  <!-- Peso -->
-  <div class="section">
-    <h2>Peso (kg)</h2>
-    <input type="number" id="peso" placeholder="Ejemplo: 70">
-  </div>
+<div class="section">
+<h2>Peso (kg)</h2>
+<input type="number" id="peso" placeholder="Ejemplo: 70">
+</div>
 
-  <!-- Situación clínica -->
-  <div class="section">
-    <h2>Situación clínica</h2>
-    <select id="situacion">
-      <option value="">Selecciona</option>
-      <option value="diarrea">💩 Deshidratación por diarrea</option>
-      <option value="vomito">🤮 Deshidratación por vómito</option>
-      <option value="fiebre">🔥 Fiebre prolongada</option>
-      <option value="hemorragia">🩸 Hemorragia</option>
-    </select>
-  </div>
+<div class="section">
+<h2>Situación clínica</h2>
+<select id="situacion">
+<option value="">Selecciona</option>
+<option value="diarrea">💩 Diarrea</option>
+<option value="vomito">🤮 Vómito</option>
+<option value="fiebre">🔥 Fiebre</option>
+<option value="hemorragia">🩸 Hemorragia</option>
+</select>
+</div>
 
-  <button class="calc-btn" onclick="calcular()">Calcular</button>
+<button class="calc-btn" onclick="calcular()">Calcular</button>
 
-  <!-- Resultado -->
-  <div id="resultado" class="result-box"></div>
+<div id="resultado" class="result-box"></div>
 
-  <button class="back-btn" onclick="history.back()">⬅ Volver</button>
+<button class="back-btn" onclick="history.back()">⬅ Volver</button>
 </div>
 
 <script>
 function calcular() {
   const edad = document.getElementById("edad").value;
-  const peso = document.getElementById("peso").value;
+  const peso = parseFloat(document.getElementById("peso").value);
   const situacion = document.getElementById("situacion").value;
-  const resultado = document.getElementById("resultado");
+  const r = document.getElementById("resultado");
 
   if (!edad || !peso || !situacion) {
     alert("Completa todos los campos");
     return;
   }
 
-  let solucion = "";
-  if (situacion === "hemorragia") {
-    solucion = "Hartmann";
-  } else {
-    solucion = "Solución salina 0.9%";
+  let solucion = (situacion === "hemorragia") ? "Hartmann" : "NaCl 0.9%";
+  let volumen = 0;
+  let tiempoMin = 0;
+  let alerta = "green";
+  let nota = "";
+
+  if (edad === "lactante" || edad === "nino") {
+    if (situacion === "hemorragia") {
+      volumen = peso * 20;
+      tiempoMin = 60;
+      alerta = "yellow";
+      nota = "Si no mejora tras este bolo, referir.";
+    } else {
+      volumen = peso * 15;
+      tiempoMin = 120;
+    }
   }
 
-  resultado.style.display = "block";
-  resultado.innerHTML = `
-    <strong>Resultado preliminar</strong><br><br>
-    Edad: ${edad}<br>
-    Peso: ${peso} kg<br>
-    Situación: ${situacion}<br><br>
-    <strong>Solución sugerida:</strong> ${solucion}<br>
-    <em>(El cálculo de volumen y goteo se agregará enseguida)</em>
+  if (edad === "adulto") {
+    volumen = 500;
+    if (situacion === "hemorragia") {
+      tiempoMin = 45;
+      alerta = "yellow";
+    } else {
+      tiempoMin = 90;
+    }
+  }
+
+  if (edad === "adultomayor") {
+    volumen = 250;
+    tiempoMin = 90;
+    alerta = "yellow";
+    nota = "Vigilar dificultad respiratoria o edema.";
+  }
+
+  let gotasMin = Math.round((volumen * 20) / tiempoMin);
+
+  r.style.display = "block";
+  r.className = "result-box " + alerta;
+
+  r.innerHTML = `
+  <strong>Resultado</strong><br><br>
+  Solución: <strong>${solucion}</strong><br>
+  Volumen: <strong>${volumen} ml</strong><br>
+  Tiempo: <strong>${tiempoMin} min</strong><br>
+  Goteo: <strong>${gotasMin} gotas/min</strong><br><br>
+  <em>${nota}</em>
   `;
 }
 </script>
