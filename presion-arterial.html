@@ -1,166 +1,137 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Presión Arterial – Signos Vitales</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Presión Arterial – Signos Vitales</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f2f2f2;
-      margin: 0;
-      padding: 20px;
-      text-align: center;
-    }
+<style>
+body { font-family: Arial, sans-serif; background: #f2f2f2; margin:0; padding:20px; text-align:center; }
 
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      max-width: 420px;
-      margin: 0 auto 20px auto;
-      gap: 12px;
-    }
+.header { display:flex; align-items:center; justify-content:center; max-width:420px; margin:0 auto 20px auto; gap:12px; }
+.logo { width:33%; max-width:90px; }
+.logo img { width:100%; height:auto; }
+.header-text { text-align:left; width:67%; }
+h1 { margin-bottom:4px; font-size:22px; }
+p.subtitle { margin-top:0; color:#555; font-size:14px; }
 
-    .logo { width: 33%; max-width: 90px; }
-    .logo img { width: 100%; height: auto; }
+.input-group { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; align-items:center; margin:10px 0; }
+.input-group label { font-weight:bold; margin:0; }
+.input-group input, .input-group select { flex:0 0 120px; padding:8px; font-size:16px; border-radius:6px; border:1px solid #ccc; }
 
-    .header-text { text-align: left; width: 67%; }
+button { padding:12px 20px; font-size:16px; border-radius:10px; border:none; margin:10px; cursor:pointer; transition:all 0.1s ease; box-shadow:0 4px 8px rgba(0,0,0,0.1);}
+button:active { transform:translateY(2px); box-shadow:0 2px 4px rgba(0,0,0,0.2); }
 
-    h1 { margin-bottom: 4px; font-size: 22px; }
-    p.subtitle { margin-top: 0; color: #555; font-size: 14px; }
-
-    .input-group {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      align-items: center;
-      margin: 10px 0;
-    }
-
-    .input-group label {
-      font-weight: bold;
-    }
-
-    .input-group input {
-      flex: 0 0 80px;
-      padding: 8px;
-      font-size: 16px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-
-    button {
-      padding: 12px 20px;
-      font-size: 16px;
-      border-radius: 10px;
-      border: none;
-      margin: 10px;
-      cursor: pointer;
-      transition: all 0.1s ease;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-
-    button:active {
-      transform: translateY(2px);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-
-    .resultado {
-      margin-top: 20px;
-      padding: 16px;
-      border-radius: 10px;
-      font-size: 18px;
-      font-weight: bold;
-      color: white;
-    }
-
-    .verde { background-color: #2e7d32; }
-    .amarillo { background-color: #f9a825; }
-    .rojo { background-color: #d32f2f; }
-  </style>
+.modal {
+  display:none; 
+  position:fixed; 
+  z-index:100; 
+  left:0; top:0; width:100%; height:100%; 
+  overflow:auto; 
+  background-color: rgba(0,0,0,0.4);
+}
+.modal-content {
+  background-color:#fff; margin:15% auto; padding:20px; border-radius:12px;
+  max-width:400px; text-align:left; box-shadow:0 4px 12px rgba(0,0,0,0.3);
+}
+.modal-header { font-size:20px; font-weight:bold; margin-bottom:10px; color:#1976d2; }
+.modal-body { margin-bottom:20px; font-size:16px; }
+.modal-footer { text-align:right; }
+.close-btn { padding:8px 16px; border:none; border-radius:8px; background:#1976d2; color:white; cursor:pointer; font-weight:bold; }
+.close-btn:active { transform:translateY(2px); }
+</style>
 </head>
-
 <body>
 
-  <div class="header">
-    <div class="logo">
-      <img src="logo.png" alt="The Tía Foundation">
-    </div>
-    <div class="header-text">
-      <h1>Presión Arterial</h1>
-      <p class="subtitle">Ingresa los valores para ver el semáforo clínico</p>
+<div class="header">
+  <div class="logo">
+    <img src="logo.png" alt="The Tía Foundation">
+  </div>
+  <div class="header-text">
+    <h1>Presión Arterial</h1>
+    <p class="subtitle">Selecciona grupo etario e ingresa valores</p>
+  </div>
+</div>
+
+<div class="input-group">
+  <label for="grupo">Grupo etario:</label>
+  <select id="grupo">
+    <option value="">--Selecciona--</option>
+    <option value="lactante">Lactante (<1 año)</option>
+    <option value="nino">Niño (1–17 años)</option>
+    <option value="adulto">Adulto (≥18 años)</option>
+  </select>
+</div>
+
+<div class="input-group">
+  <label for="sist">Sistólica (mmHg):</label>
+  <input type="number" id="sist" placeholder="120">
+</div>
+<div class="input-group">
+  <label for="diast">Diastólica (mmHg):</label>
+  <input type="number" id="diast" placeholder="80">
+</div>
+
+<button onclick="evaluarPA()">Evaluar</button>
+<button onclick="location.href='signos-vitales.html'">⬅ Volver</button>
+
+<!-- Modal -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">The Tía Foundation</div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <button class="close-btn" onclick="cerrarModal()">Cerrar</button>
     </div>
   </div>
+</div>
 
-  <div class="input-group">
-    <label for="sist">Sistólica:</label>
-    <input type="number" id="sist" placeholder="mmHg">
-    <label for="diast">Diastólica:</label>
-    <input type="number" id="diast" placeholder="mmHg">
-  </div>
+<script>
+function evaluarPA(){
+  const grupo = document.getElementById('grupo').value;
+  const sist = parseInt(document.getElementById('sist').value);
+  const diast = parseInt(document.getElementById('diast').value);
+  const modalBody = document.getElementById('modal-body');
 
-  <button onclick="evaluarPresion()">Evaluar</button>
-  <button onclick="location.href='signos-vitales.html'">⬅ Volver</button>
+  if(!grupo || isNaN(sist) || isNaN(diast)){
+    alert("Selecciona grupo etario y coloca ambos valores de presión");
+    return;
+  }
 
-  <div id="resultado" class="resultado" style="display:none;"></div>
+  let color="", mensaje="";
 
-  <script>
-    function evaluarPresion() {
-      const s = parseInt(document.getElementById('sist').value);
-      const d = parseInt(document.getElementById('diast').value);
-      const res = document.getElementById('resultado');
+  // Rangos según guías internacionales
+  if(grupo === "adulto"){
+    if(sist < 90 || diast < 50) { color="🔴"; mensaje="Hipotensión grave"; }
+    else if((sist >= 90 && sist < 100) || (diast >=50 && diast < 60)) { color="🟡"; mensaje="Hipotensión leve"; }
+    else if(sist <= 120 && diast <= 80) { color="🟢"; mensaje="Normal"; }
+    else if((sist >120 && sist <=139) || (diast >80 && diast <=89)) { color="🟡"; mensaje="Prehipertensión"; }
+    else { color="🔴"; mensaje="Hipertensión"; }
 
-      if (isNaN(s) || isNaN(d)) {
-        alert("Por favor ingresa ambos valores.");
-        return;
-      }
+  } else if(grupo === "nino"){
+    if(sist < 70 || diast < 40) { color="🔴"; mensaje="Hipotensión grave"; }
+    else if((sist >= 70 && sist < 80) || (diast >=40 && diast < 50)) { color="🟡"; mensaje="Hipotensión leve"; }
+    else if(sist <= 110 && diast <= 70) { color="🟢"; mensaje="Normal"; }
+    else if((sist >110 && sist <=119) || (diast >70 && diast <=79)) { color="🟡"; mensaje="Elevada"; }
+    else { color="🔴"; mensaje="Hipertensión"; }
 
-      let mensaje = "";
-      let color = "";
-      let accion = null;
+  } else if(grupo === "lactante"){
+    if(sist < 70 || diast < 50) { color="🔴"; mensaje="Hipotensión grave"; }
+    else if((sist >= 70 && sist < 80) || (diast >=50 && diast < 55)) { color="🟡"; mensaje="Hipotensión leve"; }
+    else if(sist <=100 && diast <=65) { color="🟢"; mensaje="Normal"; }
+    else if((sist >100 && sist <=110) || (diast >65 && diast <=70)) { color="🟡"; mensaje="Elevada"; }
+    else { color="🔴"; mensaje="Hipertensión"; }
+  }
 
-      if ((s < 90 || d < 60) || (s >= 160 || d >= 100)) {
-        mensaje = "🔴 EMERGENCIA: Actuar inmediatamente";
-        color = "rojo";
-        accion = function() {
-          alert(
-            "ALGORITMO DE EMERGENCIA – PRESIÓN ARTERIAL\n\n" +
-            "1. Mantener al paciente en reposo\n" +
-            "2. Posición semisentada\n" +
-            "3. Tomar signos vitales cada 5 minutos\n" +
-            "4. Administrar oxígeno si está disponible\n" +
-            "5. Buscar traslado urgente a unidad médica"
-          );
-        };
-      } 
-      else if (s >= 140 || d >= 90) {
-        mensaje = "🟡 ALERTA: Vigilar y repetir medición";
-        color = "amarillo";
-        accion = function() {
-          alert(
-            "ALGORITMO DE OBSERVACIÓN – PRESIÓN ARTERIAL\n\n" +
-            "1. Repetir medición en 15 minutos\n" +
-            "2. Verificar técnica correcta\n" +
-            "3. Preguntar síntomas (cefalea, mareo, visión borrosa)\n" +
-            "4. Si persiste, avisar al responsable de salud"
-          );
-        };
-      } 
-      else {
-        mensaje = "🟢 NORMAL: Continuar observación";
-        color = "verde";
-      }
+  modalBody.innerHTML = `<span style="font-size:24px">${color}</span> ${mensaje}<br><br>
+  Algoritmo:<br>- Repetir control en 5-10 min si anormal<br>- Vigilar signos vitales<br>- Actuar según gravedad<br>- Adultos con hipertensión grave → referir a centro de salud`;
+  document.getElementById('modal').style.display = "block";
+}
 
-      res.style.display = "block";
-      res.className = "resultado " + color;
-      res.textContent = mensaje;
-
-      if (accion) accion();
-    }
-  </script>
+function cerrarModal(){
+  document.getElementById('modal').style.display = "none";
+}
+</script>
 
 </body>
 </html>
