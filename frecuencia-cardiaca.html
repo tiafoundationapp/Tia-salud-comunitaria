@@ -1,118 +1,125 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Frecuencia Cardiaca – Signos Vitales</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Frecuencia Cardíaca – Signos Vitales</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body { font-family: Arial, sans-serif; background: #f2f2f2; margin:0; padding:20px; text-align:center; }
+<style>
+body { font-family: Arial, sans-serif; background: #f2f2f2; margin:0; padding:20px; text-align:center; }
 
-    .header { display:flex; align-items:center; justify-content:center; max-width:420px; margin:0 auto 20px auto; gap:12px; }
-    .logo { width:33%; max-width:90px; }
-    .logo img { width:100%; height:auto; }
-    .header-text { text-align:left; width:67%; }
-    h1 { margin-bottom:4px; font-size:22px; }
-    p.subtitle { margin-top:0; color:#555; font-size:14px; }
+.header { display:flex; align-items:center; justify-content:center; max-width:420px; margin:0 auto 20px auto; gap:12px; }
+.logo { width:33%; max-width:90px; }
+.logo img { width:100%; height:auto; }
+.header-text { text-align:left; width:67%; }
+h1 { margin-bottom:4px; font-size:22px; }
+p.subtitle { margin-top:0; color:#555; font-size:14px; }
 
-    .input-group { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; align-items:center; margin:10px 0; }
-    .input-group label { font-weight:bold; margin:0; }
-    .input-group input, .input-group select {
-      flex:0 0 80px; padding:8px; font-size:16px; border-radius:6px; border:1px solid #ccc;
-    }
+.input-group { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; align-items:center; margin:10px 0; }
+.input-group label { font-weight:bold; margin:0; }
+.input-group input { flex:0 0 80px; padding:8px; font-size:16px; border-radius:6px; border:1px solid #ccc; }
+.input-group select { flex:0 0 120px; padding:8px; font-size:16px; border-radius:6px; border:1px solid #ccc; }
 
-    button { padding:12px 20px; font-size:16px; border-radius:10px; border:none; margin:10px; cursor:pointer; transition:all 0.1s ease; box-shadow:0 4px 8px rgba(0,0,0,0.1);}
-    button:active { transform:translateY(2px); box-shadow:0 2px 4px rgba(0,0,0,0.2); }
+button { padding:12px 20px; font-size:16px; border-radius:10px; border:none; margin:10px; cursor:pointer; transition:all 0.1s ease; box-shadow:0 4px 8px rgba(0,0,0,0.1);}
+button:active { transform:translateY(2px); box-shadow:0 2px 4px rgba(0,0,0,0.2); }
 
-    .resultado { margin-top:20px; padding:16px; border-radius:10px; font-size:18px; font-weight:bold; color:white; }
-    .verde { background-color: #2e7d32; }
-    .amarillo { background-color: #f9a825; }
-    .rojo { background-color: #d32f2f; }
+.resultado { margin-top:20px; padding:16px; border-radius:10px; font-size:18px; font-weight:bold; color:white; }
 
-  </style>
+/* Modal */
+.modal {
+  display:none; 
+  position:fixed; 
+  z-index:100; 
+  left:0; top:0; width:100%; height:100%; 
+  overflow:auto; 
+  background-color: rgba(0,0,0,0.4);
+}
+.modal-content {
+  background-color:#fff; margin:15% auto; padding:20px; border-radius:12px;
+  max-width:400px; text-align:left; box-shadow:0 4px 12px rgba(0,0,0,0.3);
+}
+.modal-header { font-size:20px; font-weight:bold; margin-bottom:10px; color:#1976d2; }
+.modal-body { margin-bottom:20px; }
+.modal-footer { text-align:right; }
+.close-btn { padding:8px 16px; border:none; border-radius:8px; background:#1976d2; color:white; cursor:pointer; font-weight:bold; }
+.close-btn:active { transform:translateY(2px); }
+</style>
 </head>
-
 <body>
 
-  <div class="header">
-    <div class="logo">
-      <img src="logo.png" alt="The Tía Foundation">
-    </div>
-    <div class="header-text">
-      <h1>Frecuencia Cardiaca</h1>
-      <p class="subtitle">Ingresa la edad y el pulso para evaluar</p>
+<div class="header">
+  <div class="logo">
+    <img src="logo.png" alt="The Tía Foundation">
+  </div>
+  <div class="header-text">
+    <h1>Frecuencia Cardíaca</h1>
+    <p class="subtitle">Ingresa edad y frecuencia</p>
+  </div>
+</div>
+
+<div class="input-group">
+  <label for="edad">Edad (años):</label>
+  <input type="number" id="edad" placeholder="25">
+</div>
+<div class="input-group">
+  <label for="fc">Frecuencia Cardíaca (lpm):</label>
+  <input type="number" id="fc" placeholder="80">
+</div>
+
+<button onclick="evaluarFC()">Evaluar</button>
+<button onclick="location.href='signos-vitales.html'">⬅ Volver</button>
+
+<!-- Modal -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">The Tía Foundation</div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <button class="close-btn" onclick="cerrarModal()">Cerrar</button>
     </div>
   </div>
+</div>
 
-  <div class="input-group">
-    <label for="edad">Edad:</label>
-    <select id="edad">
-      <option value="0-1m">0–1 mes</option>
-      <option value="1-12m">1–12 meses</option>
-      <option value="1-5y">1–5 años</option>
-      <option value="6-12y">6–12 años</option>
-      <option value="13-17y">13–17 años</option>
-      <option value="18y">≥18 años</option>
-    </select>
-    <label for="fc">FC:</label>
-    <input type="number" id="fc" placeholder="lpm">
-  </div>
+<script>
+function evaluarFC(){
+  const edad = parseInt(document.getElementById('edad').value);
+  const fc = parseInt(document.getElementById('fc').value);
+  const modalBody = document.getElementById('modal-body');
 
-  <button onclick="evaluarFC()">Evaluar</button>
-  <button onclick="location.href='signos-vitales.html'">⬅ Volver</button>
+  if(isNaN(edad) || isNaN(fc)){
+    alert("Ingresa valores válidos");
+    return;
+  }
+  if(edad < 0 || edad > 120 || fc < 30 || fc > 250){
+    alert("Valores fuera de rango");
+    return;
+  }
 
-  <div id="resultado" class="resultado" style="display:none;"></div>
+  let color="", mensaje="";
 
-  <script>
-    function evaluarFC() {
-      const edad = document.getElementById('edad').value;
-      const fc = parseInt(document.getElementById('fc').value);
-      const res = document.getElementById('resultado');
+  // Rangos simplificados
+  if(edad >= 18){ // Adultos
+    if(fc < 60) { color="🔴"; mensaje="Bradicardia: alerta"; }
+    else if(fc <=100) { color="🟢"; mensaje="Normal"; }
+    else { color="🟡"; mensaje="Taquicardia: alerta"; }
+  } else if(edad >= 1){ // Niños
+    if(fc < 70) { color="🔴"; mensaje="Bradicardia: alerta"; }
+    else if(fc <=120) { color="🟢"; mensaje="Normal"; }
+    else { color="🟡"; mensaje="Taquicardia: alerta"; }
+  } else { // Lactantes <1 año
+    if(fc <100) { color="🔴"; mensaje="Bradicardia: alerta"; }
+    else if(fc <=160) { color="🟢"; mensaje="Normal"; }
+    else { color="🟡"; mensaje="Taquicardia: alerta"; }
+  }
 
-      if (isNaN(fc)) { alert("Ingresa un valor válido"); return; }
+  modalBody.innerHTML = color + " " + mensaje + "<br><br>Algoritmo:\n- Vigilar signos vitales\n- Repetir control si es anormal\n- Actuar según situación";
+  document.getElementById('modal').style.display = "block";
+}
 
-      let rango = [0,0]; // [min, max]
-      switch(edad) {
-        case "0-1m": rango=[100,180]; break;
-        case "1-12m": rango=[100,160]; break;
-        case "1-5y": rango=[80,120]; break;
-        case "6-12y": rango=[75,115]; break;
-        case "13-17y": rango=[60,130]; break;
-        case "18y": rango=[60,120]; break;
-      }
-
-      let mensaje="", color="", accion=null;
-
-      if (fc < rango[0] || fc > rango[1]) {
-        mensaje = "🔴 EMERGENCIA: Actuar inmediatamente";
-        color = "rojo";
-        accion = function() {
-          alert(
-            "ALGORITMO EMERGENCIA – FRECUENCIA CARDIACA\n\n" +
-            "1. Valorar conciencia y respiración\n2. Llamar a ayuda inmediata\n3. Colocar al paciente en posición segura\n4. Administrar oxígeno si disponible\n5. Traslado urgente a unidad médica"
-          );
-        };
-      } else if ((fc >= rango[1]*0.9 && fc < rango[1]) || (fc > rango[0] && fc <= rango[0]*1.1)) {
-        mensaje = "🟡 Alerta: Vigilar y repetir medición";
-        color = "amarillo";
-        accion = function() {
-          alert(
-            "ALGORITMO OBSERVACIÓN – FRECUENCIA CARDIACA\n\n" +
-            "1. Repetir medición en 5–10 minutos\n2. Verificar técnica de palpación\n3. Observar síntomas asociados\n4. Avisar al responsable sanitario si persiste"
-          );
-        };
-      } else {
-        mensaje = "🟢 Normal: Continuar observación";
-        color = "verde";
-      }
-
-      res.style.display = "block";
-      res.className = "resultado " + color;
-      res.textContent = mensaje;
-
-      if (accion) accion();
-    }
-  </script>
+function cerrarModal(){
+  document.getElementById('modal').style.display = "none";
+}
+</script>
 
 </body>
 </html>
