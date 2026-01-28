@@ -1,119 +1,244 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Paciente Quemado - Reanimación IV</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body { font-family: Arial, sans-serif; background:#f5f5f5; margin:0; padding:1rem; }
-    h1 { color:#b30000; }
-    h2 { color:#333; margin-top:1.5rem; }
-    .card { background:white; border-radius:8px; padding:1rem; margin-bottom:1rem; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
-    .warning { background:#ffe5e5; border-left:6px solid #b30000; padding:1rem; }
-    .btn { display:inline-block; padding:0.6rem 1rem; border:none; border-radius:6px; cursor:pointer; font-size:1rem; }
-    .btn-danger { background:#b30000; color:white; }
-    .btn-primary { background:#0066cc; color:white; }
-    .btn-success { background:#2e7d32; color:white; }
-    label { display:block; margin:0.3rem 0; }
-    input[type="number"] { width:100%; padding:0.4rem; }
-    .result { background:#eef6ff; padding:1rem; border-radius:6px; margin-top:1rem; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quemaduras – Manejo IV</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background:#f4f6f8;
+  margin:0;
+  padding:20px;
+}
+
+h1 {
+  text-align:center;
+  margin-bottom:20px;
+}
+
+button {
+  width:100%;
+  padding:15px;
+  margin:10px 0;
+  font-size:16px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+}
+
+.btn-white {
+  background:white;
+  border:1px solid #ccc;
+}
+
+.btn-warning {
+  background:#ffc107;
+  color:black;
+}
+
+.btn-danger {
+  background:#dc3545;
+  color:white;
+}
+
+.btn-primary {
+  background:#0d6efd;
+  color:white;
+}
+
+.btn-disabled {
+  background:#ccc;
+  color:#666;
+}
+
+.popup {
+  display:none;
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.5);
+  z-index:999;
+}
+
+.popup-content {
+  background:white;
+  margin:5% auto;
+  padding:20px;
+  width:90%;
+  max-width:500px;
+  border-radius:10px;
+  max-height:85%;
+  overflow-y:auto;
+}
+
+.close {
+  float:right;
+  font-size:20px;
+  cursor:pointer;
+}
+
+.check-group label {
+  display:block;
+  margin:8px 0;
+}
+
+.result {
+  margin-top:15px;
+  padding:10px;
+  background:#e9ecef;
+  border-radius:8px;
+  font-weight:bold;
+}
+</style>
 </head>
+
 <body>
 
-<h1>Paciente Quemado – Reanimación con Líquidos IV</h1>
+<h1>Quemaduras – Manejo inicial IV</h1>
 
-<div class="card warning">
-  <strong>⚠️ Advertencias importantes</strong>
-  <ul>
-    <li>No retirar ropa pegada a la piel</li>
-    <li>No aplicar remedios caseros, cremas o sustancias</li>
-    <li>No romper ampollas</li>
-    <li>Si no hay vena, trasladar inmediatamente</li>
-  </ul>
+<button class="btn-white" onclick="alert('Aquí irá la infografía visual de quemaduras')">
+📊 Ver infografía
+</button>
+
+<button class="btn-warning" onclick="openPopup('alertas')">
+⚠️ Advertencias importantes
+</button>
+
+<button class="btn-white" onclick="openPopup('scq')">
+🔥 Superficie corporal quemada
+</button>
+
+<button id="btnCalc" class="btn-disabled" disabled onclick="openPopup('parkland')">
+💧 Calculadora de líquidos (quemados)
+</button>
+
+<button class="btn-white" onclick="location.href='manejo-quemaduras.html'">
+🩹 Manejo de quemaduras
+</button>
+
+<button class="btn-primary" onclick="location.href='medicamentos.html'">
+⬅️ Volver al menú
+</button>
+
+<!-- ================= POPUPS ================= -->
+
+<!-- ADVERTENCIAS -->
+<div id="alertas" class="popup">
+  <div class="popup-content">
+    <span class="close" onclick="closePopup('alertas')">&times;</span>
+    <h3>⚠️ Advertencias</h3>
+    <ul>
+      <li>No retirar ropa adherida a la piel</li>
+      <li>No aplicar remedios caseros</li>
+      <li>No romper ampollas</li>
+      <li>Quemadura eléctrica → traslado inmediato</li>
+      <li>Quemadura química → irrigar con agua abundante</li>
+      <li>Quemadura solar extensa también cuenta</li>
+    </ul>
+  </div>
 </div>
 
-<div class="card">
-  <h2>1. Superficie corporal quemada</h2>
-  <p>Selecciona las zonas quemadas (solo quemaduras parciales o profundas):</p>
-  <label><input type="checkbox" class="zona" value="9"> Cabeza y cuello (9%)</label>
-  <label><input type="checkbox" class="zona" value="9"> Brazo derecho (9%)</label>
-  <label><input type="checkbox" class="zona" value="9"> Brazo izquierdo (9%)</label>
-  <label><input type="checkbox" class="zona" value="18"> Tórax anterior (18%)</label>
-  <label><input type="checkbox" class="zona" value="18"> Espalda (18%)</label>
-  <label><input type="checkbox" class="zona" value="18"> Pierna derecha (18%)</label>
-  <label><input type="checkbox" class="zona" value="18"> Pierna izquierda (18%)</label>
-  <label><input type="checkbox" class="zona" value="1"> Genitales (1%)</label>
-  <p><strong>Total estimado: <span id="scq">0</span>%</strong></p>
-</div>
+<!-- SCQ -->
+<div id="scq" class="popup">
+  <div class="popup-content">
+    <span class="close" onclick="closePopup('scq')">&times;</span>
+    <h3>🔥 Superficie corporal quemada</h3>
 
-<div class="card">
-  <h2>2. Datos del paciente</h2>
-  <label>Grupo de edad
-    <select id="edad">
-      <option value="adulto">Adulto</option>
-      <option value="nino">Niño</option>
-      <option value="lactante">Lactante</option>
+    <div class="check-group">
+      <label><input type="checkbox" value="9"> Cabeza</label>
+      <label><input type="checkbox" value="18"> Tronco anterior</label>
+      <label><input type="checkbox" value="18"> Tronco posterior</label>
+      <label><input type="checkbox" value="9"> Brazo derecho</label>
+      <label><input type="checkbox" value="9"> Brazo izquierdo</label>
+      <label><input type="checkbox" value="9"> Pierna derecha (anterior)</label>
+      <label><input type="checkbox" value="9"> Pierna derecha (posterior)</label>
+      <label><input type="checkbox" value="9"> Pierna izquierda (anterior)</label>
+      <label><input type="checkbox" value="9"> Pierna izquierda (posterior)</label>
+      <label><input type="checkbox" value="1"> Genitales</label>
+    </div>
+
+    <h4>Profundidad</h4>
+    <select id="profundidad">
+      <option value="superficial">Superficial</option>
+      <option value="parcial">Espesor parcial</option>
+      <option value="total">Espesor total</option>
     </select>
-  </label>
-  <label>Peso (kg)
-    <input type="number" id="peso" placeholder="Ej. 70">
-  </label>
+
+    <button class="btn-white" onclick="calcularSCQ()">Calcular</button>
+
+    <div id="resultadoSCQ" class="result"></div>
+  </div>
 </div>
 
-<div class="card">
-  <h2>3. Tipo de quemadura</h2>
-  <label><input type="radio" name="tipo" checked> Fuego / líquidos calientes</label>
-  <label><input type="radio" name="tipo"> Eléctrica</label>
-  <label><input type="radio" name="tipo"> Química</label>
-  <label><input type="radio" name="tipo"> Explosión</label>
-</div>
+<!-- PARKLAND -->
+<div id="parkland" class="popup">
+  <div class="popup-content">
+    <span class="close" onclick="closePopup('parkland')">&times;</span>
+    <h3>💧 Calculadora Parkland</h3>
 
-<div class="card">
-  <h2>4. Profundidad</h2>
-  <label><input type="radio" name="prof" checked> Parcial</label>
-  <label><input type="radio" name="prof"> Profunda</label>
-</div>
+    <label>Peso (kg)</label>
+    <input type="number" id="peso" min="1">
 
-<div class="card">
-  <button class="btn btn-success" onclick="calcular()">Calcular líquidos IV</button>
-  <div class="result" id="resultado"></div>
+    <label>Tipo de quemadura</label>
+    <select>
+      <option>Fuego</option>
+      <option>Eléctrica</option>
+      <option>Química</option>
+      <option>Solar</option>
+    </select>
+
+    <button class="btn-white" onclick="calcularParkland()">Calcular líquidos</button>
+
+    <div id="resultadoParkland" class="result"></div>
+  </div>
 </div>
 
 <script>
-  function calcularSCQ() {
-    let total = 0;
-    document.querySelectorAll('.zona:checked').forEach(z => total += parseInt(z.value));
-    document.getElementById('scq').innerText = total;
-    return total;
+function openPopup(id){ document.getElementById(id).style.display='block'; }
+function closePopup(id){ document.getElementById(id).style.display='none'; }
+
+let scqGlobal = 0;
+
+function calcularSCQ(){
+  let total = 0;
+  document.querySelectorAll('#scq input[type=checkbox]').forEach(cb=>{
+    if(cb.checked) total += parseInt(cb.value);
+  });
+  scqGlobal = total;
+  let profundidad = document.getElementById('profundidad').value;
+
+  let msg = `Superficie corporal quemada: ${total}%<br>Profundidad: ${profundidad}`;
+
+  if(total >= 10){
+    msg += `<br><br>👉 Requiere líquidos IV`;
+    document.getElementById('btnCalc').disabled = false;
+    document.getElementById('btnCalc').className = 'btn-white';
+  } else {
+    msg += `<br><br>👉 No requiere líquidos IV`;
   }
 
-  document.querySelectorAll('.zona').forEach(z => z.addEventListener('change', calcularSCQ));
+  document.getElementById('resultadoSCQ').innerHTML = msg;
+}
 
-  function calcular() {
-    const peso = parseFloat(document.getElementById('peso').value);
-    const scq = calcularSCQ();
-
-    if (!peso || scq === 0) {
-      document.getElementById('resultado').innerHTML = '⚠️ Ingresa peso y superficie quemada.';
-      return;
-    }
-
-    const total = 4 * peso * scq; // Parkland
-    const primeras8 = total / 2;
-    const siguientes16 = total / 2;
-    const mlHora8 = (primeras8 / 8).toFixed(0);
-    const gotasMin = Math.round((mlHora8 * 20) / 60);
-
-    document.getElementById('resultado').innerHTML = `
-      <strong>Solución recomendada:</strong> Hartmann<br><br>
-      <strong>Volumen total 24 h:</strong> ${total.toFixed(0)} ml<br>
-      <strong>Primeras 8 h:</strong> ${primeras8.toFixed(0)} ml (${mlHora8} ml/h)<br>
-      <strong>Siguientes 16 h:</strong> ${siguientes16.toFixed(0)} ml<br><br>
-      <strong>Ritmo estimado:</strong> ${gotasMin} gotas/min (macro)<br><br>
-      <em>Si no hay acceso venoso o SCQ elevada, trasladar de inmediato.</em>
-    `;
+function calcularParkland(){
+  let peso = document.getElementById('peso').value;
+  if(!peso || scqGlobal===0){
+    alert('Datos incompletos');
+    return;
   }
+
+  let total = 4 * peso * scqGlobal;
+  let primeras8 = total / 2;
+  let siguientes16 = total / 2;
+
+  document.getElementById('resultadoParkland').innerHTML =
+    `Volumen total 24 h: ${total} ml<br>
+     Primeras 8 h: ${primeras8} ml<br>
+     Siguientes 16 h: ${siguientes16} ml<br><br>
+     ⚠️ Si no hay acceso venoso, trasladar inmediatamente`;
+}
 </script>
 
 </body>
