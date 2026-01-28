@@ -15,25 +15,35 @@
     }
 
     h1 {
-      margin-bottom: 5px;
+      margin-bottom: 4px;
     }
 
-    p {
+    p.subtitle {
       margin-top: 0;
+      margin-bottom: 20px;
       color: #555;
+      font-size: 14px;
     }
 
     .menu-button {
       display: block;
       width: 100%;
-      max-width: 400px;
-      margin: 12px auto;
-      padding: 18px;
+      max-width: 420px;
+      margin: 14px auto;
+      padding: 16px;
       font-size: 18px;
-      border-radius: 12px;
+      border-radius: 14px;
       border: none;
       background: #ffffff;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+
+    .menu-button span {
+      display: block;
+      font-size: 14px;
+      color: #555;
+      margin-top: 6px;
     }
 
     .emergency {
@@ -41,29 +51,81 @@
       color: white;
       font-size: 20px;
     }
+
+    .emergency span {
+      color: #ffeaea;
+    }
+
+    .blue {
+      border-left: 10px solid #1976d2;
+    }
+
+    .purple {
+      border-left: 10px solid #6a1b9a;
+    }
+
+    .orange {
+      border-left: 10px solid #ef6c00;
+    }
+
+    .green {
+      border-left: 10px solid #2e7d32;
+    }
+
+    .teal {
+      border-left: 10px solid #00796b;
+    }
+
+    .gray {
+      border-left: 10px solid #616161;
+    }
   </style>
 </head>
 
 <body>
 
   <h1>The Tía Foundation</h1>
-  <p>Salud Comunitaria</p>
+  <p class="subtitle">Manual y App de Salud Comunitaria</p>
 
-  <button class="menu-button emergency">🚨 EMERGENCIAS</button>
+  <button class="menu-button emergency">
+    🚨 EMERGENCIAS
+    <span>Qué hacer ahora mismo ante una urgencia</span>
+  </button>
 
-  <button class="menu-button">🚦 Signos Vitales</button>
+  <button class="menu-button blue">
+    🚦 Signos Vitales
+    <span>Tomar, interpretar y saber cuándo es peligro</span>
+  </button>
 
-  <button class="menu-button">💉 Aplicación de Medicamentos</button>
+  <button class="menu-button purple">
+    💉 Aplicación de Medicamentos y Soluciones
+    <span>Inyecciones, sueros, dosis y técnica segura</span>
+  </button>
 
-  <button class="menu-button">🩹 Heridas, Vendajes y Quemaduras</button>
+  <button class="menu-button orange">
+    🩹 Heridas, Vendajes y Quemaduras
+    <span>Sangrados, fracturas, inmovilización y quemaduras</span>
+  </button>
 
-  <button class="menu-button">🤰 Trabajo de Parto</button>
+  <button class="menu-button pink green">
+    🤰 Trabajo de Parto
+    <span>Identificar parto, atender y reconocer peligro</span>
+  </button>
 
-  <button class="menu-button">🥗 Nutrición Saludable</button>
+  <button class="menu-button green">
+    🥗 Nutrición Saludable
+    <span>Alimentación con lo que hay en la comunidad</span>
+  </button>
 
-  <button class="menu-button">🧠 Primeros Auxilios Psicológicos</button>
+  <button class="menu-button teal">
+    🧠 Primeros Auxilios Psicológicos
+    <span>Cómo ayudar en crisis emocional o trauma</span>
+  </button>
 
-  <button class="menu-button">📘 Manual Completo</button>
+  <button class="menu-button gray">
+    📘 Manual Completo
+    <span>Todo el contenido para lectura continua</span>
+  </button>
 
 </body>
 </html>
