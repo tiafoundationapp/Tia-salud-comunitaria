@@ -1,118 +1,72 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Temperatura – Signos Vitales</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body { font-family: Arial, sans-serif; background: #f2f2f2; margin:0; padding:20px; text-align:center; }
-    .header { display:flex; align-items:center; justify-content:center; max-width:420px; margin:0 auto 20px auto; gap:12px; }
-    .logo { width:33%; max-width:90px; }
-    .logo img { width:100%; height:auto; }
-    .header-text { text-align:left; width:67%; }
-    h1 { margin-bottom:4px; font-size:22px; }
-    p.subtitle { margin-top:0; color:#555; font-size:14px; }
-
-    .input-group { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; align-items:center; margin:10px 0; }
-    .input-group label { font-weight:bold; margin:0; }
-    .input-group input { flex:0 0 80px; padding:8px; font-size:16px; border-radius:6px; border:1px solid #ccc; }
-
-    button { padding:12px 20px; font-size:16px; border-radius:10px; border:none; margin:10px; cursor:pointer; transition:all 0.1s ease; box-shadow:0 4px 8px rgba(0,0,0,0.1);}
-    button:active { transform:translateY(2px); box-shadow:0 2px 4px rgba(0,0,0,0.2); }
-
-    .resultado { margin-top:20px; padding:16px; border-radius:10px; font-size:18px; font-weight:bold; color:white; }
-    .verde { background-color: #2e7d32; }
-    .amarillo { background-color: #f9a825; }
-    .rojo { background-color: #d32f2f; }
-  </style>
+<meta charset="UTF-8">
+<title>Temperatura – Signos Vitales</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body { font-family: Arial, sans-serif; background:#f2f2f2; margin:0; padding:20px; text-align:center; }
+.header { display:flex; align-items:center; justify-content:center; max-width:420px; margin:0 auto 20px auto; gap:12px; }
+.logo { width:33%; max-width:90px; } .logo img { width:100%; height:auto; }
+.header-text { text-align:left; width:67%; }
+h1 { margin-bottom:4px; font-size:22px; }
+p.subtitle { margin-top:0; color:#555; font-size:14px; }
+.input-group { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; align-items:center; margin:10px 0; }
+.input-group label { font-weight:bold; margin:0; }
+.input-group input { flex:0 0 120px; padding:8px; font-size:16px; border-radius:6px; border:1px solid #ccc; }
+button { padding:12px 20px; font-size:16px; border-radius:10px; border:none; margin:10px; cursor:pointer; transition:all 0.1s ease; box-shadow:0 4px 8px rgba(0,0,0,0.1);}
+button:active { transform:translateY(2px); box-shadow:0 2px 4px rgba(0,0,0,0.2); }
+.modal { display:none; position:fixed; z-index:100; left:0; top:0; width:100%; height:100%; overflow:auto; background-color: rgba(0,0,0,0.4);}
+.modal-content { background-color:#fff; margin:15% auto; padding:20px; border-radius:12px; max-width:400px; text-align:left; box-shadow:0 4px 12px rgba(0,0,0,0.3);}
+.modal-header { font-size:20px; font-weight:bold; margin-bottom:10px; color:#1976d2; }
+.modal-body { margin-bottom:20px; font-size:16px; }
+.modal-footer { text-align:right; }
+.close-btn { padding:8px 16px; border:none; border-radius:8px; background:#1976d2; color:white; cursor:pointer; font-weight:bold; }
+.close-btn:active { transform:translateY(2px); }
+</style>
 </head>
 <body>
 
-  <div class="header">
-    <div class="logo">
-      <img src="logo.png" alt="The Tía Foundation">
-    </div>
-    <div class="header-text">
-      <h1>Temperatura</h1>
-      <p class="subtitle">Ingresa temperatura corporal (°C)</p>
-    </div>
+<div class="header">
+  <div class="logo"><img src="logo.png" alt="The Tía Foundation"></div>
+  <div class="header-text"><h1>Temperatura</h1><p class="subtitle">Cuerpo humano</p></div>
+</div>
+
+<div class="input-group">
+  <label for="temp">Temperatura (°C)</label>
+  <input type="number" id="temp" placeholder="36.5" min="34" max="42" step="0.1">
+</div>
+
+<button onclick="evaluarTemp()">Evaluar</button>
+<button onclick="location.href='signos-vitales.html'">⬅ Volver</button>
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">The Tía Foundation</div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer"><button class="close-btn" onclick="cerrarModal()">Cerrar</button></div>
   </div>
+</div>
 
-  <div class="input-group">
-    <label for="temp">Temperatura:</label>
-    <input type="number" id="temp" placeholder="36.5" step="0.1">
-  </div>
+<script>
+function evaluarTemp(){
+  const temp = parseFloat(document.getElementById('temp').value);
+  const modalBody = document.getElementById('modal-body');
 
-  <button onclick="evaluarTemperatura()">Evaluar</button>
-  <button onclick="location.href='signos-vitales.html'">⬅ Volver</button>
+  if(isNaN(temp) || temp<34 || temp>42){ alert("Ingrese temperatura entre 34 y 42°C"); return; }
 
-  <div id="resultado" class="resultado" style="display:none;"></div>
+  let color="", mensaje="";
+  if(temp<36){ color="🟡"; mensaje="Hipotermia leve"; }
+  else if(temp<=37.5){ color="🟢"; mensaje="Normal"; }
+  else if(temp<=39){ color="🟡"; mensaje="Fiebre leve"; }
+  else { color="🔴"; mensaje="Fiebre alta / emergencia"; }
 
-  <script>
-    function evaluarTemperatura(){
-      const temp = parseFloat(document.getElementById('temp').value);
-      const res = document.getElementById('resultado');
-
-      if(isNaN(temp)){
-        alert("Ingresa un valor válido");
-        return;
-      }
-
-      if(temp < 34 || temp > 42){
-        alert("Valor fuera de rango permitido (34–42 °C)");
-        return;
-      }
-
-      let mensaje="", color="", accion=null;
-
-      if(temp < 35.5){
-        mensaje="🔴 Hipotermia: emergencia";
-        color="rojo";
-        accion=function(){
-          alert(
-            "ALGORITMO HIPOTERMIA:\n"+
-            "1. Abrigar al paciente\n"+
-            "2. Medir signos vitales\n"+
-            "3. Traslado si persiste hipotermia"
-          );
-        };
-      } else if(temp <= 36){
-        mensaje="🟡 Alerta: temperatura baja leve";
-        color="amarillo";
-      } else if(temp <= 37.5){
-        mensaje="🟢 Normal";
-        color="verde";
-      } else if(temp <= 38){
-        mensaje="🟡 Fiebre leve";
-        color="amarillo";
-        accion=function(){
-          alert(
-            "ALGORITMO FIEBRE LEVE:\n"+
-            "1. Vigilar síntomas\n"+
-            "2. Hidratación\n"+
-            "3. Controlar signos vitales"
-          );
-        };
-      } else {
-        mensaje="🔴 Fiebre alta: emergencia";
-        color="rojo";
-        accion=function(){
-          alert(
-            "ALGORITMO FIEBRE ALTA:\n"+
-            "1. Valorar signos de alarma\n"+
-            "2. Administrar medidas antipiréticas\n"+
-            "3. Traslado si necesario"
-          );
-        };
-      }
-
-      res.style.display="block";
-      res.className="resultado "+color;
-      res.textContent=mensaje;
-
-      if(accion) accion();
-    }
-  </script>
+  modalBody.innerHTML = `<span style="font-size:24px">${color}</span> ${mensaje}<br><br>
+  Algoritmo:<br>- Vigilar signos vitales<br>- Administrar antipiréticos según protocolo<br>- Referir si 🔴`;
+  document.getElementById('modal').style.display="block";
+}
+function cerrarModal(){ document.getElementById('modal').style.display="none"; }
+</script>
 
 </body>
 </html>
