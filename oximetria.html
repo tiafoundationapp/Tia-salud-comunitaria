@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Oximetría – Signos Vitales</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial, sans-serif; background: #f2f2f2; margin:0; padding:20px; text-align:center; }
+    .header { display:flex; align-items:center; justify-content:center; max-width:420px; margin:0 auto 20px auto; gap:12px; }
+    .logo { width:33%; max-width:90px; }
+    .logo img { width:100%; height:auto; }
+    .header-text { text-align:left; width:67%; }
+    h1 { margin-bottom:4px; font-size:22px; }
+    p.subtitle { margin-top:0; color:#555; font-size:14px; }
+    .input-group { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; align-items:center; margin:10px 0; }
+    .input-group label { font-weight:bold; margin:0; }
+    .input-group input { flex:0 0 80px; padding:8px; font-size:16px; border-radius:6px; border:1px solid #ccc; }
+    button { padding:12px 20px; font-size:16px; border-radius:10px; border:none; margin:10px; cursor:pointer; transition:all 0.1s ease; box-shadow:0 4px 8px rgba(0,0,0,0.1);}
+    button:active { transform:translateY(2px); box-shadow:0 2px 4px rgba(0,0,0,0.2); }
+    .resultado { margin-top:20px; padding:16px; border-radius:10px; font-size:18px; font-weight:bold; color:white; }
+    .verde { background-color: #2e7d32; }
+    .amarillo { background-color: #f9a825; }
+    .rojo { background-color: #d32f2f; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo">
+      <img src="logo.png" alt="The Tía Foundation">
+    </div>
+    <div class="header-text">
+      <h1>Oximetría</h1>
+      <p class="subtitle">Ingresa la saturación de oxígeno (%)</p>
+    </div>
+  </div>
+
+  <div class="input-group">
+    <label for="spo2">SpO₂:</label>
+    <input type="number" id="spo2" placeholder="95">
+  </div>
+
+  <button onclick="evaluarSpO2()">Evaluar</button>
+  <button onclick="location.href='signos-vitales.html'">⬅ Volver</button>
+
+  <div id="resultado" class="resultado" style="display:none;"></div>
+
+  <script>
+    function evaluarSpO2(){
+      const spo2 = parseInt(document.getElementById('spo2').value);
+      const res = document.getElementById('resultado');
+
+      if(isNaN(spo2)){ alert("Ingresa un valor válido"); return; }
+
+      let mensaje="", color="", accion=null;
+
+      if(spo2 < 88){
+        mensaje="🔴 EMERGENCIA: Hipoxia grave";
+        color="rojo";
+        accion=function(){
+          alert(
+            "ALGORITMO EMERGENCIA OXIMETRÍA:\n"+
+            "1. Valorar respiración y conciencia\n"+
+            "2. Administrar oxígeno si disponible\n"+
+            "3. Posicionar correctamente al paciente\n"+
+            "4. Traslado inmediato"
+          );
+        };
+      } else if(spo2 <= 91){
+        mensaje="🟡 Alerta: Hipoxia moderada, vigilar";
+        color="amarillo";
+        accion=function(){
+          alert(
+            "ALGORITMO OBSERVACIÓN OXIMETRÍA:\n"+
+            "1. Repetir medición en 5–10 min\n"+
+            "2. Verificar técnica de oxímetro\n"+
+            "3. Observar síntomas asociados\n"+
+            "4. Avisar responsable sanitario"
+          );
+        };
+      } else {
+        mensaje="🟢 Normal";
+        color="verde";
+      }
+
+      res.style.display="block";
+      res.className="resultado "+color;
+      res.textContent=mensaje;
+
+      if(accion) accion();
+    }
+  </script>
+
+</body>
+</html>
