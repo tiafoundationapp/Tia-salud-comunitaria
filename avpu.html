@@ -2,10 +2,11 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>AVPU – Signos Vitales</title>
+  <title>Estado de Conciencia (AVPU) – Signos Vitales</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
-    body { font-family: Arial, sans-serif; background: #f2f2f2; margin:0; padding:20px; text-align:center; }
+    body { font-family: Arial, sans-serif; background:#f2f2f2; margin:0; padding:20px; text-align:center; }
     .header { display:flex; align-items:center; justify-content:center; max-width:420px; margin:0 auto 20px auto; gap:12px; }
     .logo { width:33%; max-width:90px; }
     .logo img { width:100%; height:auto; }
@@ -13,13 +14,27 @@
     h1 { margin-bottom:4px; font-size:22px; }
     p.subtitle { margin-top:0; color:#555; font-size:14px; }
 
-    .question { margin:20px 0; font-size:18px; }
-    .btn { padding:12px 20px; font-size:16px; border-radius:10px; border:none; margin:10px; cursor:pointer; transition:all 0.1s ease; box-shadow:0 4px 8px rgba(0,0,0,0.1);}
-    .btn:active { transform:translateY(2px); box-shadow:0 2px 4px rgba(0,0,0,0.2); }
-    .resultado { margin-top:20px; padding:16px; border-radius:10px; font-size:18px; font-weight:bold; color:white; }
+    .avpu-button {
+      display:block;
+      width:100%;
+      max-width:400px;
+      margin:12px auto;
+      padding:20px;
+      font-size:18px;
+      border-radius:12px;
+      border:none;
+      color:white;
+      cursor:pointer;
+      box-shadow:0 4px 8px rgba(0,0,0,0.1);
+      transition:all 0.1s ease;
+    }
+    .avpu-button:active { transform:translateY(2px); box-shadow:0 2px 4px rgba(0,0,0,0.2); }
+
     .verde { background-color: #2e7d32; }
-    .amarillo { background-color: #f9a825; }
+    .amarillo { background-color: #f9a825; color:#000; }
+    .naranja { background-color: #ff9800; }
     .rojo { background-color: #d32f2f; }
+
   </style>
 </head>
 <body>
@@ -30,67 +45,35 @@
     </div>
     <div class="header-text">
       <h1>Estado de Conciencia (AVPU)</h1>
-      <p class="subtitle">Sigue las preguntas secuenciales para evaluar al paciente</p>
+      <p class="subtitle">Selecciona el nivel del paciente</p>
     </div>
   </div>
 
-  <div id="pregunta" class="question">¿El paciente está alerta y responde preguntas?</div>
-  <button class="btn" onclick="respuesta('si1')">Sí</button>
-  <button class="btn" onclick="respuesta('no1')">No</button>
+  <button class="avpu-button verde" onclick="mostrarInfo('A')">🟢 A – Alerta: paciente despierto y responde preguntas</button>
+  <button class="avpu-button amarillo" onclick="mostrarInfo('V')">🟡 V – Responde a la voz: se mueve o habla con estímulo verbal</button>
+  <button class="avpu-button naranja" onclick="mostrarInfo('P')">🟠 P – Responde al dolor: reacciona solo a estímulo doloroso</button>
+  <button class="avpu-button rojo" onclick="mostrarInfo('U')">🔴 U – No responde: no hay respuesta a estímulos</button>
 
-  <button onclick="location.href='signos-vitales.html'">⬅ Volver</button>
-
-  <div id="resultado" class="resultado" style="display:none;"></div>
+  <button class="avpu-button" style="background:#ffffff;color:#000; box-shadow:0 4px 8px rgba(0,0,0,0.1);" onclick="location.href='signos-vitales.html'">⬅ Volver</button>
 
   <script>
-    function respuesta(valor){
-      const pregunta = document.getElementById('pregunta');
-      const res = document.getElementById('resultado');
-
-      if(valor === 'si1'){
-        // Alerta normal
-        res.style.display="block";
-        res.className="resultado verde";
-        res.textContent="🟢 A (Alerta): Normal. Continuar observación.";
-        alert("ALGORITMO: Continuar observación, evaluar signos vitales periódicamente.");
-        pregunta.style.display="none";
+    function mostrarInfo(tipo){
+      let mensaje="";
+      switch(tipo){
+        case 'A':
+          mensaje="Paciente alerta:\n- Monitorear signos vitales regularmente\n- Puede interactuar y responder preguntas\n- Continuar observación rutinaria";
+          break;
+        case 'V':
+          mensaje="Paciente responde a la voz:\n- Verificar nivel de conciencia\n- Vigilar signos vitales\n- Preparar para intervención si empeora";
+          break;
+        case 'P':
+          mensaje="Paciente responde al dolor:\n- Evaluar causa del dolor\n- Monitorear signos vitales cada 5 min\n- Considerar traslado a nivel superior";
+          break;
+        case 'U':
+          mensaje="Paciente no responde:\n- Activar algoritmo de emergencia\n- Revisar vía aérea, respiración y circulación\n- Traslado inmediato a hospital";
+          break;
       }
-
-      else if(valor === 'no1'){
-        pregunta.textContent="¿Responde a la voz?";
-        document.querySelectorAll(".btn")[0].setAttribute("onclick","respuesta('si2')");
-        document.querySelectorAll(".btn")[1].setAttribute("onclick","respuesta('no2')");
-      }
-
-      else if(valor === 'si2'){
-        res.style.display="block";
-        res.className="resultado amarillo";
-        res.textContent="🟡 V (Responde a voz): Vigilar y controlar signos vitales.";
-        alert("ALGORITMO: Vigilar, controlar signos vitales, considerar traslado si persiste alteración.");
-        pregunta.style.display="none";
-      }
-
-      else if(valor === 'no2'){
-        pregunta.textContent="¿Responde al dolor?";
-        document.querySelectorAll(".btn")[0].setAttribute("onclick","respuesta('si3')");
-        document.querySelectorAll(".btn")[1].setAttribute("onclick","respuesta('no3')");
-      }
-
-      else if(valor === 'si3'){
-        res.style.display="block";
-        res.className="resultado amarillo";
-        res.textContent="🟡 P (Responde al dolor): Vigilar, posible traslado.";
-        alert("ALGORITMO: Vigilar de cerca, preparar traslado, controlar signos vitales.");
-        pregunta.style.display="none";
-      }
-
-      else if(valor === 'no3'){
-        res.style.display="block";
-        res.className="resultado rojo";
-        res.textContent="🔴 U (No responde): EMERGENCIA, activar protocolo de RCP.";
-        alert("ALGORITMO EMERGENCIA: No responde → iniciar RCP si necesario, llamar ayuda inmediata, mantener vías aéreas.");
-        pregunta.style.display="none";
-      }
+      alert(mensaje);
     }
   </script>
 
