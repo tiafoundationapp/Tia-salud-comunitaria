@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Frecuencia Respiratoria – Signos Vitales</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body { font-family: Arial, sans-serif; background: #f2f2f2; margin:0; padding:20px; text-align:center; }
+
+    .header { display:flex; align-items:center; justify-content:center; max-width:420px; margin:0 auto 20px auto; gap:12px; }
+    .logo { width:33%; max-width:90px; }
+    .logo img { width:100%; height:auto; }
+    .header-text { text-align:left; width:67%; }
+    h1 { margin-bottom:4px; font-size:22px; }
+    p.subtitle { margin-top:0; color:#555; font-size:14px; }
+
+    .input-group { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; align-items:center; margin:10px 0; }
+    .input-group label { font-weight:bold; margin:0; }
+    .input-group input, .input-group select { flex:0 0 80px; padding:8px; font-size:16px; border-radius:6px; border:1px solid #ccc; }
+
+    button { padding:12px 20px; font-size:16px; border-radius:10px; border:none; margin:10px; cursor:pointer; transition:all 0.1s ease; box-shadow:0 4px 8px rgba(0,0,0,0.1);}
+    button:active { transform:translateY(2px); box-shadow:0 2px 4px rgba(0,0,0,0.2); }
+
+    .resultado { margin-top:20px; padding:16px; border-radius:10px; font-size:18px; font-weight:bold; color:white; }
+    .verde { background-color: #2e7d32; }
+    .amarillo { background-color: #f9a825; }
+    .rojo { background-color: #d32f2f; }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <div class="logo">
+      <img src="logo.png" alt="The Tía Foundation">
+    </div>
+    <div class="header-text">
+      <h1>Frecuencia Respiratoria</h1>
+      <p class="subtitle">Ingresa la edad y la respiración por minuto</p>
+    </div>
+  </div>
+
+  <div class="input-group">
+    <label for="edad">Edad:</label>
+    <select id="edad">
+      <option value="0-1m">0–1 mes</option>
+      <option value="1-12m">1–12 meses</option>
+      <option value="1-5y">1–5 años</option>
+      <option value="6-12y">6–12 años</option>
+      <option value="13-17y">13–17 años</option>
+      <option value="18y">≥18 años</option>
+    </select>
+
+    <label for="fr">FR:</label>
+    <input type="number" id="fr" placeholder="rpm">
+  </div>
+
+  <button onclick="evaluarFR()">Evaluar</button>
+  <button onclick="location.href='signos-vitales.html'">⬅ Volver</button>
+
+  <div id="resultado" class="resultado" style="display:none;"></div>
+
+  <script>
+    function evaluarFR() {
+      const edad = document.getElementById('edad').value;
+      const fr = parseInt(document.getElementById('fr').value);
+      const res = document.getElementById('resultado');
+
+      if (isNaN(fr)) { alert("Ingresa un valor válido"); return; }
+
+      let rango=[0,0];
+      switch(edad){
+        case "0-1m": rango=[30,60]; break;
+        case "1-12m": rango=[30,50]; break;
+        case "1-5y": rango=[20,40]; break;
+        case "6-12y": rango=[18,30]; break;
+        case "13-17y": rango=[12,20]; break;
+        case "18y": rango=[12,20]; break;
+      }
+
+      let mensaje="", color="", accion=null;
+
+      if(fr<rango[0] || fr>rango[1]){
+        mensaje="🔴 EMERGENCIA: Actuar inmediatamente";
+        color="rojo";
+        accion=function(){
+          alert(
+            "ALGORITMO EMERGENCIA – FRECUENCIA RESPIRATORIA\n\n"+
+            "1. Valorar conciencia y respiración\n2. Abrir vías aéreas\n3. Administrar oxígeno si disponible\n4. Llamar ayuda inmediata\n5. Traslado urgente"
+          );
+        };
+      } else if ((fr >= rango[1]*0.9 && fr < rango[1]) || (fr > rango[0] && fr <= rango[0]*1.1)){
+        mensaje="🟡 Alerta: Vigilar y repetir medición";
+        color="amarillo";
+        accion=function(){
+          alert(
+            "ALGORITMO OBSERVACIÓN – FRECUENCIA RESPIRATORIA\n\n"+
+            "1. Repetir medición en 5–10 min\n2. Verificar técnica de conteo\n3. Observar síntomas asociados\n4. Avisar al responsable sanitario si persiste"
+          );
+        };
+      } else {
+        mensaje="🟢 Normal: Continuar observación";
+        color="verde";
+      }
+
+      res.style.display="block";
+      res.className="resultado "+color;
+      res.textContent=mensaje;
+
+      if(accion) accion();
+    }
+  </script>
+
+</body>
+</html>
