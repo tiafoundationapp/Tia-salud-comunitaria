@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Medicamento Intravenoso</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background:#f2f2f2;
+  margin:0;
+  padding:20px;
+  text-align:center;
+}
+
+.container {
+  max-width:420px;
+  margin:0 auto;
+  background:#ffffff;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 4px 8px rgba(0,0,0,0.1);
+  text-align:left;
+}
+
+h1 {
+  font-size:22px;
+  margin-bottom:10px;
+  text-align:center;
+}
+
+/* Botón infografía */
+.info-btn {
+  width:100%;
+  margin:10px 0 15px 0;
+  padding:10px;
+  font-size:16px;
+  border-radius:10px;
+  border:2px solid #1976d2;
+  background:#ffffff;
+  color:#1976d2;
+  cursor:pointer;
+}
+
+.info-btn:active {
+  transform:translateY(2px);
+}
+
+/* Advertencia alergias */
+.warning-box {
+  border:2px solid #d32f2f;
+  border-radius:10px;
+  padding:12px;
+  margin-bottom:15px;
+  background:#fdecea;
+}
+
+.warning-box label {
+  font-size:17px;
+  font-weight:bold;
+  color:#b71c1c;
+}
+
+.warning-box p {
+  margin:6px 0 0 0;
+  color:#b71c1c;
+  font-size:14px;
+}
+
+/* Botones submenu */
+.sub-btn {
+  width:100%;
+  padding:14px;
+  margin:10px 0;
+  font-size:17px;
+  border-radius:12px;
+  border:none;
+  background:#ffffff;
+  box-shadow:0 3px 6px rgba(0,0,0,0.15);
+  cursor:pointer;
+}
+
+.sub-btn:active {
+  transform:translateY(2px);
+}
+
+.danger {
+  background:#d32f2f;
+  color:white;
+}
+
+/* Botón volver */
+.back-btn {
+  width:100%;
+  margin-top:20px;
+  padding:12px;
+  font-size:16px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  background:#1976d2;
+  color:white;
+}
+
+/* Modal general */
+.modal {
+  display:none;
+  position:fixed;
+  z-index:100;
+  left:0; top:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.6);
+}
+
+.modal-content {
+  background:#ffffff;
+  margin:5% auto;
+  padding:18px;
+  border-radius:12px;
+  max-width:95%;
+}
+
+.modal-content h2 {
+  margin-top:0;
+}
+
+.modal-content label {
+  display:block;
+  margin:8px 0;
+  font-size:16px;
+}
+
+.close-btn {
+  width:100%;
+  margin-top:15px;
+  padding:10px;
+  font-size:16px;
+  border-radius:8px;
+  border:none;
+  background:#1976d2;
+  color:white;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>💧 Medicamento Intravenoso</h1>
+  <p style="text-align:center;color:#555;font-size:14px;">
+    Aplicación segura por vía IV
+  </p>
+
+  <!-- Infografía -->
+  <button class="info-btn" onclick="openModal('infografia')">
+    📊 Ver infografía
+  </button>
+
+  <!-- Alergias -->
+  <div class="warning-box">
+    <label>
+      ⚠️ <input type="checkbox">
+      ¿Alergia conocida al medicamento?
+    </label>
+    <p>Si la respuesta es SÍ o se desconoce, <strong>NO aplicar</strong> y referir.</p>
+  </div>
+
+  <!-- Submenús -->
+  <button class="sub-btn danger" onclick="openModal('advertencias')">
+    🔴 ADVERTENCIAS
+  </button>
+
+  <button class="sub-btn" onclick="openModal('material')">
+    🧰 Material necesario
+  </button>
+
+  <button class="sub-btn" onclick="openModal('preparacion')">
+    🧪 Preparación del medicamento
+  </button>
+
+  <button class="sub-btn" onclick="openModal('aplicacion')">
+    💉 Aplicación
+  </button>
+
+  <button class="back-btn" onclick="history.back()">⬅ Volver</button>
+</div>
+
+<!-- MODALES -->
+
+<!-- Infografía -->
+<div id="infografia" class="modal">
+  <div class="modal-content">
+    <h2>Infografía</h2>
+    <img src="img/medicamento-iv.png" style="width:100%;border-radius:8px;">
+    <button class="close-btn" onclick="closeModal('infografia')">Cerrar</button>
+  </div>
+</div>
+
+<!-- Advertencias -->
+<div id="advertencias" class="modal">
+  <div class="modal-content">
+    <h2>🔴 Advertencias</h2>
+    <p><strong>NO aplicar medicamento IV si:</strong></p>
+    <ul>
+      <li>No conoces el medicamento</li>
+      <li>No hay dosis clara</li>
+      <li>No sabes la dilución correcta</li>
+      <li>No hay vía IV permeable</li>
+      <li>El paciente tiene alergia</li>
+    </ul>
+    <p><strong>Ante duda → REFERIR</strong></p>
+    <button class="close-btn" onclick="closeModal('advertencias')">Cerrar</button>
+  </div>
+</div>
+
+<!-- Material -->
+<div id="material" class="modal">
+  <div class="modal-content">
+    <h2>🧰 Material necesario</h2>
+    <label><input type="checkbox"> Medicamento</label>
+    <label><input type="checkbox"> Solución diluyente</label>
+    <label><input type="checkbox"> Jeringa</label>
+    <label><input type="checkbox"> Aguja</label>
+    <label><input type="checkbox"> Equipo IV</label>
+    <label><input type="checkbox"> Torniquete</label>
+    <label><input type="checkbox"> Alcohol</label>
+    <label><input type="checkbox"> Guantes</label>
+    <label><input type="checkbox"> Contenedor punzocortantes</label>
+    <button class="close-btn" onclick="closeModal('material')">Cerrar</button>
+  </div>
+</div>
+
+<!-- Preparación -->
+<div id="preparacion" class="modal">
+  <div class="modal-content">
+    <h2>🧪 Preparación</h2>
+    <label><input type="checkbox"> Verificar medicamento</label>
+    <label><input type="checkbox"> Revisar caducidad y aspecto</label>
+    <label><input type="checkbox"> Confirmar dosis</label>
+    <label><input type="checkbox"> Verificar diluyente correcto</label>
+    <label><input type="checkbox"> Reconstituir (si es liofilizado)</label>
+    <label><input type="checkbox"> Mezclar suavemente</label>
+    <button class="close-btn" onclick="closeModal('preparacion')">Cerrar</button>
+  </div>
+</div>
+
+<!-- Aplicación -->
+<div id="aplicacion" class="modal">
+  <div class="modal-content">
+    <h2>💉 Aplicación</h2>
+    <label><input type="checkbox"> Lavado de manos</label>
+    <label><input type="checkbox"> Vía IV permeable</label>
+    <label><input type="checkbox"> Limpieza del puerto</label>
+    <label><input type="checkbox"> Aplicar lentamente</label>
+    <label><input type="checkbox"> Vigilar dolor o ardor</label>
+    <label><input type="checkbox"> Observar sitio de punción</label>
+    <label><input type="checkbox"> Vigilar al paciente</label>
+    <button class="close-btn" onclick="closeModal('aplicacion')">Cerrar</button>
+  </div>
+</div>
+
+<script>
+function openModal(id) {
+  document.getElementById(id).style.display = "block";
+}
+function closeModal(id) {
+  document.getElementById(id).style.display = "none";
+}
+</script>
+
+</body>
+</html>
