@@ -30,6 +30,24 @@ h1 {
   text-align:center;
 }
 
+/* Botón infografía */
+.info-btn {
+  width:100%;
+  margin:10px 0 15px 0;
+  padding:10px;
+  font-size:16px;
+  border-radius:10px;
+  border:2px solid #1976d2;
+  background:#ffffff;
+  color:#1976d2;
+  cursor:pointer;
+}
+
+.info-btn:active {
+  transform:translateY(2px);
+}
+
+/* Advertencia alergias */
 .warning-box {
   border:2px solid #d32f2f;
   border-radius:10px;
@@ -50,6 +68,7 @@ h1 {
   font-size:14px;
 }
 
+/* Checklist */
 .checklist label {
   display:block;
   margin:8px 0;
@@ -63,7 +82,8 @@ h1 {
   font-size:14px;
 }
 
-button {
+/* Botones */
+button.main-btn {
   width:100%;
   margin-top:15px;
   padding:12px;
@@ -73,11 +93,39 @@ button {
   cursor:pointer;
   background:#1976d2;
   color:white;
-  transition:all 0.1s ease;
 }
 
 button:active {
   transform:translateY(2px);
+}
+
+/* Modal imagen */
+.modal {
+  display:none;
+  position:fixed;
+  z-index:100;
+  left:0; top:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.6);
+}
+
+.modal-content {
+  background:#fff;
+  margin:5% auto;
+  padding:15px;
+  border-radius:12px;
+  max-width:95%;
+  text-align:center;
+}
+
+.close-btn {
+  background:#1976d2;
+  color:white;
+  border:none;
+  padding:10px 20px;
+  border-radius:8px;
+  margin-top:10px;
+  cursor:pointer;
 }
 </style>
 </head>
@@ -86,6 +134,11 @@ button:active {
 
 <div class="container">
   <h1>💉 Inyección Intramuscular</h1>
+
+  <!-- Botón infografía -->
+  <button class="info-btn" onclick="abrirInfografia()">
+    📊 Ver infografía
+  </button>
 
   <!-- Advertencia de alergias -->
   <div class="warning-box">
@@ -117,8 +170,25 @@ button:active {
     ⚠️ Si algún paso no se cumple, NO aplicar el medicamento.
   </p>
 
-  <button onclick="history.back()">⬅ Volver</button>
+  <button class="main-btn" onclick="history.back()">⬅ Volver</button>
 </div>
+
+<!-- Modal infografía -->
+<div id="imgModal" class="modal">
+  <div class="modal-content">
+    <img src="img/inyeccion-im.png" style="width:100%;border-radius:8px;">
+    <button class="close-btn" onclick="cerrarInfografia()">Cerrar</button>
+  </div>
+</div>
+
+<script>
+function abrirInfografia() {
+  document.getElementById("imgModal").style.display = "block";
+}
+function cerrarInfografia() {
+  document.getElementById("imgModal").style.display = "none";
+}
+</script>
 
 </body>
 </html>
