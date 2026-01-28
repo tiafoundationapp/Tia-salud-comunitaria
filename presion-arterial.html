@@ -30,11 +30,25 @@
     h1 { margin-bottom: 4px; font-size: 22px; }
     p.subtitle { margin-top: 0; color: #555; font-size: 14px; }
 
-    input[type=number] {
-      width: 80px;
+    /* Grupo de inputs responsivo */
+    .input-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      align-items: center;
+      margin: 10px 0;
+    }
+
+    .input-group label {
+      margin: 0;
+      font-weight: bold;
+    }
+
+    .input-group input {
+      flex: 0 0 80px; /* ancho fijo para los cuadros */
       padding: 8px;
       font-size: 16px;
-      margin: 8px;
       border-radius: 6px;
       border: 1px solid #ccc;
     }
@@ -83,10 +97,10 @@
     </div>
   </div>
 
-  <div>
-    <label>Sistólica:</label>
+  <div class="input-group">
+    <label for="sist">Sistólica:</label>
     <input type="number" id="sist" placeholder="mmHg">
-    <label>Diastólica:</label>
+    <label for="diast">Diastólica:</label>
     <input type="number" id="diast" placeholder="mmHg">
   </div>
 
