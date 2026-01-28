@@ -4,21 +4,41 @@
   <meta charset="UTF-8">
   <title>Signos Vitales – The Tía Foundation</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <style>
     body { font-family: Arial, sans-serif; background: #f2f2f2; margin:0; padding:20px; text-align:center; }
     .header { display:flex; align-items:center; justify-content:center; max-width:420px; margin:0 auto 20px auto; gap:12px; }
     .logo { width:33%; max-width:90px; }
     .logo img { width:100%; height:auto; }
     .header-text { text-align:left; width:67%; }
-    h1 { margin-bottom:4px; }
+    h1 { margin-bottom:4px; font-size:22px; }
     p.subtitle { margin-top:0; color:#555; font-size:14px; }
-    .menu-button { display:block; width:100%; max-width:400px; margin:12px auto; padding:18px; font-size:18px; border-radius:12px; border:none; background:#ffffff; box-shadow:0 4px 8px rgba(0,0,0,0.1); cursor:pointer; transition:all 0.1s ease; }
+
+    .menu-button {
+      display:block;
+      width:100%;
+      max-width:400px;
+      margin:12px auto;
+      padding:18px;
+      font-size:18px;
+      border-radius:12px;
+      border:none;
+      background:#ffffff;
+      box-shadow:0 4px 8px rgba(0,0,0,0.1);
+      cursor:pointer;
+      transition:all 0.1s ease;
+    }
     .menu-button:active { transform:translateY(2px); box-shadow:0 2px 4px rgba(0,0,0,0.2); }
-    .emergency { font-size:20px; background:#d32f2f; color:white; }
+
+    .emergency { background:#d32f2f; color:white; font-size:20px; }
+
+    /* Botón volver al menú principal */
+    .volver {
+      background-color: #1976d2;
+      color: white;
+      font-weight: bold;
+    }
   </style>
 </head>
-
 <body>
 
   <div class="header">
@@ -27,18 +47,19 @@
     </div>
     <div class="header-text">
       <h1>Signos Vitales</h1>
-      <p class="subtitle">Selecciona el signo vital a evaluar</p>
+      <p class="subtitle">Selecciona un signo para evaluar</p>
     </div>
   </div>
 
-  <button class="menu-button" onclick="location.href='presion-arterial.html'">🩺 Presión Arterial</button>
+  <button class="menu-button" onclick="location.href='presion-arterial.html'">💓 Presión Arterial</button>
   <button class="menu-button" onclick="location.href='frecuencia-cardiaca.html'">❤️ Frecuencia Cardíaca</button>
-  <button class="menu-button" onclick="location.href='temperatura.html'">🌡️ Temperatura</button>
-  <button class="menu-button" onclick="location.href='oximetria.html'">🫁 Oximetría</button>
-  <button class="menu-button" onclick="location.href='avpu.html'">🧠 Estado de Conciencia (AVPU)</button>
-  <button class="menu-button" onclick="location.href='glucosa.html'">🍬 Glucosa Capilar</button>
+  <button class="menu-button" onclick="location.href='oximetria.html'">🫁 Saturación O₂</button>
+  <button class="menu-button" onclick="location.href='temperatura.html'">🌡 Temperatura</button>
+  <button class="menu-button" onclick="location.href='estado-conciencia.html'">🧠 Estado de Conciencia (AVPU)</button>
+  <button class="menu-button" onclick="location.href='glucosa.html'">🩸 Glucosa Capilar</button>
 
-  <button class="menu-button" onclick="location.href='index.html'">⬅ Volver al Menú Principal</button>
+  <!-- Botón volver destacado -->
+  <button class="menu-button volver" onclick="location.href='index.html'">⬅ Volver al Menú Principal</button>
 
 </body>
 </html>
