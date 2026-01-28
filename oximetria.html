@@ -12,11 +12,14 @@
     .header-text { text-align:left; width:67%; }
     h1 { margin-bottom:4px; font-size:22px; }
     p.subtitle { margin-top:0; color:#555; font-size:14px; }
+
     .input-group { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; align-items:center; margin:10px 0; }
     .input-group label { font-weight:bold; margin:0; }
     .input-group input { flex:0 0 80px; padding:8px; font-size:16px; border-radius:6px; border:1px solid #ccc; }
+
     button { padding:12px 20px; font-size:16px; border-radius:10px; border:none; margin:10px; cursor:pointer; transition:all 0.1s ease; box-shadow:0 4px 8px rgba(0,0,0,0.1);}
     button:active { transform:translateY(2px); box-shadow:0 2px 4px rgba(0,0,0,0.2); }
+
     .resultado { margin-top:20px; padding:16px; border-radius:10px; font-size:18px; font-weight:bold; color:white; }
     .verde { background-color: #2e7d32; }
     .amarillo { background-color: #f9a825; }
@@ -31,55 +34,61 @@
     </div>
     <div class="header-text">
       <h1>Oximetría</h1>
-      <p class="subtitle">Ingresa la saturación de oxígeno (%)</p>
+      <p class="subtitle">Ingresa saturación de oxígeno (%)</p>
     </div>
   </div>
 
   <div class="input-group">
-    <label for="spo2">SpO₂:</label>
-    <input type="number" id="spo2" placeholder="95">
+    <label for="oxi">Saturación:</label>
+    <input type="number" id="oxi" placeholder="95" step="1">
   </div>
 
-  <button onclick="evaluarSpO2()">Evaluar</button>
+  <button onclick="evaluarOximetria()">Evaluar</button>
   <button onclick="location.href='signos-vitales.html'">⬅ Volver</button>
 
   <div id="resultado" class="resultado" style="display:none;"></div>
 
   <script>
-    function evaluarSpO2(){
-      const spo2 = parseInt(document.getElementById('spo2').value);
+    function evaluarOximetria(){
+      const oxi = parseInt(document.getElementById('oxi').value);
       const res = document.getElementById('resultado');
 
-      if(isNaN(spo2)){ alert("Ingresa un valor válido"); return; }
+      if(isNaN(oxi)){
+        alert("Ingresa un valor válido");
+        return;
+      }
+
+      if(oxi < 50 || oxi > 100){
+        alert("Valor fuera de rango permitido (50–100%)");
+        return;
+      }
 
       let mensaje="", color="", accion=null;
 
-      if(spo2 < 88){
-        mensaje="🔴 EMERGENCIA: Hipoxia grave";
+      if(oxi < 88){
+        mensaje="🔴 Saturación baja: emergencia";
         color="rojo";
         accion=function(){
           alert(
-            "ALGORITMO EMERGENCIA OXIMETRÍA:\n"+
-            "1. Valorar respiración y conciencia\n"+
-            "2. Administrar oxígeno si disponible\n"+
-            "3. Posicionar correctamente al paciente\n"+
-            "4. Traslado inmediato"
+            "ALGORITMO OXIMETRÍA BAJA:\n"+
+            "1. Administrar oxígeno si disponible\n"+
+            "2. Valorar signos vitales\n"+
+            "3. Traslado inmediato si persiste"
           );
         };
-      } else if(spo2 <= 91){
-        mensaje="🟡 Alerta: Hipoxia moderada, vigilar";
+      } else if(oxi <= 91){
+        mensaje="🟡 Saturación ligeramente baja: alerta";
         color="amarillo";
         accion=function(){
           alert(
-            "ALGORITMO OBSERVACIÓN OXIMETRÍA:\n"+
-            "1. Repetir medición en 5–10 min\n"+
-            "2. Verificar técnica de oxímetro\n"+
-            "3. Observar síntomas asociados\n"+
-            "4. Avisar responsable sanitario"
+            "ALGORITMO OXIMETRÍA ALERTA:\n"+
+            "1. Observar signos de dificultad respiratoria\n"+
+            "2. Posicionar adecuadamente al paciente\n"+
+            "3. Reevaluar en 5–10 min"
           );
         };
       } else {
-        mensaje="🟢 Normal";
+        mensaje="🟢 Saturación normal";
         color="verde";
       }
 
