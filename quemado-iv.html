@@ -71,22 +71,29 @@ p {
   color:white;
 }
 
-/* Popup */
+/* Popup fondo */
 .popup {
   display:none;
   position:fixed;
-  top:0; left:0;
-  width:100%; height:100%;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
   background:rgba(0,0,0,0.6);
   z-index:10;
+  padding:10px;
 }
 
+/* Popup contenido */
 .popup-content {
   background:white;
   max-width:420px;
-  margin:60px auto;
+  margin:40px auto;
   padding:20px;
   border-radius:12px;
+
+  max-height:80vh;
+  overflow-y:auto;
 }
 
 .popup-content h2 {
@@ -132,22 +139,22 @@ p {
   <button class="back-btn" onclick="history.back()">⬅ Volver</button>
 </div>
 
-<!-- POPUP ADVERTENCIAS -->
+<!-- ADVERTENCIAS -->
 <div id="advertencias" class="popup">
   <div class="popup-content">
     <h2>⚠️ Advertencias</h2>
     <ul>
       <li>No retirar ropa pegada a la piel</li>
-      <li>No aplicar pomadas, pasta dental ni remedios caseros</li>
+      <li>No aplicar pomadas, aceites ni remedios caseros</li>
       <li>No reventar ampollas</li>
-      <li>Si no hay acceso venoso, trasladar de inmediato</li>
-      <li>Priorizar ABC (vía aérea, respiración)</li>
+      <li>Si no hay acceso venoso, trasladar inmediatamente</li>
+      <li>Priorizar vía aérea en quemaduras faciales</li>
     </ul>
     <button onclick="closePopup('advertencias')">Cerrar</button>
   </div>
 </div>
 
-<!-- POPUP SCQ -->
+<!-- SCQ -->
 <div id="scq" class="popup">
   <div class="popup-content">
     <h2>📐 Superficie corporal</h2>
@@ -164,7 +171,7 @@ p {
     <label><input type="checkbox" value="9"> Pierna izquierda anterior (9%)</label><br>
     <label><input type="checkbox" value="9"> Pierna izquierda posterior (9%)</label><br>
 
-    <p>Profundidad:</p>
+    <p>Profundidad de la quemadura</p>
     <select id="profundidad" style="width:100%;padding:8px;">
       <option value="superficial">Superficial</option>
       <option value="parcial">Parcial</option>
@@ -179,12 +186,16 @@ p {
   </div>
 </div>
 
-<!-- POPUP PARKLAND -->
+<!-- PARKLAND -->
 <div id="parkland" class="popup">
   <div class="popup-content">
     <h2>💧 Parkland</h2>
-    <p>Calculadora de líquidos para quemados.<br>
-    (Se conectará con peso y edad)</p>
+    <p>
+      Fórmula: 4 ml × kg × % SCQ<br><br>
+      • 50% en primeras 8 h<br>
+      • 50% en siguientes 16 h
+    </p>
+    <p><i>Calculadora completa en desarrollo</i></p>
     <button onclick="closePopup('parkland')">Cerrar</button>
   </div>
 </div>
@@ -204,13 +215,13 @@ function calcularSCQ() {
     total += parseInt(cb.value);
   });
 
-  const prof = document.getElementById('profundidad').value;
+  const profundidad = document.getElementById('profundidad').value;
   const resultado = document.getElementById('resultadoSCQ');
   const btn = document.getElementById('btnParkland');
 
   let texto = `Superficie corporal quemada: <b>${total}%</b><br>`;
 
-  if (total >= 10 && prof !== 'superficial') {
+  if (total >= 10 && profundidad !== 'superficial') {
     texto += '⚠️ <b>Requiere líquidos IV (Parkland)</b>';
     btn.disabled = false;
     btn.style.opacity = '1';
