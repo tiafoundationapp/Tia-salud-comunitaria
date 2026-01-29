@@ -234,11 +234,40 @@ p {
 <script>
 function openPopup(id) {
   document.getElementById(id).style.display = 'flex';
+
+  // ✅ Reiniciar al entrar al popup de SCQ
+  if (id === 'scq') resetSCQ();
 }
+</script>
 
 function closePopup(id) {
   document.getElementById(id).style.display = 'none';
 }
+
+  <script>
+function resetSCQ() {
+  // Reset variables
+  currentSCQ = 0;
+
+  // Desmarcar checkboxes
+  document.querySelectorAll('.scq-zone').forEach(cb => cb.checked = false);
+
+  // Reset selector de profundidad
+  const depthEl = document.getElementById('burnDepth');
+  if (depthEl) depthEl.value = 'Primer grado';
+
+  // Reset resultado visual
+  const out = document.getElementById('scqTotal');
+  if (out) out.textContent = '0';
+
+  // Reset almacenamiento (para que no reaparezca el valor)
+  try { localStorage.setItem('scq_total', '0'); } catch(e) {}
+
+  // Recalcular semáforo (queda en AMARILLO por default)
+  updateDecision();
+}
+</script>
+
 
 /* %SCQ */
 let currentSCQ = 0;
