@@ -27,7 +27,7 @@ p {text-align:center;color:#555;font-size:14px;}
 <p>Evaluación inicial y líquidos IV</p>
 <button class="menu-btn warn-btn" onclick="openPopup('adv')">⚠️ ADVERTENCIAS IMPORTANTES</button>
 <button class="menu-btn" onclick="openPopup('scq')">🧮 Superficie corporal quemada</button>
-<button class="menu-btn" onclick="openPopup('parkland')">💧 Calculadora de líquidos (Parkland)</button>
+<button class="menu-btn" id="btnParkland" onclick="openPopup('parkland')" disabled style="opacity:0.5">💧 Calculadora de líquidos (Parkland)</button>
 <button class="menu-btn" onclick="location.href='manejo-quemaduras.html'">🩹 Manejo de quemaduras</button>
 <button class="back-btn" onclick="history.back()">⬅ Volver</button>
 </div>
@@ -62,15 +62,28 @@ p {text-align:center;color:#555;font-size:14px;}
 function openPopup(id){document.getElementById(id).style.display='flex';}
 function closePopup(id){document.getElementById(id).style.display='none';}
 function calcularSCQ(){
-  let total=0;
-  document.querySelectorAll('#scq input[type=checkbox]:checked').forEach(cb=>{total+=parseInt(cb.value);});
-  let prof=document.getElementById('profundidad').value;
-  let texto='Superficie quemada: '+total+'%';
-  if(total>=10 && prof!=='superficial'){
-    texto+='<br>⚠️ Requiere líquidos IV';
+  let total = 0;
+  document.querySelectorAll('#scq input[type=checkbox]:checked').forEach(cb => {
+    total += parseInt(cb.value);
+  });
+
+  let prof = document.getElementById('profundidad').value;
+  let texto = 'Superficie quemada: ' + total + '%';
+
+  const btn = document.getElementById('btnParkland');
+
+  if (total >= 10 && prof !== 'superficial') {
+    texto += '<br>⚠️ Requiere líquidos IV (Parkland)';
+    btn.disabled = false;
+    btn.style.opacity = '1';
   } else {
-    texto+='<br>ℹ️ No requiere líquidos IV';
+    texto += '<br>ℹ️ No requiere líquidos IV. Manejo local.';
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
   }
+
+  document.getElementById('resultadoSCQ').innerHTML = texto;
+}
   document.getElementById('resultadoSCQ').innerHTML=texto;
 }
 </script>
