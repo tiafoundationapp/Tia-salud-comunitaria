@@ -90,7 +90,7 @@ p {
   border-radius:12px;
   text-align:left;
 
-  /* ✅ FIX: scroll para PC / pantallas chicas */
+  /* Scroll en PC/pantallas chicas */
   max-height: 85vh;
   overflow-y: auto;
 }
@@ -117,7 +117,7 @@ p {
   border-radius:10px;
 }
 
-/* ✅ Semaforización */
+/* Semáforo */
 .decision-box {
   text-align:center;
   margin-top:12px;
@@ -127,11 +127,11 @@ p {
 }
 
 .decision-red {
-  background:#f8d7da;     /* rojo claro */
+  background:#f8d7da;
   border-color:#f5c2c7;
 }
 .decision-yellow {
-  background:#fff3cd;     /* amarillo claro */
+  background:#fff3cd;
   border-color:#ffecb5;
 }
 
@@ -148,12 +148,11 @@ p {
   text-align:center;
 }
 
-/* botón dentro del semáforo: por defecto azul, pero podemos reforzar */
 .action-red {
-  background:#dc3545; /* rojo */
+  background:#dc3545;
 }
 .action-yellow {
-  background:#f0ad4e; /* amarillo */
+  background:#f0ad4e;
   color:#111;
 }
 </style>
@@ -168,7 +167,7 @@ p {
 
   <button class="menu-btn" onclick="openPopup('scq')">🧮 Superficie corporal quemada</button>
 
-  <!-- ✅ Mantiene estética y manda a parkland.html -->
+  <!-- Parkland: SIEMPRE navega a parkland.html -->
   <button class="menu-btn" id="parklandBtn" onclick="goToParkland()">💧 Calculadora de líquidos (Parkland)</button>
 
   <button class="menu-btn" onclick="location.href='manejo-quemaduras.html'">🩹 Manejo de quemaduras</button>
@@ -218,12 +217,11 @@ p {
       %SCQ total: <strong><span id="scqTotal">0</span>%</strong>
     </div>
 
-    <!-- ✅ Semáforo + acción -->
     <div class="decision-box decision-yellow" id="decisionBox">
       <div class="decision-msg" id="scqDecisionMsg">Selecciona zonas y profundidad.</div>
       <button class="close-btn action-yellow" id="scqDecisionBtn" onclick="decisionAction()">Continuar</button>
       <div class="decision-note" id="scqDecisionNote">
-        Amarillo = requiere manejo. Rojo = requiere hidratación IV.
+        🟨 Amarillo = manejo. 🟥 Rojo = hidratación IV.
       </div>
     </div>
 
@@ -232,51 +230,51 @@ p {
 </div>
 
 <script>
-function openPopup(id) {
-  document.getElementById(id).style.display = 'flex';
+/* =========================
+   CONFIG (tus criterios)
+========================= */
+const IV_THRESHOLD = 15;   // >15% en 2º o 3º => IV (ROJO)
+const LOW_THRESHOLD = 10;  // <10% o 1º grado => manejo (AMARILLO)
 
-  // ✅ Reiniciar al entrar al popup de SCQ
+/* =========================
+   Estado
+========================= */
+let currentSCQ = 0;
+let decisionTarget = 'manejo-quemaduras.html';
+
+/* =========================
+   Popups
+========================= */
+function openPopup(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = 'flex';
+
+  // Reinicia SIEMPRE al abrir el SCQ (para evitar valores pegados)
   if (id === 'scq') resetSCQ();
 }
-</script>
 
 function closePopup(id) {
-  document.getElementById(id).style.display = 'none';
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = 'none';
 }
 
-  <script>
+/* =========================
+   SCQ: reset + cálculo
+========================= */
 function resetSCQ() {
-  // Reset variables
   currentSCQ = 0;
-
-  // Desmarcar checkboxes
   document.querySelectorAll('.scq-zone').forEach(cb => cb.checked = false);
 
-  // Reset selector de profundidad
   const depthEl = document.getElementById('burnDepth');
   if (depthEl) depthEl.value = 'Primer grado';
 
-  // Reset resultado visual
   const out = document.getElementById('scqTotal');
   if (out) out.textContent = '0';
 
-  // Reset almacenamiento (para que no reaparezca el valor)
-  try { localStorage.setItem('scq_total', '0'); } catch(e) {}
-
-  // Recalcular semáforo (queda en AMARILLO por default)
   updateDecision();
 }
-</script>
-
-
-/* %SCQ */
-let currentSCQ = 0;
-
-// destino del botón automático
-let decisionTarget = 'manejo-quemaduras.html';
-
-// Umbral práctico para adultos: ≥20% (2º/3º) suele requerir IV formal
-const IV_THRESHOLD_ADULT = 20;
 
 function calculateSCQ() {
   let sum = 0;
@@ -288,18 +286,19 @@ function calculateSCQ() {
   if (sum > 100) sum = 100;
 
   currentSCQ = sum;
+
   const out = document.getElementById('scqTotal');
   if (out) out.textContent = String(sum);
-
-  try { localStorage.setItem('scq_total', String(sum)); } catch(e) {}
 
   updateDecision();
 }
 
+/* =========================
+   Semáforo + decisión
+========================= */
 function setSemaforo(isRed) {
   const box = document.getElementById('decisionBox');
   const btn = document.getElementById('scqDecisionBtn');
-
   if (!box || !btn) return;
 
   if (isRed) {
@@ -322,83 +321,62 @@ function updateDecision() {
   const msgEl = document.getElementById('scqDecisionMsg');
   const btnEl = document.getElementById('scqDecisionBtn');
   const noteEl = document.getElementById('scqDecisionNote');
-
   if (!msgEl || !btnEl) return;
 
-  const isSuperficial = (depth === 'Primer grado');
+  const isFirst = (depth === 'Primer grado');
+  const isSecond = (depth === 'Segundo grado');
   const isThird = (depth === 'Tercer grado');
 
-  // ✅ NUEVA REGLA: Tercer grado en cualquier % => ROJO => Parkland
-  if (isThird) {
-    setSemaforo(true);
-    msgEl.textContent = '🟥 ROJO: Tercer grado → Requiere hidratación IV';
-    btnEl.textContent = 'Ir a Parkland';
-    decisionTarget = 'parkland.html?scq=' + encodeURIComponent(currentSCQ || 0);
-    if (noteEl) noteEl.textContent = 'Tercer grado: prioridad traslado + líquidos IV según contexto clínico.';
-    return;
-  }
-
-  // Regla pedida previamente:
-  // - si ≥20% y no superficial → ROJO → Parkland
-  // - si <20% o superficial → AMARILLO → Manejo
-  if (currentSCQ >= IV_THRESHOLD_ADULT && !isSuperficial) {
+  // 🟥 ROJO: >15% y 2º o 3º
+  if ((currentSCQ > IV_THRESHOLD) && (isSecond || isThird)) {
     setSemaforo(true);
     msgEl.textContent = '🟥 ROJO: Requiere hidratación IV';
     btnEl.textContent = 'Ir a Parkland';
-    decisionTarget = 'parkland.html?scq=' + encodeURIComponent(currentSCQ || 0);
-    if (noteEl) {
-      noteEl.textContent = 'Adulto: ≥20% (2º grado). Si niño/anciano o inhalación, considerar IV y traslado aunque sea menor.';
-    }
-  } else {
-    setSemaforo(false);
-    msgEl.textContent = '🟨 AMARILLO: Requiere manejo';
-    btnEl.textContent = 'Ir a Manejo de quemaduras';
-    decisionTarget = 'manejo-quemaduras.html';
-    if (noteEl) {
-      noteEl.textContent = 'Si cara/manos/pies/genitales, químico/eléctrico, inhalación o comorbilidades → traslado.';
-    }
+    decisionTarget = 'parkland.html';
+    if (noteEl) noteEl.textContent = 'Criterio: >15% y 2º/3º grado.';
+    return;
   }
+
+  // 🟨 AMARILLO: <10% o 1º grado
+  if (currentSCQ < LOW_THRESHOLD || isFirst) {
+    setSemaforo(false);
+    msgEl.textContent = '🟨 AMARILLO: Manejo de quemaduras';
+    btnEl.textContent = 'Ir a Manejo';
+    decisionTarget = 'manejo-quemaduras.html';
+    if (noteEl) noteEl.textContent = 'Criterio: <10% o 1º grado.';
+    return;
+  }
+
+  // Intermedio (10–15% en 2º grado): AMARILLO por defecto (manejo/valorar)
+  setSemaforo(false);
+  msgEl.textContent = '🟨 AMARILLO: Manejo / valorar traslado';
+  btnEl.textContent = 'Ir a Manejo';
+  decisionTarget = 'manejo-quemaduras.html';
+  if (noteEl) noteEl.textContent = 'Entre 10–15%: vigilar, analgesia, curación, y valorar traslado según zona/estado.';
 }
 
+/* =========================
+   Acciones botones
+========================= */
 function decisionAction() {
   location.href = decisionTarget;
 }
 
-/* listeners */
-document.addEventListener('change', (e) => {
-  if (e.target && e.target.classList.contains('scq-zone')) {
-    calculateSCQ();
-  }
-  if (e.target && e.target.id === 'burnDepth') {
-    updateDecision();
-  }
-});
-
-/* Botón Parkland principal (fuera del popup) */
 function goToParkland() {
-  let scq = currentSCQ;
-  if (!scq) {
-    try {
-      const saved = parseFloat(localStorage.getItem('scq_total'));
-      if (!isNaN(saved)) scq = saved;
-    } catch(e) {}
-  }
-  location.href = 'parkland.html?scq=' + encodeURIComponent(scq || 0);
+  location.href = 'parkland.html';
 }
 
-/* init */
-(function initSCQ() {
-  try {
-    const saved = parseFloat(localStorage.getItem('scq_total'));
-    if (!isNaN(saved)) {
-      currentSCQ = saved;
-      const out = document.getElementById('scqTotal');
-      if (out) out.textContent = String(saved);
-    }
-  } catch(e) {}
+/* =========================
+   Listeners
+========================= */
+document.addEventListener('change', (e) => {
+  if (e.target && e.target.classList.contains('scq-zone')) calculateSCQ();
+  if (e.target && e.target.id === 'burnDepth') updateDecision();
+});
 
-  updateDecision();
-})();
+// Inicializa semáforo en pantalla (por si abre sin tocar nada)
+updateDecision();
 </script>
+
 </body>
 </html>
