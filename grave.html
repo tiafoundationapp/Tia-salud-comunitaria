@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Calculadora de Gravedad (Triage)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  font-family: Arial, sans-serif;
+  background:#f2f2f2;
+  margin:0;
+  padding:20px;
+}
+
+.container{
+  max-width:420px;
+  margin:0 auto;
+  background:#fff;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 4px 8px rgba(0,0,0,0.1);
+}
+
+h1{
+  text-align:center;
+  font-size:22px;
+}
+
+.subtext{
+  text-align:center;
+  font-size:14px;
+  color:#555;
+  margin-bottom:15px;
+}
+
+.sub-btn{
+  width:100%;
+  padding:14px;
+  margin:10px 0;
+  font-size:16px;
+  border-radius:12px;
+  border:none;
+  background:#ffffff;
+  box-shadow:0 3px 6px rgba(0,0,0,0.15);
+  cursor:pointer;
+}
+
+.calc-btn{
+  width:100%;
+  padding:16px;
+  margin-top:15px;
+  font-size:18px;
+  border-radius:14px;
+  border:none;
+  background:#000;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.back-btn{
+  width:100%;
+  margin-top:15px;
+  padding:12px;
+  font-size:16px;
+  border-radius:10px;
+  border:none;
+  background:#1976d2;
+  color:white;
+}
+
+.reset-btn{
+  width:100%;
+  margin-top:10px;
+  padding:12px;
+  font-size:15px;
+  border-radius:10px;
+  border:none;
+  background:#9e9e9e;
+  color:white;
+}
+
+/* Resultado */
+.result{
+  margin-top:15px;
+  padding:14px;
+  border-radius:12px;
+  display:none;
+}
+.blanco{background:#f5f5f5;}
+.verde{background:#d4edda;}
+.amarillo{background:#fff3cd;}
+.rojo{background:#f8d7da;}
+.gris{background:#e2e3e5;}
+.negro{background:#212529;color:white;}
+
+label{
+  display:block;
+  margin:8px 0;
+  font-size:14px;
+}
+input[type="checkbox"]{
+  transform:scale(1.2);
+  margin-right:8px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1>⚠️ Calculadora de Gravedad</h1>
+<p class="subtext">Guía rápida de triage en campo</p>
+
+<!-- Reglas que mandan -->
+<button class="sub-btn">✅ Reglas que mandan</button>
+<label><input type="checkbox" id="noRespira"> No respira tras abrir vía aérea</label>
+<label><input type="checkbox" id="rojoDirecto"> Dificultad respiratoria / sangrado masivo / inconsciente</label>
+<label><input type="checkbox" id="grisDirecto"> Lesión masiva sin recursos disponibles</label>
+
+<!-- Puntos -->
+<button class="sub-btn">📋 Factores de riesgo</button>
+
+<label><input type="checkbox" class="score" value="2"> Lactante o adulto mayor</label>
+<label><input type="checkbox" class="score" value="2"> Embarazo</label>
+<label><input type="checkbox" class="score" value="2"> Comorbilidad grave</label>
+<label><input type="checkbox" class="score" value="3"> Fractura expuesta / quemadura grave</label>
+<label><input type="checkbox" class="score" value="3"> Deshidratación severa / choque</label>
+<label><input type="checkbox" class="score" value="2"> Dolor intenso / no puede caminar</label>
+
+<button class="calc-btn" onclick="calcular()">🧮 Calcular triage</button>
+
+<div id="resultado" class="result"></div>
+
+<button class="reset-btn" onclick="resetear()">🔄 Reevaluar</button>
+<button class="back-btn" onclick="history.back()">⬅ Volver</button>
+</div>
+
+<script>
+function calcular(){
+  const res = document.getElementById("resultado");
+  res.style.display="block";
+
+  if(document.getElementById("noRespira").checked){
+    res.className="result negro";
+    res.innerHTML="⚫ NEGRO<br>No respira tras abrir vía aérea. Prioriza otros y pide apoyo.";
+    return;
+  }
+  if(document.getElementById("grisDirecto").checked){
+    res.className="result gris";
+    res.innerHTML="🩶 GRIS<br>Muy grave con recursos limitados. Prioriza otros rescatables.";
+    return;
+  }
+  if(document.getElementById("rojoDirecto").checked){
+    res.className="result rojo";
+    res.innerHTML="🔴 ROJO<br>Emergencia vital. Intervención inmediata y traslado urgente.";
+    return;
+  }
+
+  let score=0;
+  document.querySelectorAll(".score:checked").forEach(c=>{
+    score+=parseInt(c.value);
+  });
+
+  if(score>=6){
+    res.className="result rojo";
+    res.innerHTML="🔴 ROJO<br>Alta gravedad acumulada. Traslado urgente.";
+  }else if(score>=3){
+    res.className="result amarillo";
+    res.innerHTML="🟡 AMARILLO<br>Urgente pero estable. Vigila y prepara traslado.";
+  }else if(score>=1){
+    res.className="result verde";
+    res.innerHTML="🟢 VERDE<br>Leve. Manejo local y reevaluar.";
+  }else{
+    res.className="result blanco";
+    res.innerHTML="⚪ BLANCO<br>No urgente. Consejería y signos de alarma.";
+  }
+}
+
+function resetear(){
+  document.querySelectorAll("input[type='checkbox']").forEach(c=>c.checked=false);
+  const res=document.getElementById("resultado");
+  res.style.display="none";
+  res.className="result";
+}
+</script>
+
+</body>
+</html>
