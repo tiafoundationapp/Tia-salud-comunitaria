@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora de Parkland</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      padding: 16px;
+      color: #1f2933;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+      color: #0f172a;
+    }
+    .subtitle {
+      font-size: 0.9rem;
+      color: #475569;
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+      color: #334155;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      font-size: 1rem;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      background: #dc2626; /* rojo emergencias */
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:active {
+      transform: scale(0.98);
+    }
+    .result {
+      margin-top: 16px;
+      background: #f1f5f9;
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .result p {
+      margin: 6px 0;
+      font-size: 0.9rem;
+    }
+    .highlight {
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .note {
+      margin-top: 12px;
+      font-size: 0.75rem;
+      color: #475569;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Calculadora de Parkland</h1>
+    <div class="subtitle">Reposición inicial de líquidos en pacientes con quemaduras</div>
+
+    <label for="weight">Peso del paciente (kg)</label>
+    <input type="number" id="weight" placeholder="Ej. 70" />
+
+    <label for="tbsa">% de superficie corporal quemada (SCQ)</label>
+    <input type="number" id="tbsa" placeholder="Ej. 30" />
+
+    <button onclick="calculateParkland()">Calcular líquidos</button>
+
+    <div id="results" class="result" style="display:none;"></div>
+
+    <div class="note">
+      Fórmula de Parkland: 4 ml × kg × %SCQ. <br>
+      Administrar 50% en las primeras 8 h y 50% en las siguientes 16 h. <br>
+      Usar como guía inicial y reevaluar según diuresis y estado clínico.
+    </div>
+  </div>
+
+  <script>
+    function calculateParkland() {
+      const weight = parseFloat(document.getElementById('weight').value);
+      const tbsa = parseFloat(document.getElementById('tbsa').value);
+      const resultsDiv = document.getElementById('results');
+
+      if (isNaN(weight) || isNaN(tbsa) || weight <= 0 || tbsa <= 0) {
+        resultsDiv.style.display = 'block';
+        resultsDiv.innerHTML = '<p>⚠️ Ingresa valores válidos de peso y porcentaje de quemadura.</p>';
+        return;
+      }
+
+      const totalFluids = 4 * weight * tbsa; // ml en 24 h
+      const first8h = totalFluids / 2;
+      const next16h = totalFluids / 2;
+      const rateFirst8h = first8h / 8;
+      const rateNext16h = next16h / 16;
+
+      resultsDiv.style.display = 'block';
+      resultsDiv.innerHTML = `
+        <p><span class="highlight">Volumen total (24 h):</span> ${totalFluids.toFixed(0)} ml</p>
+        <p><span class="highlight">Primeras 8 h:</span> ${first8h.toFixed(0)} ml (${rateFirst8h.toFixed(0)} ml/h)</p>
+        <p><span class="highlight">Siguientes 16 h:</span> ${next16h.toFixed(0)} ml (${rateNext16h.toFixed(0)} ml/h)</p>
+      `;
+    }
+  </script>
+</body>
+</html>
