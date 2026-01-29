@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Segundo grado – Manejo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  font-family: Arial, sans-serif;
+  background:#f2f2f2;
+  margin:0;
+  padding:20px;
+  text-align:center;
+}
+
+.container{
+  max-width:420px;
+  margin:0 auto;
+  background:#ffffff;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 4px 8px rgba(0,0,0,0.1);
+  text-align:left;
+}
+
+h1{
+  font-size:22px;
+  margin-bottom:10px;
+  text-align:center;
+}
+
+p.subtext{
+  text-align:center;
+  color:#555;
+  font-size:14px;
+  margin-bottom:16px;
+}
+
+/* Botón infografía */
+.info-btn{
+  width:100%;
+  margin:10px 0 15px 0;
+  padding:10px;
+  font-size:16px;
+  border-radius:10px;
+  border:2px solid #1976d2;
+  background:#ffffff;
+  color:#1976d2;
+  cursor:pointer;
+}
+.info-btn:active{ transform:translateY(2px); }
+
+/* Warning box (amarillo) */
+.warning-box{
+  border:2px solid #f0ad4e;
+  border-radius:10px;
+  padding:12px;
+  margin-bottom:15px;
+  background:#fff3cd;
+}
+.warning-box label{
+  font-size:16px;
+  font-weight:bold;
+  color:#856404;
+  display:block;
+  margin-bottom:6px;
+}
+.warning-box p{
+  margin:6px 0 0 0;
+  color:#856404;
+  font-size:14px;
+  line-height:1.35;
+}
+
+/* Botones submenu */
+.sub-btn{
+  width:100%;
+  padding:14px;
+  margin:10px 0;
+  font-size:17px;
+  border-radius:12px;
+  border:none;
+  background:#ffffff;
+  box-shadow:0 3px 6px rgba(0,0,0,0.15);
+  cursor:pointer;
+}
+.sub-btn:active{ transform:translateY(2px); }
+
+/* Botón advertencias (amarillo fuerte) */
+.warn-btn{
+  background:#fff3cd;
+  color:#856404;
+  font-weight:bold;
+}
+
+/* Botón volver */
+.back-btn{
+  width:100%;
+  margin-top:20px;
+  padding:12px;
+  font-size:16px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  background:#1976d2;
+  color:white;
+}
+
+/* Modal */
+.modal{
+  display:none;
+  position:fixed;
+  z-index:100;
+  left:0; top:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.6);
+}
+.modal-content{
+  background:#ffffff;
+  margin:5% auto;
+  padding:18px;
+  border-radius:12px;
+  max-width:95%;
+  text-align:left;
+}
+.modal-content h2{
+  margin-top:0;
+  text-align:center;
+}
+.close-btn{
+  width:100%;
+  margin-top:15px;
+  padding:10px;
+  font-size:16px;
+  border-radius:8px;
+  border:none;
+  background:#1976d2;
+  color:white;
+  cursor:pointer;
+}
+
+/* Checklist */
+.checklist label{
+  display:block;
+  margin:10px 0;
+  font-size:15px;
+  color:#333;
+}
+.checklist input{
+  transform:scale(1.2);
+  margin-right:10px;
+}
+.small-note{
+  font-size:13px;
+  color:#555;
+  line-height:1.35;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>🟠 Quemadura de 2º grado</h1>
+  <p class="subtext">Ampollas / piel húmeda y dolorosa. Riesgo de infección.</p>
+
+  <!-- Infografía -->
+  <button class="info-btn" onclick="openModal('infografia')">📊 Ver infografía</button>
+
+  <!-- Warning -->
+  <div class="warning-box">
+    <label>⚠️ IMPORTANTE</label>
+    <p>
+      Segundo grado suele tener <b>ampollas</b> y dolor fuerte. <br>
+      Si es extensa, en zonas especiales o hay dudas → <b>prioriza traslado</b>. <br>
+      <b>No</b> revientes ampollas ni uses remedios caseros.
+    </p>
+  </div>
+
+  <!-- Botones -->
+  <button class="sub-btn" onclick="openModal('guia')">✅ 🟠 Guía rápida (checklist)</button>
+  <button class="sub-btn warn-btn" onclick="openModal('advertencias')">⚠️ Advertencias</button>
+  <button class="sub-btn" onclick="openModal('material')">🧰 Material necesario</button>
+  <button class="sub-btn" onclick="openModal('preparacion')">🧍 Preparación del paciente</button>
+  <button class="sub-btn" onclick="openModal('manejo')">🩹 Manejo de la quemadura</button>
+
+  <button class="back-btn" onclick="history.back()">⬅ Volver</button>
+</div>
+
+<!-- Modal Infografía -->
+<div id="infografia" class="modal">
+  <div class="modal-content">
+    <h2>📊 Infografía – 2º grado</h2>
+    <p class="small-note">
+      Aquí irá una imagen simple con:<br>
+      • Qué hacer / Qué NO hacer<br>
+      • Manejo de ampollas<br>
+      • Señales de infección y traslado
+    </p>
+    <!-- <img src="img/infografia-segundo-grado.png" style="width:100%; border-radius:10px;"> -->
+    <button class="close-btn" onclick="closeModal('infografia')">Cerrar</button>
+  </div>
+</div>
+
+<!-- Modal Guía rápida -->
+<div id="guia" class="modal">
+  <div class="modal-content">
+    <h2>✅ 🟠 Guía rápida (2º grado)</h2>
+    <div class="checklist">
+      <label><input type="checkbox"> Enfriar con agua corriente 10–20 min (si fue reciente). <b>No hielo</b>.</label>
+      <label><input type="checkbox"> Cubrir con gasa/paño limpio (protege la piel y reduce dolor).</label>
+      <label><input type="checkbox"> <b>No</b> reventar ampollas. <b>No</b> remedios caseros.</label>
+      <label><input type="checkbox"> Analgesia según protocolo local.</label>
+      <label><input type="checkbox"> Valorar criterios de traslado (cara/manos/pies/genitales, grande, niños, inhalación).</label>
+      <label><input type="checkbox"> Vigilar infección: fiebre, pus, mal olor, enrojecimiento que avanza.</label>
+    </div>
+    <button class="close-btn" onclick="closeModal('guia')">Cerrar</button>
+  </div>
+</div>
+
+<!-- Modal Advertencias -->
+<div id="advertencias" class="modal">
+  <div class="modal-content">
+    <h2>⚠️ Advertencias</h2>
+    <div class="checklist">
+      <label><input type="checkbox"> Si hay humo/hollín, tos, ronquera o dificultad respiratoria → <b>traslado inmediato</b>.</label>
+      <label><input type="checkbox"> Zonas especiales: <b>cara/ojos, manos, pies, genitales</b> → <b>traslado</b>.</label>
+      <label><input type="checkbox"> Quemadura química/eléctrica → manejo especial + traslado.</label>
+      <label><input type="checkbox"> Si es extensa (≈ >10–15% adulto o >5–10% niño) → <b>traslado</b>.</label>
+      <label><input type="checkbox"> Si el dolor es desproporcionado o la piel se ve pálida/negra → sospecha más profunda.</label>
+      <label><input type="checkbox"> Si hay fiebre, pus, mal olor, líneas rojas o empeora → infección → valoración.</label>
+    </div>
+    <p class="small-note"><b>Regla de oro:</b> si dudas, refiere. Mejor temprano que tarde.</p>
+    <button class="close-btn" onclick="closeModal('advertencias')">Cerrar</button>
+  </div>
+</div>
+
+<!-- Modal Material -->
+<div id="material" class="modal">
+  <div class="modal-content">
+    <h2>🧰 Material necesario</h2>
+    <div class="checklist">
+      <label><input type="checkbox"> Agua limpia (o suero fisiológico si hay).</label>
+      <label><input type="checkbox"> Jabón neutro (si disponible) para limpieza suave alrededor.</label>
+      <label><input type="checkbox"> Gasas estériles / paño limpio (ideal no adherente si hay).</label>
+      <label><input type="checkbox"> Venda/cinta/tela limpia para fijar sin apretar.</label>
+      <label><input type="checkbox"> Guantes (si hay).</label>
+      <label><input type="checkbox"> Analgésico según protocolo local.</label>
+      <label><input type="checkbox"> Bolsa limpia / película plástica como barrera (alternativa si no hay apósito).</label>
+      <label><input type="checkbox"> Bitácora/celular: registrar fecha, zona, tamaño, aspecto, dolor.</label>
+    </div>
+    <button class="close-btn" onclick="closeModal('material')">Cerrar</button>
+  </div>
+</div>
+
+<!-- Modal Preparación -->
+<div id="preparacion" class="modal">
+  <div class="modal-content">
+    <h2>🧍 Preparación del paciente</h2>
+    <div class="checklist">
+      <label><input type="checkbox"> Explicar y tranquilizar (el dolor puede ser fuerte).</label>
+      <label><input type="checkbox"> Valorar dolor (0–10) y dar analgesia si está permitido.</label>
+      <label><input type="checkbox"> Retirar anillos/relojes si está cerca (antes de que se inflame).</label>
+      <label><input type="checkbox"> Confirmar 2º grado: ampollas/piel húmeda/roja, dolor.</label>
+      <label><input type="checkbox"> Registrar hora de la quemadura (si se sabe).</label>
+      <label><input type="checkbox"> Buscar señales de alarma: mareo, vómito, confusión, dificultad respiratoria.</label>
+    </div>
+    <button class="close-btn" onclick="closeModal('preparacion')">Cerrar</button>
+  </div>
+</div>
+
+<!-- Modal Manejo -->
+<div id="manejo" class="modal">
+  <div class="modal-content">
+    <h2>🩹 Manejo (2º grado)</h2>
+    <div class="checklist">
+      <label><input type="checkbox"> Enfriar con agua corriente 10–20 min si fue reciente. <b>No hielo</b>.</label>
+      <label><input type="checkbox"> Limpiar suave alrededor con agua y jabón neutro (sin tallar).</label>
+      <label><input type="checkbox"> <b>No</b> reventar ampollas. Si se rompe sola, cubrir y mantener limpio.</label>
+      <label><input type="checkbox"> Cubrir con gasa/paño limpio (ideal no adherente). Fijar sin apretar.</label>
+      <label><input type="checkbox"> Mantener la zona elevada si es posible (reduce inflamación).</label>
+      <label><input type="checkbox"> Analgesia según protocolo. Hidratación oral si tolera.</label>
+      <label><input type="checkbox"> Revisar diario si se puede: dolor, enrojecimiento que avanza, pus, mal olor, fiebre.</label>
+      <label><input type="checkbox"> Si hay signos de infección o empeora → <b>traslado/valoración</b>.</label>
+    </div>
+    <p class="small-note">
+      <b>Tip rural:</b> lo más importante es <b>limpieza</b>, <b>cubrir</b> y <b>no contaminar</b>.
+      No usar pasta dental, manteca, café, ceniza, ni plantas.
+    </p>
+    <button class="close-btn" onclick="closeModal('manejo')">Cerrar</button>
+  </div>
+</div>
+
+<script>
+function openModal(id){
+  document.getElementById(id).style.display = "block";
+}
+function closeModal(id){
+  document.getElementById(id).style.display = "none";
+}
+</script>
+
+</body>
+</html>
