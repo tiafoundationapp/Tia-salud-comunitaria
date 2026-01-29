@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Calculadoras Clínicas</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  font-family: Arial, sans-serif;
+  background:#f2f2f2;
+  margin:0;
+  padding:20px;
+  text-align:center;
+}
+
+.container{
+  max-width:420px;
+  margin:0 auto;
+  background:#ffffff;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 4px 8px rgba(0,0,0,0.1);
+  text-align:left;
+}
+
+h1{
+  font-size:22px;
+  margin-bottom:10px;
+  text-align:center;
+}
+
+p.subtext{
+  text-align:center;
+  color:#555;
+  font-size:14px;
+  margin-bottom:16px;
+}
+
+/* Botones tipo menú */
+.menu-btn{
+  width:100%;
+  padding:16px;
+  margin:12px 0;
+  font-size:17px;
+  border-radius:14px;
+  border:none;
+  background:#ffffff;
+  box-shadow:0 3px 6px rgba(0,0,0,0.15);
+  cursor:pointer;
+}
+
+.menu-btn:active{
+  transform:translateY(2px);
+}
+
+/* Botón destacado amarillo */
+.highlight-btn{
+  background:#fff3cd;
+  color:#856404;
+  font-weight:bold;
+  border:2px solid #f0ad4e;
+}
+
+/* Botón volver */
+.back-btn{
+  width:100%;
+  margin-top:20px;
+  padding:12px;
+  font-size:16px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  background:#1976d2;
+  color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>🧮 Calculadoras Clínicas</h1>
+  <p class="subtext">Herramientas de apoyo rápido para toma de decisiones</p>
+
+  <!-- 1️⃣ GRAVEDAD (destacado) -->
+  <button class="menu-btn highlight-btn" onclick="location.href='grave.html'">
+    ⚠️ Calculadora de Gravedad
+  </button>
+
+  <!-- 2️⃣ Rehidratación general -->
+  <button class="menu-btn" onclick="location.href='calculadora-rehidratacion.html'">
+    💧 Calculadora de Rehidratación
+  </button>
+
+  <!-- 3️⃣ Rehidratación en quemados -->
+  <button class="menu-btn" onclick="location.href='parkland.html'">
+    🔥💧 Rehidratación en Quemados (Parkland)
+  </button>
+
+  <!-- 4️⃣ Medicamentos pediátricos -->
+  <button class="menu-btn" onclick="location.href='calculadora-pediatrica.html'">
+    🧒💊 Medicamentos Pediátricos
+  </button>
+
+  <!-- 5️⃣ Semanas de embarazo -->
+  <button class="menu-btn" onclick="location.href='calc-embarazo.html'">
+    🤰 Calculadora de Semanas de Embarazo
+  </button>
+
+  <!-- 6️⃣ Nutrición -->
+  <button class="menu-btn" onclick="location.href='calc-nutricion.html'">
+    🥗 Calculadora de Nutrición
+  </button>
+
+  <!-- 7️⃣ Riesgo psicológico -->
+  <button class="menu-btn" onclick="location.href='calc-psicologia.html'">
+    🧠 Calculadora de Riesgo Psicológico
+  </button>
+
+  <button class="back-btn" onclick="history.back()">⬅ Volver</button>
+</div>
+
+</body>
+</html>
