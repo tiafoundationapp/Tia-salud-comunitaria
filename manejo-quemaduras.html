@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Manejo de Quemaduras</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background:#f2f2f2;
+  margin:0;
+  padding:20px;
+  text-align:center;
+}
+
+.container {
+  max-width:420px;
+  margin:0 auto;
+  background:#ffffff;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 4px 8px rgba(0,0,0,0.1);
+  text-align:left;
+}
+
+h1 {
+  font-size:22px;
+  margin-bottom:10px;
+  text-align:center;
+}
+
+p.subtext {
+  text-align:center;
+  color:#555;
+  font-size:14px;
+  margin-bottom:16px;
+}
+
+/* Botón infografía */
+.info-btn {
+  width:100%;
+  margin:10px 0 15px 0;
+  padding:10px;
+  font-size:16px;
+  border-radius:10px;
+  border:2px solid #1976d2;
+  background:#ffffff;
+  color:#1976d2;
+  cursor:pointer;
+}
+
+.info-btn:active {
+  transform:translateY(2px);
+}
+
+/* Advertencia amarilla */
+.warning-box {
+  border:2px solid #f0ad4e;
+  border-radius:10px;
+  padding:12px;
+  margin-bottom:15px;
+  background:#fff3cd;
+}
+
+.warning-box label {
+  font-size:16px;
+  font-weight:bold;
+  color:#856404;
+  display:block;
+  margin-bottom:6px;
+}
+
+.warning-box p {
+  margin:6px 0 0 0;
+  color:#856404;
+  font-size:14px;
+  line-height:1.35;
+}
+
+/* Botones submenu */
+.sub-btn {
+  width:100%;
+  padding:14px;
+  margin:10px 0;
+  font-size:17px;
+  border-radius:12px;
+  border:none;
+  background:#ffffff;
+  box-shadow:0 3px 6px rgba(0,0,0,0.15);
+  cursor:pointer;
+}
+
+.sub-btn:active {
+  transform:translateY(2px);
+}
+
+/* Botón rojo (tercer grado) */
+.danger {
+  background:#d32f2f;
+  color:white;
+  font-weight:bold;
+}
+
+/* Botón volver */
+.back-btn {
+  width:100%;
+  margin-top:20px;
+  padding:12px;
+  font-size:16px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  background:#1976d2;
+  color:white;
+}
+
+/* Modal */
+.modal {
+  display:none;
+  position:fixed;
+  z-index:100;
+  left:0; top:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.6);
+}
+
+.modal-content {
+  background:#ffffff;
+  margin:5% auto;
+  padding:18px;
+  border-radius:12px;
+  max-width:95%;
+}
+
+.modal-content h2 {
+  margin-top:0;
+}
+
+.close-btn {
+  width:100%;
+  margin-top:15px;
+  padding:10px;
+  font-size:16px;
+  border-radius:8px;
+  border:none;
+  background:#1976d2;
+  color:white;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>🔥 Manejo de Quemaduras</h1>
+  <p class="subtext">Cuidados iniciales según el grado (en campo)</p>
+
+  <!-- Infografía -->
+  <button class="info-btn" onclick="openModal('infografia')">
+    📊 Ver infografía
+  </button>
+
+  <!-- Advertencia -->
+  <div class="warning-box">
+    <label>⚠️ ADVERTENCIA IMPORTANTE</label>
+    <p>
+      • <b>No</b> aplicar remedios caseros (aceite, manteca, pasta dental, plantas).<br>
+      • <b>No</b> reventar ampollas.<br>
+      • <b>No</b> retirar ropa pegada a la piel.<br>
+      • Si hay duda, dolor intenso, quemadura profunda o en cara/manos/pies/genitales → <b>prioriza traslado</b>.
+    </p>
+  </div>
+
+  <!-- Submenús por grado -->
+  <button class="sub-btn" onclick="location.href='primer-grado.html'">
+    🟡 Primer grado
+  </button>
+
+  <button class="sub-btn" onclick="location.href='segundo-grado.html'">
+    🟠 Segundo grado
+  </button>
+
+  <button class="sub-btn danger" onclick="location.href='tercer-grado.html'">
+    🔴 Tercer grado (URGENTE)
+  </button>
+
+  <button class="back-btn" onclick="history.back()">⬅ Volver</button>
+</div>
+
+<!-- Modal Infografía -->
+<div id="infografia" class="modal">
+  <div class="modal-content">
+    <h2>📊 Infografía – Quemaduras</h2>
+    <p style="color:#555; font-size:14px; line-height:1.35;">
+      Aquí irá la imagen de infografía (cuando la tengas lista).<br>
+      Recomendación: una imagen simple con <b>qué hacer</b> y <b>qué NO hacer</b> por grado.
+    </p>
+
+    <!-- Si ya tienes imagen, cambia el src:
+    <img src="img/infografia-quemaduras.png" style="width:100%;border-radius:8px;">
+    -->
+
+    <button class="close-btn" onclick="closeModal('infografia')">Cerrar</button>
+  </div>
+</div>
+
+<script>
+function openModal(id) {
+  document.getElementById(id).style.display = "block";
+}
+function closeModal(id) {
+  document.getElementById(id).style.display = "none";
+}
+</script>
+
+</body>
+</html>
