@@ -1,239 +1,338 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Paciente Quemado IV</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quemaduras – IV</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      padding: 16px;
+      color: #1f2933;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+      max-width: 520px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 1.35rem;
+      margin: 0 0 6px;
+      color: #0f172a;
+    }
+    .subtitle {
+      font-size: 0.9rem;
+      color: #475569;
+      margin-bottom: 14px;
+      line-height: 1.35;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      background: #fee2e2;
+      color: #991b1b;
+      margin-bottom: 8px;
+      border: 1px solid rgba(220,38,38,.25);
+    }
 
-<style>
-body {
-  font-family: Arial, sans-serif;
-  background:#f2f2f2;
-  margin:0;
-  padding:20px;
-  text-align:center;
-}
+    label {
+      display: block;
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+      color: #334155;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      font-size: 1rem;
+    }
 
-.container {
-  max-width:420px;
-  margin:0 auto;
-  background:#ffffff;
-  padding:20px;
-  border-radius:12px;
-  box-shadow:0 4px 8px rgba(0,0,0,0.1);
-  text-align:left;
-}
+    /* Botones tipo “tarjeta” (para que sean iguales a los otros) */
+    .menu-btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid #e2e8f0;
+      background: #ffffff;
+      color: #0f172a;
+      cursor: pointer;
+      text-align: left;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      margin: 10px 0;
+    }
+    .menu-btn:active { transform: scale(0.99); }
+    .menu-title { font-weight: 800; font-size: 1rem; margin: 0; }
+    .menu-sub { font-size: 0.85rem; color: #475569; margin: 4px 0 0; }
 
-h1 {
-  font-size:22px;
-  margin-bottom:10px;
-  text-align:center;
-}
+    /* Variante de emergencia */
+    .menu-btn.emergency {
+      border: 1px solid rgba(220, 38, 38, .35);
+    }
+    .menu-btn.emergency .menu-title { color: #b91c1c; }
 
-p {
-  text-align:center;
-  color:#555;
-  font-size:14px;
-}
+    /* Botón secundario simple */
+    .secondary {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: #0f172a;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: -4px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .secondary:active { transform: scale(0.98); }
 
-/* Botones */
-.menu-btn {
-  width:100%;
-  padding:16px;
-  margin:12px 0;
-  font-size:18px;
-  border-radius:14px;
-  border:none;
-  background:#ffffff;
-  box-shadow:0 3px 6px rgba(0,0,0,0.15);
-  cursor:pointer;
-}
+    .note {
+      margin-top: 12px;
+      font-size: 0.78rem;
+      color: #475569;
+      line-height: 1.35;
+    }
 
-.menu-btn:active {
-  transform:translateY(2px);
-}
-
-/* Advertencias */
-.warn-btn {
-  background:#ffeb3b;
-}
-
-/* Botón volver */
-.back-btn {
-  width:100%;
-  margin-top:20px;
-  padding:12px;
-  font-size:16px;
-  border-radius:10px;
-  border:none;
-  cursor:pointer;
-  background:#1976d2;
-  color:white;
-}
-
-/* Popup fondo */
-.popup {
-  display:none;
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.6);
-  z-index:10;
-  padding:10px;
-}
-
-/* Popup contenido */
-.popup-content {
-  background:white;
-  max-width:420px;
-  margin:40px auto;
-  padding:20px;
-  border-radius:12px;
-
-  max-height:80vh;
-  overflow-y:auto;
-}
-
-.popup-content h2 {
-  text-align:center;
-  margin-top:0;
-}
-
-.popup-content button {
-  width:100%;
-  margin-top:10px;
-  padding:12px;
-  border:none;
-  border-radius:10px;
-  background:#1976d2;
-  color:white;
-  font-size:16px;
-}
-</style>
+    /* --- Modal TBSA --- */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 50;
+    }
+    .modal-content {
+      width: 100%;
+      max-width: 520px;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    .modal-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .modal-title { font-weight: 800; color: #0f172a; }
+    .modal-subtitle { font-size: 0.85rem; color: #475569; margin-top: 2px; }
+    .icon-btn {
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      border-radius: 10px;
+      padding: 8px 10px;
+      cursor: pointer;
+      font-weight: 900;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin: 10px 0 12px;
+    }
+    .chk {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 10px;
+      border-radius: 12px;
+      font-size: 0.92rem;
+      color: #0f172a;
+    }
+    .row { display: flex; align-items: center; gap: 10px; margin: 8px 0; }
+    .row input { margin: 0; }
+    .sum {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      background: #f1f5f9;
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin: 10px 0;
+      color: #0f172a;
+      font-weight: 900;
+    }
+    .sum-value { font-size: 1.2rem; }
+    .modal-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .modal-note { margin-top: 10px; font-size: 0.75rem; color: #475569; }
+  </style>
 </head>
-
 <body>
+  <div class="card">
+    <span class="badge">EMERGENCIA</span>
+    <h1>Quemaduras – IV</h1>
+    <div class="subtitle">
+      Herramienta rápida para personal comunitario. Estima <b>%SCQ</b> (adulto) y abre la calculadora de Parkland.
+    </div>
 
-<div class="container">
-  <h1>🔥 Paciente quemado</h1>
-  <p>Evaluación y líquidos IV</p>
+    <label for="weight">Peso del paciente (kg)</label>
+    <input type="number" id="weight" inputmode="decimal" placeholder="Ej. 70" />
 
-  <button class="menu-btn warn-btn" onclick="openPopup('advertencias')">
-    ⚠️ Advertencias importantes
-  </button>
+    <label for="tbsa">% de superficie corporal quemada (SCQ)</label>
+    <input type="number" id="tbsa" inputmode="decimal" placeholder="Ej. 30" />
 
-  <button class="menu-btn" onclick="openPopup('scq')">
-    📐 Superficie corporal quemada
-  </button>
+    <!-- ✅ FIX 1: el popup sí calcula y te pone el % en el campo -->
+    <button type="button" class="secondary" onclick="openTbsaModal()">Ayuda: calcular %SCQ (Regla de los 9)</button>
 
-  <button onclick="window.location.href='emergencias/parkland.html'">
-  Calculadora de Parkland
-</button>
+    <!-- ✅ FIX 2: botón estilo igual a los otros + navega a parkland.html -->
+    <button type="button" class="menu-btn emergency" onclick="goToParkland()">
+      <p class="menu-title">Calculadora de Parkland</p>
+      <p class="menu-sub">Abre parkland.html (sin popups). Usa el peso y %SCQ de arriba.</p>
+    </button>
 
-  <button class="menu-btn" onclick="location.href='manejo-quemaduras.html'">
-    🩹 Manejo de quemaduras
-  </button>
+    <button type="button" class="menu-btn" onclick="showQuickGuide()">
+      <p class="menu-title">Guía IV inicial (rápida)</p>
+      <p class="menu-sub">Qué hacer en campo mientras organizas traslado.</p>
+    </button>
 
-  <button class="back-btn" onclick="history.back()">⬅ Volver</button>
-</div>
+    <div id="quickGuide" class="note" style="display:none;"></div>
 
-<!-- ADVERTENCIAS -->
-<div id="advertencias" class="popup">
-  <div class="popup-content">
-    <h2>⚠️ Advertencias</h2>
-    <ul>
-      <li>No retirar ropa pegada a la piel</li>
-      <li>No aplicar pomadas, aceites ni remedios caseros</li>
-      <li>No reventar ampollas</li>
-      <li>Si no hay acceso venoso, trasladar inmediatamente</li>
-      <li>Priorizar vía aérea en quemaduras faciales</li>
-    </ul>
-    <button onclick="closePopup('advertencias')">Cerrar</button>
+    <div class="note">
+      Recordatorio: La Regla de los 9 es una estimación rápida para <b>adultos</b>. En pediatría conviene Lund–Browder.
+    </div>
   </div>
-</div>
 
-<!-- SCQ -->
-<div id="scq" class="popup">
-  <div class="popup-content">
-    <h2>📐 Superficie corporal</h2>
+  <!-- Modal TBSA -->
+  <div id="tbsaModal" class="modal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-label="Calculadora de %SCQ">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">%SCQ (Regla de los 9) – Adulto</div>
+          <div class="modal-subtitle">Marca zonas afectadas. La suma se calcula automáticamente.</div>
+        </div>
+        <button type="button" class="icon-btn" onclick="closeTbsaModal()" aria-label="Cerrar">✕</button>
+      </div>
 
-    <p>Selecciona las zonas quemadas</p>
+      <div class="grid">
+        <label class="chk"><input type="checkbox" data-pct="9" onchange="updateTbsaSum()"> Cabeza y cuello (9%)</label>
+        <label class="chk"><input type="checkbox" data-pct="18" onchange="updateTbsaSum()"> Tronco anterior (18%)</label>
+        <label class="chk"><input type="checkbox" data-pct="18" onchange="updateTbsaSum()"> Tronco posterior (18%)</label>
+        <label class="chk"><input type="checkbox" data-pct="9" onchange="updateTbsaSum()"> Brazo derecho (9%)</label>
+        <label class="chk"><input type="checkbox" data-pct="9" onchange="updateTbsaSum()"> Brazo izquierdo (9%)</label>
+        <label class="chk"><input type="checkbox" data-pct="18" onchange="updateTbsaSum()"> Pierna derecha (18%)</label>
+        <label class="chk"><input type="checkbox" data-pct="18" onchange="updateTbsaSum()"> Pierna izquierda (18%)</label>
+        <label class="chk"><input type="checkbox" data-pct="1" onchange="updateTbsaSum()"> Periné (1%)</label>
+      </div>
 
-    <label><input type="checkbox" value="9"> Cabeza (9%)</label><br>
-    <label><input type="checkbox" value="9"> Brazo derecho (9%)</label><br>
-    <label><input type="checkbox" value="9"> Brazo izquierdo (9%)</label><br>
-    <label><input type="checkbox" value="18"> Tronco anterior (18%)</label><br>
-    <label><input type="checkbox" value="18"> Tronco posterior (18%)</label><br>
-    <label><input type="checkbox" value="9"> Pierna derecha anterior (9%)</label><br>
-    <label><input type="checkbox" value="9"> Pierna derecha posterior (9%)</label><br>
-    <label><input type="checkbox" value="9"> Pierna izquierda anterior (9%)</label><br>
-    <label><input type="checkbox" value="9"> Pierna izquierda posterior (9%)</label><br>
+      <div class="row">
+        <label for="tbsaExtra" style="margin:0;">+ Ajuste manual (%)</label>
+        <input type="number" id="tbsaExtra" inputmode="decimal" placeholder="0" min="0" step="0.5" oninput="updateTbsaSum()" />
+      </div>
 
-    <p>Profundidad de la quemadura</p>
-    <select id="profundidad" style="width:100%;padding:8px;">
-      <option value="superficial">Superficial</option>
-      <option value="parcial">Parcial</option>
-      <option value="profunda">Profunda</option>
-    </select>
+      <div class="sum">
+        <span>Total estimado:</span>
+        <span class="sum-value" id="tbsaSum">0</span><span>%</span>
+      </div>
 
-    <button onclick="calcularSCQ()">Calcular</button>
+      <div class="modal-actions">
+        <button type="button" class="secondary" onclick="resetTbsaModal()">Limpiar</button>
+        <button type="button" class="secondary" onclick="applyTbsaToInput()">Usar este %SCQ</button>
+      </div>
 
-    <p id="resultadoSCQ" style="margin-top:10px;"></p>
-
-    <button onclick="closePopup('scq')">Cerrar</button>
+      <div class="modal-note">Nota: estimación rápida en <b>adultos</b>. En pediatría usar Lund–Browder.</div>
+    </div>
   </div>
-</div>
 
-<!-- PARKLAND -->
-<div id="parkland" class="popup">
-  <div class="popup-content">
-    <h2>💧 Parkland</h2>
-    <p>
-      Fórmula: 4 ml × kg × % SCQ<br><br>
-      • 50% en primeras 8 h<br>
-      • 50% en siguientes 16 h
-    </p>
-    <p><i>Calculadora completa en desarrollo</i></p>
-    <button onclick="closePopup('parkland')">Cerrar</button>
-  </div>
-</div>
+  <script>
+    // --- Navegación ---
+    function goToParkland() {
+      // Pasa valores por querystring para que parkland.html los use cuando lo programemos.
+      const w = document.getElementById('weight').value || '';
+      const t = document.getElementById('tbsa').value || '';
+      const qs = `?weight=${encodeURIComponent(w)}&tbsa=${encodeURIComponent(t)}`;
+      window.location.href = 'parkland.html' + qs;
+    }
 
-<script>
-function openPopup(id) {
-  document.getElementById(id).style.display = 'block';
-}
+    // --- Guía rápida comunitaria ---
+    function showQuickGuide() {
+      const box = document.getElementById('quickGuide');
+      const isOpen = box.style.display === 'block';
+      if (isOpen) { box.style.display = 'none'; return; }
+      box.style.display = 'block';
+      box.innerHTML = `
+        <b>Guía rápida IV (campo):</b><br>
+        1) ABC, oxígeno si disponible. <br>
+        2) Retira ropa/joyas; cubrir con paño limpio; evitar hipotermia. <br>
+        3) Si quemadura moderada-severa: inicia líquidos y organiza traslado. <br>
+        4) Registrar hora de quemadura, peso estimado y %SCQ. <br>
+      `;
+    }
 
-function closePopup(id) {
-  document.getElementById(id).style.display = 'none';
-}
+    // --- Modal %SCQ (Regla de los 9) ---
+    function openTbsaModal() {
+      const m = document.getElementById('tbsaModal');
+      m.style.display = 'flex';
+      m.setAttribute('aria-hidden', 'false');
+      updateTbsaSum();
+    }
 
-function calcularSCQ() {
-  let total = 0;
-  document.querySelectorAll('#scq input[type=checkbox]:checked').forEach(cb => {
-    total += parseInt(cb.value);
-  });
+    function closeTbsaModal() {
+      const m = document.getElementById('tbsaModal');
+      m.style.display = 'none';
+      m.setAttribute('aria-hidden', 'true');
+    }
 
-  const profundidad = document.getElementById('profundidad').value;
-  const resultado = document.getElementById('resultadoSCQ');
-  const btn = document.getElementById('btnParkland');
+    function resetTbsaModal() {
+      document.querySelectorAll('#tbsaModal input[type="checkbox"]').forEach(cb => cb.checked = false);
+      const extra = document.getElementById('tbsaExtra');
+      if (extra) extra.value = '';
+      updateTbsaSum();
+    }
 
-  let texto = `Superficie corporal quemada: <b>${total}%</b><br>`;
+    // ✅ FIX 1: suma real + muestra resultado siempre
+    function updateTbsaSum() {
+      let sum = 0;
+      document.querySelectorAll('#tbsaModal input[type="checkbox"]:checked').forEach(cb => {
+        sum += parseFloat(cb.getAttribute('data-pct')) || 0;
+      });
+      const extraVal = parseFloat(document.getElementById('tbsaExtra').value);
+      if (!isNaN(extraVal) && extraVal > 0) sum += extraVal;
+      if (sum < 0) sum = 0;
+      if (sum > 100) sum = 100;
+      document.getElementById('tbsaSum').textContent = (Math.round(sum * 10) / 10).toString();
+    }
 
-  if (total >= 10 && profundidad !== 'superficial') {
-    texto += '⚠️ <b>Requiere líquidos IV (Parkland)</b>';
-    btn.disabled = false;
-    btn.style.opacity = '1';
-  } else {
-    texto += 'ℹ️ No requiere líquidos IV. Manejo local.';
-    btn.disabled = true;
-    btn.style.opacity = '0.5';
-  }
+    function applyTbsaToInput() {
+      const val = parseFloat(document.getElementById('tbsaSum').textContent);
+      if (!isNaN(val)) document.getElementById('tbsa').value = val;
+      closeTbsaModal();
+    }
 
-  resultado.innerHTML = texto;
-}
-</script>
-
+    // cerrar modal con fondo o ESC
+    document.addEventListener('click', (e) => {
+      const modal = document.getElementById('tbsaModal');
+      if (modal && modal.style.display === 'flex' && e.target === modal) closeTbsaModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const modal = document.getElementById('tbsaModal');
+        if (modal && modal.style.display === 'flex') closeTbsaModal();
+      }
+    });
+  </script>
 </body>
 </html>
