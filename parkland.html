@@ -22,13 +22,14 @@
     }
     h1 {
       font-size: 1.4rem;
-      margin-bottom: 8px;
+      margin: 0 0 8px;
       color: #0f172a;
     }
     .subtitle {
       font-size: 0.9rem;
       color: #475569;
       margin-bottom: 16px;
+      line-height: 1.35;
     }
     label {
       display: block;
@@ -36,15 +37,17 @@
       margin-bottom: 4px;
       color: #334155;
     }
-    input {
+    input, select {
       width: 100%;
       padding: 10px;
       margin-bottom: 12px;
       border-radius: 10px;
       border: 1px solid #cbd5e1;
       font-size: 1rem;
+      background: #fff;
     }
-    button {
+
+    .primary {
       width: 100%;
       padding: 12px;
       border: none;
@@ -52,64 +55,116 @@
       background: #dc2626; /* rojo emergencias */
       color: white;
       font-size: 1rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
     }
-    button:active {
-      transform: scale(0.98);
-    }
+    .primary:active { transform: scale(0.98); }
+
     .result {
       margin-top: 16px;
       background: #f1f5f9;
       border-radius: 12px;
       padding: 12px;
+      display: none;
     }
     .result p {
       margin: 6px 0;
       font-size: 0.9rem;
     }
     .highlight {
-      font-weight: 700;
+      font-weight: 800;
       color: #0f172a;
     }
+
+    /* Advertencia amarilla (estilo rural/semáforo) */
+    .warn {
+      margin-top: 14px;
+      background: #fff3cd;
+      border: 1px solid #ffecb5;
+      color: #856404;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.85rem;
+      line-height: 1.35;
+    }
+    .warn strong { color: #6c5200; }
+
     .note {
       margin-top: 12px;
       font-size: 0.75rem;
       color: #475569;
+      line-height: 1.35;
     }
+
+    /* Botón atrás azul (como los otros módulos) */
+    .back-btn {
+      width: 100%;
+      margin-top: 16px;
+      padding: 12px;
+      font-size: 1rem;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      background: #1976d2;
+      color: white;
+      font-weight: 700;
+    }
+    .back-btn:active { transform: scale(0.99); }
   </style>
 </head>
 <body>
   <div class="card">
     <h1>Calculadora de Parkland</h1>
-    <div class="subtitle">Reposición inicial de líquidos en pacientes con quemaduras</div>
+    <div class="subtitle">
+      Reposición inicial de líquidos en pacientes con quemaduras.<br>
+      <b>Solución recomendada: Hartmann (Ringer lactato).</b>
+    </div>
+
+    <label for="ageGroup">Grupo etáreo</label>
+    <select id="ageGroup">
+      <option value="adulto">Adulto</option>
+      <option value="nino">Niño</option>
+      <option value="lactante">Lactante</option>
+    </select>
 
     <label for="weight">Peso del paciente (kg)</label>
-    <input type="number" id="weight" placeholder="Ej. 70" />
+    <input type="number" id="weight" inputmode="decimal" placeholder="Ej. 70" />
 
     <label for="tbsa">% de superficie corporal quemada (SCQ)</label>
-    <input type="number" id="tbsa" placeholder="Ej. 30" />
+    <input type="number" id="tbsa" inputmode="decimal" placeholder="Ej. 30" />
 
-    <button onclick="calculateParkland()">Calcular líquidos</button>
+    <button class="primary" onclick="calculateParkland()">Calcular líquidos</button>
 
-    <div id="results" class="result" style="display:none;"></div>
+    <div id="results" class="result"></div>
 
+    <!-- Texto guía (se queda debajo del botón, como pediste) -->
     <div class="note">
-      Fórmula de Parkland: 4 ml × kg × %SCQ. <br>
-      Administrar 50% en las primeras 8 h y 50% en las siguientes 16 h. <br>
+      Fórmula de Parkland: <b>4 ml × kg × %SCQ</b> (en 24 h). <br>
+      Administrar <b>50%</b> en las primeras <b>8 h</b> y <b>50%</b> en las siguientes <b>16 h</b>. <br>
+      Solución: <b>Hartmann (Ringer lactato)</b>. <br>
       Usar como guía inicial y reevaluar según diuresis y estado clínico.
     </div>
+
+    <!-- Advertencia amarilla -->
+    <div class="warn">
+      <strong>⚠️ ADVERTENCIA:</strong> Esta calculadora es una <b>guía</b>. Si hay duda, empeora, hay inhalación,
+      quemadura eléctrica/química, zonas de alto riesgo (cara, manos, pies, genitales) o falta de recursos para
+      monitorizar, <b>prioriza traslado</b> a un centro con mayor capacidad.
+    </div>
+
+    <button class="back-btn" onclick="history.back()">⬅ Atrás</button>
   </div>
 
   <script>
     function calculateParkland() {
+      const ageGroup = document.getElementById('ageGroup').value;
       const weight = parseFloat(document.getElementById('weight').value);
       const tbsa = parseFloat(document.getElementById('tbsa').value);
       const resultsDiv = document.getElementById('results');
 
       if (isNaN(weight) || isNaN(tbsa) || weight <= 0 || tbsa <= 0) {
         resultsDiv.style.display = 'block';
-        resultsDiv.innerHTML = '<p>⚠️ Ingresa valores válidos de peso y porcentaje de quemadura.</p>';
+        resultsDiv.innerHTML = '<p>⚠️ Ingresa valores válidos de peso y %SCQ.</p>';
         return;
       }
 
@@ -119,11 +174,19 @@
       const rateFirst8h = first8h / 8;
       const rateNext16h = next16h / 16;
 
+      // Nota simple por grupo etáreo (sin cambiar fórmula aquí)
+      let ageNote = '';
+      if (ageGroup === 'nino' || ageGroup === 'lactante') {
+        ageNote = '<p><span class="highlight">Nota pediatría:</span> además de Parkland, suele requerirse mantenimiento. Si hay duda, prioriza traslado.</p>';
+      }
+
       resultsDiv.style.display = 'block';
       resultsDiv.innerHTML = `
+        <p><span class="highlight">Solución:</span> Hartmann (Ringer lactato)</p>
         <p><span class="highlight">Volumen total (24 h):</span> ${totalFluids.toFixed(0)} ml</p>
         <p><span class="highlight">Primeras 8 h:</span> ${first8h.toFixed(0)} ml (${rateFirst8h.toFixed(0)} ml/h)</p>
         <p><span class="highlight">Siguientes 16 h:</span> ${next16h.toFixed(0)} ml (${rateNext16h.toFixed(0)} ml/h)</p>
+        ${ageNote}
       `;
     }
   </script>
