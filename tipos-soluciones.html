@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Tipos de Soluciones IV</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  font-family: Arial, sans-serif;
+  background:#f2f2f2;
+  margin:0;
+  padding:20px;
+  text-align:center;
+}
+
+.container{
+  max-width:420px;
+  margin:0 auto;
+  background:#ffffff;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 4px 8px rgba(0,0,0,0.1);
+  text-align:left;
+}
+
+h1{
+  font-size:22px;
+  margin-bottom:10px;
+  text-align:center;
+}
+
+p.subtext{
+  text-align:center;
+  color:#555;
+  font-size:14px;
+  margin-bottom:16px;
+}
+
+/* Botón infografía */
+.info-btn{
+  width:100%;
+  margin:10px 0 15px 0;
+  padding:10px;
+  font-size:16px;
+  border-radius:10px;
+  border:2px solid #1976d2;
+  background:#ffffff;
+  color:#1976d2;
+  cursor:pointer;
+}
+.info-btn:active{ transform:translateY(2px); }
+
+/* Warning box (amarillo suave) */
+.warning-box{
+  border:2px solid #f0ad4e;
+  border-radius:10px;
+  padding:12px;
+  margin-bottom:15px;
+  background:#fff3cd;
+}
+.warning-box label{
+  font-size:16px;
+  font-weight:bold;
+  color:#856404;
+  display:block;
+  margin-bottom:6px;
+}
+.warning-box p{
+  margin:6px 0 0 0;
+  color:#856404;
+  font-size:14px;
+  line-height:1.35;
+}
+
+/* Botones */
+.sub-btn{
+  width:100%;
+  padding:14px;
+  margin:10px 0;
+  font-size:17px;
+  border-radius:12px;
+  border:none;
+  background:#ffffff;
+  box-shadow:0 3px 6px rgba(0,0,0,0.15);
+  cursor:pointer;
+}
+.sub-btn:active{ transform:translateY(2px); }
+
+/* Botón volver */
+.back-btn{
+  width:100%;
+  margin-top:20px;
+  padding:12px;
+  font-size:16px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  background:#1976d2;
+  color:white;
+}
+
+/* Modal */
+.modal{
+  display:none;
+  position:fixed;
+  z-index:100;
+  left:0; top:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.6);
+}
+.modal-content{
+  background:#ffffff;
+  margin:5% auto;
+  padding:18px;
+  border-radius:12px;
+  max-width:95%;
+  text-align:left;
+}
+.modal-content h2{
+  margin-top:0;
+  text-align:center;
+}
+.close-btn{
+  width:100%;
+  margin-top:15px;
+  padding:10px;
+  font-size:16px;
+  border-radius:8px;
+  border:none;
+  background:#1976d2;
+  color:white;
+  cursor:pointer;
+}
+
+/* Checklist */
+.checklist label{
+  display:block;
+  margin:10px 0;
+  font-size:15px;
+  color:#333;
+}
+.checklist input{
+  transform:scale(1.2);
+  margin-right:10px;
+}
+
+.small-note{
+  font-size:13px;
+  color:#555;
+  line-height:1.35;
+  text-align:left;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>💧 Tipos de Soluciones</h1>
+  <p class="subtext">Recordatorio rápido: para qué sirve cada una (en campo)</p>
+
+  <!-- Infografía -->
+  <button class="info-btn" onclick="openModal('infografia')">📊 Ver infografía</button>
+
+  <!-- Aviso general -->
+  <div class="warning-box">
+    <label>⚠️ IMPORTANTE</label>
+    <p>
+      Estas son <b>guías generales</b>. Si el paciente empeora, hay duda o no puedes monitorizar → <b>prioriza traslado</b>.<br>
+      Si hay alergias, insuficiencia cardiaca o renal, o signos de sobrecarga (edema, dificultad respiratoria) → cuidado extra.
+    </p>
+  </div>
+
+  <!-- Botones -->
+  <button class="sub-btn" onclick="openModal('ssn')">🧂 Cloruro de Sodio 0.9% (SSN)</button>
+  <button class="sub-btn" onclick="openModal('hartmann')">💧 Hartmann (Ringer Lactato)</button>
+  <button class="sub-btn" onclick="openModal('agua')">💉 Agua estéril inyectable</button>
+
+  <button class="back-btn" onclick="history.back()">⬅ Volver</button>
+</div>
+
+<!-- Modal Infografía -->
+<div id="infografia" class="modal">
+  <div class="modal-content">
+    <h2>📊 Infografía – Identificación rápida</h2>
+    <p class="small-note">
+      Aquí pondrás imágenes de las bolsas/ampolletas para reconocerlas fácil.<br><br>
+      Sugerencia: una imagen por solución con nombre grande y color.<br>
+    </p>
+    <!-- Ejemplo:
+    <img src="img/soluciones-iv.png" style="width:100%; border-radius:10px;">
+    -->
+    <button class="close-btn" onclick="closeModal('infografia')">Cerrar</button>
+  </div>
+</div>
+
+<!-- Modal SSN 0.9% -->
+<div id="ssn" class="modal">
+  <div class="modal-content">
+    <h2>🧂 Cloruro de Sodio 0.9% (SSN)</h2>
+    <p class="small-note"><b>Uso común en campo (recordatorio):</b></p>
+    <div class="checklist">
+      <label><input type="checkbox"> Reposición de volumen en deshidratación / choque (según protocolo y signos).</label>
+      <label><input type="checkbox"> Mantener vía IV “permeable” (según indicación).</label>
+      <label><input type="checkbox"> Dilución/reconstitución de algunos medicamentos (si el fármaco lo indica).</label>
+      <label><input type="checkbox"> Lavado de heridas/irrigación (cuando se indica y no hay alternativa estéril mejor).</label>
+    </div>
+    <p class="small-note">
+      <b>Nota:</b> Si es reanimación en quemados, muchas guías prefieren <b>Hartmann</b> para Parkland.
+      Vigilar signos de sobrecarga (edema, falta de aire).
+    </p>
+    <button class="close-btn" onclick="closeModal('ssn')">Cerrar</button>
+  </div>
+</div>
+
+<!-- Modal Hartmann -->
+<div id="hartmann" class="modal">
+  <div class="modal-content">
+    <h2>💧 Hartmann (Ringer Lactato)</h2>
+    <p class="small-note"><b>Uso común en campo (recordatorio):</b></p>
+    <div class="checklist">
+      <label><input type="checkbox"> Reposición de líquidos en choque/deshidratación (según protocolo local).</label>
+      <label><input type="checkbox"> <b>Quemaduras:</b> solución recomendada en la fórmula de Parkland (guía clásica).</label>
+      <label><input type="checkbox"> Puede ser opción en diarrea/vómito severo si requiere IV y hay criterios de gravedad.</label>
+    </div>
+    <p class="small-note">
+      <b>Clave:</b> En quemados con %SCQ alto, la fórmula de Parkland se realiza con <b>Hartmann</b>.
+      Si no puedes monitorizar, si hay inhalación o el paciente empeora → <b>traslado</b>.
+    </p>
+    <button class="close-btn" onclick="closeModal('hartmann')">Cerrar</button>
+  </div>
+</div>
+
+<!-- Modal Agua estéril inyectable -->
+<div id="agua" class="modal">
+  <div class="modal-content">
+    <h2>💉 Agua estéril inyectable</h2>
+    <div class="warning-box" style="margin-top:10px;">
+      <label>⚠️ MUY IMPORTANTE</label>
+      <p>
+        El agua estéril inyectable <b>NO se usa para hidratar por vena</b> (no es “suero”).<br>
+        Puede causar problemas graves si se pasa IV sola.
+      </p>
+    </div>
+
+    <p class="small-note"><b>¿Para qué sí se usa? (recordatorio):</b></p>
+    <div class="checklist">
+      <label><input type="checkbox"> Reconstituir/diluir medicamentos <b>solo si el medicamento lo indica</b>.</label>
+      <label><input type="checkbox"> Preparaciones específicas (ampolletas) para inyección, según indicación del fármaco.</label>
+    </div>
+
+    <p class="small-note">
+      <b>Si necesitas líquidos IV para hidratación:</b> normalmente se usa <b>SSN 0.9%</b> o <b>Hartmann</b> según el caso.
+      Ante duda → <b>no administrar</b> y priorizar traslado.
+    </p>
+    <button class="close-btn" onclick="closeModal('agua')">Cerrar</button>
+  </div>
+</div>
+
+<script>
+function openModal(id){
+  document.getElementById(id).style.display = "block";
+}
+function closeModal(id){
+  document.getElementById(id).style.display = "none";
+}
+</script>
+
+</body>
+</html>
