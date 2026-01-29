@@ -120,12 +120,15 @@
       <b>Solución recomendada: Hartmann (Ringer lactato).</b>
     </div>
 
-    <label for="ageGroup">Grupo etáreo</label>
-    <select id="ageGroup">
-      <option value="adulto">Adulto</option>
-      <option value="nino">Niño</option>
-      <option value="lactante">Lactante</option>
-    </select>
+    <label for="ageGroup">Edad</label>
+<select id="ageGroup">
+  <option value="lactante">👶 Lactante (0–1 año)</option>
+  <option value="nino">🧒 Niño (1–12 años)</option>
+  <option value="adolescente">🧑‍🎓 Adolescente (12–17 años)</option>
+  <option value="adulto">🧑 Adulto (18–65 años)</option>
+  <option value="adulto_mayor">👵 Adulto mayor (&gt;65 años)</option>
+</select>
+
 
     <label for="weight">Peso del paciente (kg)</label>
     <input type="number" id="weight" inputmode="decimal" placeholder="Ej. 70" />
