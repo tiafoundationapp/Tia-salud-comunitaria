@@ -102,7 +102,7 @@ p {
   cursor:pointer;
 }
 
-/* (pequeño) estilo para el resultado del %SCQ */
+/* Resultado %SCQ */
 .scq-result {
   text-align:center;
   font-size:16px;
@@ -118,6 +118,27 @@ p {
   font-size:13px;
   margin-top:8px;
 }
+
+/* Mensaje decisión */
+.decision-box {
+  text-align:center;
+  margin-top:12px;
+  padding:12px;
+  border-radius:10px;
+  background:#eef2ff;
+}
+.decision-msg {
+  font-weight:bold;
+  color:#111;
+  margin-bottom:10px;
+}
+.decision-note {
+  font-size:12px;
+  color:#555;
+  margin-top:8px;
+  line-height:1.3;
+  text-align:center;
+}
 </style>
 </head>
 
@@ -130,7 +151,7 @@ p {
 
   <button class="menu-btn" onclick="openPopup('scq')">🧮 Superficie corporal quemada</button>
 
-  <!-- ✅ FIX: ya no abre popup; navega a parkland.html manteniendo el estilo -->
+  <!-- ✅ Mantiene estética y manda a parkland.html -->
   <button class="menu-btn" id="parklandBtn" onclick="goToParkland()">💧 Calculadora de líquidos (Parkland)</button>
 
   <button class="menu-btn" onclick="location.href='manejo-quemaduras.html'">🩹 Manejo de quemaduras</button>
@@ -159,7 +180,7 @@ p {
     <h3>🧮 Superficie corporal quemada</h3>
     <p>Selecciona las zonas afectadas (Regla del 9)</p>
 
-    <!-- ✅ FIX: añadimos data-pct para poder sumar -->
+    <!-- checkboxes con porcentaje -->
     <label><input type="checkbox" class="scq-zone" data-pct="9"> Cabeza (9%)</label><br>
     <label><input type="checkbox" class="scq-zone" data-pct="9"> Brazo derecho (9%)</label><br>
     <label><input type="checkbox" class="scq-zone" data-pct="9"> Brazo izquierdo (9%)</label><br>
@@ -171,38 +192,28 @@ p {
     <label><input type="checkbox" class="scq-zone" data-pct="9"> Pierna izquierda posterior (9%)</label><br>
 
     <p><strong>Grado de profundidad:</strong></p>
-    <select style="width:100%; padding:8px;">
+    <select id="burnDepth" style="width:100%; padding:8px;">
       <option>Primer grado</option>
       <option>Segundo grado</option>
       <option>Tercer grado</option>
     </select>
 
-    <!-- ✅ Resultado real -->
     <div class="scq-result">
       %SCQ total: <strong><span id="scqTotal">0</span>%</strong>
     </div>
-    <div class="scq-hint">Este % se usará para Parkland.</div>
+
+    <!-- ✅ Decisión automática + botón de acción -->
+    <div class="decision-box">
+      <div class="decision-msg" id="scqDecisionMsg">Selecciona zonas y profundidad.</div>
+      <button class="close-btn" id="scqDecisionBtn" onclick="decisionAction()">Continuar</button>
+      <div class="decision-note" id="scqDecisionNote">
+        Regla rápida para adultos. Si es niño/anciano o hay sospecha de inhalación, considerar manejo más agresivo y traslado.
+      </div>
+    </div>
 
     <button class="close-btn" onclick="closePopup('scq')">Cerrar</button>
   </div>
 </div>
-
-<!-- Parkland (popup ya no se usa; lo dejo comentado por si quieres conservarlo como info)
-<div class="popup" id="parkland">
-  <div class="popup-content">
-    <h3>💧 Fórmula de Parkland</h3>
-    <p>Usar solo si la superficie quemada lo amerita</p>
-    <ul>
-      <li>Solución: Hartmann</li>
-      <li>4 ml × kg × % SCQ</li>
-      <li>50% en primeras 8 h</li>
-      <li>50% restantes en 16 h</li>
-    </ul>
-    <p><em>La calculadora detallada se habilitará tras el cálculo de SCQ</em></p>
-    <button class="close-btn" onclick="closePopup('parkland')">Cerrar</button>
-  </div>
-</div>
--->
 
 <script>
 function openPopup(id) {
@@ -213,8 +224,14 @@ function closePopup(id) {
   document.getElementById(id).style.display = 'none';
 }
 
-/* ✅ FIX: cálculo del %SCQ en tiempo real */
+/* %SCQ */
 let currentSCQ = 0;
+
+// destino del botón automático
+let decisionTarget = 'manejo-quemaduras.html';
+
+// ✅ Umbral internacional típico para ADULTOS: ≥20% (2º/3º) → IV formal
+const IV_THRESHOLD_ADULT = 20;
 
 function calculateSCQ() {
   let sum = 0;
@@ -222,7 +239,6 @@ function calculateSCQ() {
     sum += parseFloat(cb.dataset.pct) || 0;
   });
 
-  // límites de seguridad
   if (sum < 0) sum = 0;
   if (sum > 100) sum = 100;
 
@@ -230,20 +246,59 @@ function calculateSCQ() {
   const out = document.getElementById('scqTotal');
   if (out) out.textContent = String(sum);
 
-  // guardamos para usarlo en parkland.html si lo quieres
   try { localStorage.setItem('scq_total', String(sum)); } catch(e) {}
+
+  updateDecision();
 }
 
-// activar listeners
+function updateDecision() {
+  const depthEl = document.getElementById('burnDepth');
+  const depth = depthEl ? depthEl.value : 'Primer grado';
+
+  const msgEl = document.getElementById('scqDecisionMsg');
+  const btnEl = document.getElementById('scqDecisionBtn');
+  const noteEl = document.getElementById('scqDecisionNote');
+
+  if (!msgEl || !btnEl) return;
+
+  const isSuperficial = (depth === 'Primer grado');
+
+  // regla binaria pedida:
+  // - si ≥20% y no superficial → Parkland
+  // - si <20% o superficial → Manejo de quemaduras
+  if (currentSCQ >= IV_THRESHOLD_ADULT && !isSuperficial) {
+    msgEl.textContent = '✅ Requiere hidratación IV';
+    btnEl.textContent = 'Ir a Parkland';
+    decisionTarget = 'parkland.html?scq=' + encodeURIComponent(currentSCQ || 0);
+    if (noteEl) {
+      noteEl.textContent = 'Criterio adulto: ≥20% (2º/3º). Si es niño (≥10–15%), anciano, deshidratado o con inhalación, considerar IV y traslado aunque sea menor.';
+    }
+  } else {
+    msgEl.textContent = '✅ Manejo local / seguimiento';
+    btnEl.textContent = 'Ir a Manejo de quemaduras';
+    decisionTarget = 'manejo-quemaduras.html';
+    if (noteEl) {
+      noteEl.textContent = 'Si hay dolor intenso, ampollas extensas, cara/manos/pies/genitales, inhalación, eléctrico/químico o comorbilidades, prioriza traslado.';
+    }
+  }
+}
+
+function decisionAction() {
+  location.href = decisionTarget;
+}
+
+/* listeners */
 document.addEventListener('change', (e) => {
   if (e.target && e.target.classList.contains('scq-zone')) {
     calculateSCQ();
   }
+  if (e.target && e.target.id === 'burnDepth') {
+    updateDecision();
+  }
 });
 
-/* ✅ FIX: botón Parkland navega a parkland.html, pasando %SCQ */
+/* Botón Parkland principal (fuera del popup) */
 function goToParkland() {
-  // intenta leer lo último calculado o lo guardado
   let scq = currentSCQ;
   if (!scq) {
     try {
@@ -251,12 +306,10 @@ function goToParkland() {
       if (!isNaN(saved)) scq = saved;
     } catch(e) {}
   }
-
-  // pasa el %SCQ por query (si parkland.html lo quiere leer después)
   location.href = 'parkland.html?scq=' + encodeURIComponent(scq || 0);
 }
 
-// inicializa display si hay guardado
+/* init */
 (function initSCQ() {
   try {
     const saved = parseFloat(localStorage.getItem('scq_total'));
@@ -266,6 +319,8 @@ function goToParkland() {
       if (out) out.textContent = String(saved);
     }
   } catch(e) {}
+
+  updateDecision();
 })();
 </script>
 </body>
