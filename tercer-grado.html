@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Tercer grado – URGENTE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  font-family: Arial, sans-serif;
+  background:#f2f2f2;
+  margin:0;
+  padding:20px;
+  text-align:center;
+}
+
+.container{
+  max-width:420px;
+  margin:0 auto;
+  background:#ffffff;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 4px 8px rgba(0,0,0,0.1);
+  text-align:left;
+}
+
+h1{
+  font-size:22px;
+  margin-bottom:10px;
+  text-align:center;
+}
+
+p.subtext{
+  text-align:center;
+  color:#555;
+  font-size:14px;
+  margin-bottom:16px;
+}
+
+/* Botón infografía */
+.info-btn{
+  width:100%;
+  margin:10px 0 15px 0;
+  padding:10px;
+  font-size:16px;
+  border-radius:10px;
+  border:2px solid #1976d2;
+  background:#ffffff;
+  color:#1976d2;
+  cursor:pointer;
+}
+.info-btn:active{ transform:translateY(2px); }
+
+/* Warning box ROJO (urgente) */
+.danger-box{
+  border:2px solid #d32f2f;
+  border-radius:10px;
+  padding:12px;
+  margin-bottom:15px;
+  background:#f8d7da;
+}
+.danger-box label{
+  font-size:16px;
+  font-weight:bold;
+  color:#8a1c1c;
+  display:block;
+  margin-bottom:6px;
+}
+.danger-box p{
+  margin:6px 0 0 0;
+  color:#8a1c1c;
+  font-size:14px;
+  line-height:1.35;
+}
+
+/* Botones submenu */
+.sub-btn{
+  width:100%;
+  padding:14px;
+  margin:10px 0;
+  font-size:17px;
+  border-radius:12px;
+  border:none;
+  background:#ffffff;
+  box-shadow:0 3px 6px rgba(0,0,0,0.15);
+  cursor:pointer;
+}
+.sub-btn:active{ transform:translateY(2px); }
+
+/* Botón rojo principal */
+.urgent-btn{
+  background:#d32f2f;
+  color:white;
+  font-weight:bold;
+}
+
+/* Botón volver */
+.back-btn{
+  width:100%;
+  margin-top:20px;
+  padding:12px;
+  font-size:16px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  background:#1976d2;
+  color:white;
+}
+
+/* Modal */
+.modal{
+  display:none;
+  position:fixed;
+  z-index:100;
+  left:0; top:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.6);
+}
+.modal-content{
+  background:#ffffff;
+  margin:5% auto;
+  padding:18px;
+  border-radius:12px;
+  max-width:95%;
+  text-align:left;
+}
+.modal-content h2{
+  margin-top:0;
+  text-align:center;
+}
+.close-btn{
+  width:100%;
+  margin-top:15px;
+  padding:10px;
+  font-size:16px;
+  border-radius:8px;
+  border:none;
+  background:#1976d2;
+  color:white;
+  cursor:pointer;
+}
+
+/* Checklist */
+.checklist label{
+  display:block;
+  margin:10px 0;
+  font-size:15px;
+  color:#333;
+}
+.checklist input{
+  transform:scale(1.2);
+  margin-right:10px;
+}
+.small-note{
+  font-size:13px;
+  color:#555;
+  line-height:1.35;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>🔴 Quemadura de 3er grado</h1>
+  <p class="subtext">Piel blanca/negra, seca, puede doler poco. <b>Emergencia</b>.</p>
+
+  <!-- Infografía -->
+  <button class="info-btn" onclick="openModal('infografia')">📊 Ver infografía</button>
+
+  <!-- Caja roja urgente -->
+  <div class="danger-box">
+    <label>🚨 URGENTE</label>
+    <p>
+      Tercer grado = quemadura profunda. <br>
+      <b>Prioriza traslado inmediato</b>. No es manejo local.<br>
+      Si hay humo/inhalación, cara/manos/pies/genitales o quemadura extensa → <b>emergencia</b>.
+    </p>
+  </div>
+
+  <!-- Botones -->
+  <button class="sub-btn urgent-btn" onclick="openModal('guia')">🚨 🔴 Guía rápida (checklist)</button>
+  <button class="sub-btn" onclick="openModal('nohacer')">⛔ Qué NO hacer</button>
+  <button class="sub-btn" onclick="openModal('material')">🧰 Material necesario</button>
+  <button class="sub-btn" onclick="openModal('preparacion')">🧍 Preparación del paciente</button>
+  <button class="sub-btn" onclick="openModal('manejo')">🩹 Manejo inicial y traslado</button>
+
+  <button class="back-btn" onclick="history.back()">⬅ Volver</button>
+</div>
+
+<!-- Modal Infografía -->
+<div id="infografia" class="modal">
+  <div class="modal-content">
+    <h2>📊 Infografía – 3er grado</h2>
+    <p class="small-note">
+      Aquí irá una imagen simple con:<br>
+      • Reconocer 3er grado (piel seca, blanca/negra, aspecto “cuero”)<br>
+      • Primeros pasos y traslado<br>
+      • Qué NO hacer
+    </p>
+    <!-- <img src="img/infografia-tercer-grado.png" style="width:100%; border-radius:10px;"> -->
+    <button class="close-btn" onclick="closeModal('infografia')">Cerrar</button>
+  </div>
+</div>
+
+<!-- Modal Guía rápida -->
+<div id="guia" class="modal">
+  <div class="modal-content">
+    <h2>🚨 🔴 Guía rápida (3er grado)</h2>
+    <div class="checklist">
+      <label><input type="checkbox"> Asegurar ABC: si hay humo/ronquera/tos → <b>traslado inmediato</b>.</label>
+      <label><input type="checkbox"> Retirar anillos/relojes si está cerca (antes de que se inflame).</label>
+      <label><input type="checkbox"> Cubrir con <b>paño limpio</b> o gasa. Mantener <b>calor</b> (evitar hipotermia).</label>
+      <label><input type="checkbox"> <b>No</b> aplicar cremas/remedios ni reventar tejido.</label>
+      <label><input type="checkbox"> Dolor: analgesia si está permitido (según protocolo local).</label>
+      <label><input type="checkbox"> Organizar <b>traslado urgente</b> y registrar hora, zona y extensión.</label>
+    </div>
+    <button class="close-btn" onclick="closeModal('guia')">Cerrar</button>
+  </div>
+</div>
+
+<!-- Modal NO hacer -->
+<div id="nohacer" class="modal">
+  <div class="modal-content">
+    <h2>⛔ Qué NO hacer</h2>
+    <div class="checklist">
+      <label><input type="checkbox"> No aplicar pasta dental, aceites, manteca, café, ceniza, plantas.</label>
+      <label><input type="checkbox"> No arrancar ropa adherida ni piel.</label>
+      <label><input type="checkbox"> No usar hielo directo (empeora el daño).</label>
+      <label><input type="checkbox"> No romper ampollas si las hay alrededor.</label>
+      <label><input type="checkbox"> No retrasar traslado “por curar mejor” en campo.</label>
+    </div>
+    <p class="small-note"><b>Regla:</b> lo mejor que puedes hacer es <b>cubrir, proteger y trasladar</b>.</p>
+    <button class="close-btn" onclick="closeModal('nohacer')">Cerrar</button>
+  </div>
+</div>
+
+<!-- Modal Material -->
+<div id="material" class="modal">
+  <div class="modal-content">
+    <h2>🧰 Material necesario</h2>
+    <div class="checklist">
+      <label><input type="checkbox"> Gasas estériles / paños limpios (ideal no adherente si hay).</label>
+      <label><input type="checkbox"> Venda/tela limpia para fijar sin apretar.</label>
+      <label><input type="checkbox"> Manta para evitar hipotermia.</label>
+      <label><input type="checkbox"> Guantes (si hay).</label>
+      <label><input type="checkbox"> Analgésico según protocolo local.</label>
+      <label><input type="checkbox"> Celular/bitácora: hora de lesión, zona, sospecha de inhalación.</label>
+    </div>
+    <button class="close-btn" onclick="closeModal('material')">Cerrar</button>
+  </div>
+</div>
+
+<!-- Modal Preparación -->
+<div id="preparacion" class="modal">
+  <div class="modal-content">
+    <h2>🧍 Preparación del paciente</h2>
+    <div class="checklist">
+      <label><input type="checkbox"> Explicar: “vamos a proteger la herida y trasladar”.</label>
+      <label><input type="checkbox"> Valorar dolor y estado mental (alerta/confuso).</label>
+      <label><input type="checkbox"> Revisar signos de alarma: respiración difícil, mareo, vómito.</label>
+      <label><input type="checkbox"> Retirar objetos que compriman (anillos/relojes/cinturón) si aplica.</label>
+      <label><input type="checkbox"> Mantener al paciente caliente y tranquilo.</label>
+    </div>
+    <button class="close-btn" onclick="closeModal('preparacion')">Cerrar</button>
+  </div>
+</div>
+
+<!-- Modal Manejo -->
+<div id="manejo" class="modal">
+  <div class="modal-content">
+    <h2>🩹 Manejo inicial y traslado</h2>
+    <div class="checklist">
+      <label><input type="checkbox"> Cubrir con gasa/paño limpio. No pegar apósitos a la herida.</label>
+      <label><input type="checkbox"> Evitar hipotermia: manta/ropa seca, ambiente cálido.</label>
+      <label><input type="checkbox"> Si disponible y entrenado: preparar hidratación IV según módulo de líquidos.</label>
+      <label><input type="checkbox"> Elevar extremidad si es posible (reduce edema).</label>
+      <label><input type="checkbox"> Traslado urgente: centro con capacidad para quemados.</label>
+      <label><input type="checkbox"> Documentar: hora, mecanismo (fuego/agua/humo/químico/eléctrico), zonas afectadas.</label>
+    </div>
+    <p class="small-note">
+      <b>Clave comunitaria:</b> en 3er grado el objetivo es <b>proteger, evitar hipotermia y trasladar</b>.
+    </p>
+    <button class="close-btn" onclick="closeModal('manejo')">Cerrar</button>
+  </div>
+</div>
+
+<script>
+function openModal(id){
+  document.getElementById(id).style.display = "block";
+}
+function closeModal(id){
+  document.getElementById(id).style.display = "none";
+}
+</script>
+
+</body>
+</html>
